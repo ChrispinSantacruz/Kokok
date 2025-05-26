@@ -4,11 +4,16 @@ export class Player {
   constructor(canvas) {
     this.canvas = canvas
     this.position = new Vector2(canvas.width / 2, canvas.height - 75)
-    // Ajustar tamaño en responsive landscape
-    if (window.innerWidth < 1025 && window.innerWidth > window.innerHeight) {
-      this.radius = 22
+    // Ajustar tamaño en responsive landscape y fullscreen
+    const isMobile = window.innerWidth < 1025;
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
+    if ((isMobile && isLandscape) || isFullscreen) {
+      this.radius = 16; // Más pequeño en landscape/fullscreen móvil
+    } else if (isMobile) {
+      this.radius = 22;
     } else {
-      this.radius = 35
+      this.radius = 28;
     }
     this.speed = 24
     this.targetPosition = this.position.copy()

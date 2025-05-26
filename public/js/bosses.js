@@ -118,14 +118,20 @@ export class TrumpBoss {
 }
 
 export class ElonBoss {
-  constructor(canvas) {
-    if (window.innerWidth < 1025) {
-      this.position = new Vector2(canvas.width / 2, 55) // Más arriba en móviles
+  constructor(canvas) {    const isMobile = window.innerWidth < 1025;
+    const isLandscape = window.innerWidth > window.innerHeight;
+    const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
+    if ((isMobile && isLandscape) || isFullscreen) {
+      this.position = new Vector2(canvas.width / 2, 40);
+      this.radius = 22;
+    } else if (isMobile) {
+      this.position = new Vector2(canvas.width / 2, 55);
+      this.radius = 28;
     } else {
-      this.position = new Vector2(canvas.width / 2, 100)
+      this.position = new Vector2(canvas.width / 2, 100);
+      this.radius = 40;
     }
     this.velocity = new Vector2(0, 0)
-    this.radius = 40
     this.health = 10
     this.active = true
     this.type = "elon"

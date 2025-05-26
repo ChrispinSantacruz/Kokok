@@ -296,10 +296,44 @@
 
         <div id="rotateOverlay" class="rotate-overlay hidden">
           <video id="rotateVideo" src="assents/Rotate.mp4" autoplay loop muted playsinline></video>
+          <div class="rotate-message">Por favor, gira tu dispositivo a modo horizontal para jugar mejor. Si ya lo hiciste, toca el botón para continuar.</div>
           <button id="rotatePlayBtn" class="menu-btn play-btn">GIRAR Y JUGAR</button>
         </div>
+
+        <button id="fullscreenBtn" class="menu-btn" style="position: absolute; top: 10px; right: 10px; z-index: 2000;">Pantalla Completa</button>
     </div>
 
     <script type="module" src="js/game.js"></script>
+    <script>
+    // Overlay de rotación: ocultar al pulsar el botón
+    const rotateBtn = document.getElementById('rotatePlayBtn');
+    const rotateOverlay = document.getElementById('rotateOverlay');
+    if (rotateBtn && rotateOverlay) {
+      rotateBtn.onclick = () => {
+        rotateOverlay.classList.add('hidden');
+      };
+    }
+
+    // Pantalla completa
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    fullscreenBtn.addEventListener('click', () => {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+          elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+          elem.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+    </script>
 </body>
 </html>

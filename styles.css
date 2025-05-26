@@ -18,6 +18,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#gameContainer.game-over {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 #gameCanvas {
@@ -99,6 +104,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 30;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .forest-bg {
@@ -315,11 +321,23 @@ body {
   }
 }
 
+.gameover-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .gameover-buttons {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 10px;
+}
+
+.gameover-card {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 /* Controles móviles */
@@ -607,4 +625,21 @@ body {
   #mobileControls {
     display: none !important;
   }
+}
+
+#gameOverScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+#gameOverScreen.hidden {
+  display: none;
 }

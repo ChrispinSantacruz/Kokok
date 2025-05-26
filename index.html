@@ -104,6 +104,105 @@
                 display: none;
             }
         }
+
+        /* --- GAME OVER SCREEN RESPONSIVE --- */
+        #gameOverScreen .score-circle {
+            width: 32vw;
+            max-width: 340px;
+            min-width: 180px;
+            height: 32vw;
+            max-height: 340px;
+            min-height: 180px;
+            background: linear-gradient(135deg, #00FF00 60%, #009900 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid #222;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        #gameOverScreen .score-info {
+            text-align: center;
+            color: #111;
+            font-size: 2.2vw;
+            width: 100%;
+        }
+        #gameOverScreen .score-number {
+            font-size: 3vw;
+            font-weight: bold;
+        }
+        #gameOverScreen .record-number {
+            font-size: 2vw;
+            font-weight: bold;
+        }
+        #gameOverScreen .gameover-title {
+            font-size: 5vw;
+            color: #FF0000;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 #000;
+        }
+        #gameOverScreen .gameover-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
+            width: 80vw;
+            max-width: 340px;
+            min-width: 180px;
+            font-size: 1.5vw;
+            padding: 12px 0;
+        }
+        @media (max-width: 900px) {
+            #gameOverScreen .score-circle {
+                width: 48vw;
+                height: 48vw;
+            }
+            #gameOverScreen .score-info {
+                font-size: 3vw;
+            }
+            #gameOverScreen .score-number {
+                font-size: 4vw;
+            }
+            #gameOverScreen .record-number {
+                font-size: 3vw;
+            }
+            #gameOverScreen .gameover-title {
+                font-size: 7vw;
+            }
+            #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
+                font-size: 2.5vw;
+            }
+        }
+        @media (max-width: 600px) {
+            #gameOverScreen .score-circle {
+                width: 70vw;
+                height: 70vw;
+                min-width: 120px;
+                min-height: 120px;
+            }
+            #gameOverScreen .score-info {
+                font-size: 4vw;
+            }
+            #gameOverScreen .score-number {
+                font-size: 6vw;
+            }
+            #gameOverScreen .record-number {
+                font-size: 4vw;
+            }
+            #gameOverScreen .gameover-title {
+                font-size: 10vw;
+            }
+            #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
+                font-size: 4vw;
+                min-width: 120px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -120,7 +219,7 @@
 
         <!-- Pantalla principal -->
         <div id="mainMenu" class="screen">
-            <div class="forest-bg"></div>
+            <!-- <div class="forest-bg"></div> -->
             <div class="menu-content">
                 <h1 class="game-title">KOKOK<br>THE ROACH</h1>
                 <p class="subtitle">🪙 Crypto Shooter Game 🪙</p>
@@ -135,7 +234,7 @@
 
         <!-- Pantalla de instrucciones -->
         <div id="instructionsScreen" class="screen hidden">
-            <div class="forest-bg"></div>
+            <!-- <div class="forest-bg"></div> -->
             <div class="instructions-content">
                 <h2>INSTRUCCIONES</h2>
                 <div class="instructions-grid">
@@ -162,10 +261,9 @@
 
         <!-- Pantalla de Game Over -->
         <div id="gameOverScreen" class="screen hidden">
-            <div class="forest-bg"></div>
-            <div class="gameover-content">
-                <h2 class="gameover-title">GAME<br>OVER</h2>
-                <div class="score-circle">
+            <div class="gameover-card">
+                <h2 class="gameover-title">GAME OVER</h2>
+                <div class="gameover-layout">
                     <div class="score-info">
                         <div class="coin-icon">🪙</div>
                         <div class="score-text">PUNTOS</div>
@@ -173,12 +271,11 @@
                         <div class="record-text">RÉCORD</div>
                         <div id="highScore" class="record-number">0</div>
                     </div>
-                </div>
-                <div class="roach-mascot">🪳</div>
-                <div class="gameover-buttons">
-                    <button id="restartBtn" class="menu-btn play-btn">JUGAR DE NUEVO</button>
-                    <button id="shareTwitterBtn" class="menu-btn share-btn">COMPARTIR EN TWITTER</button>
-                    <button id="backToMenuBtn" class="menu-btn">MENÚ PRINCIPAL</button>
+                    <div class="gameover-buttons">
+                        <button id="restartBtn" class="menu-btn play-btn">JUGAR DE NUEVO</button>
+                        <button id="shareTwitterBtn" class="menu-btn share-btn">COMPARTIR EN TWITTER</button>
+                        <button id="backToMenuBtn" class="menu-btn">MENÚ PRINCIPAL</button>
+                    </div>
                 </div>
             </div>
         </div>

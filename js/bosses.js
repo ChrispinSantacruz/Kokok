@@ -3,7 +3,11 @@ import { Utils, Vector2 } from "./utils.js"
 export class TrumpBoss {
   constructor(canvas) {
     this.canvas = canvas
-    this.position = new Vector2(canvas.width / 2, 80)
+    if (window.innerWidth < 1025) {
+      this.position = new Vector2(canvas.width / 2, 40)
+    } else {
+      this.position = new Vector2(canvas.width / 2, 80)
+    }
     this.velocity = new Vector2(2, 0)
     this.radius = 50
     this.health = 10
@@ -34,7 +38,11 @@ export class TrumpBoss {
         this.velocity.x *= -1
       }
       // Fijar la posición vertical en un valor constante
-      this.position.y = this.radius + 15
+      if (window.innerWidth < 1025) {
+        this.position.y = this.radius - 10
+      } else {
+        this.position.y = this.radius + 15
+      }
     } else {
       // Movimiento aleatorio temporal tras recibir daño
       this.position.add(this.velocity)
@@ -46,7 +54,11 @@ export class TrumpBoss {
         this.velocity.y = 0
       }
       // Limitar el rango vertical aún más
-      this.position.y = this.radius + 15
+      if (window.innerWidth < 1025) {
+        this.position.y = this.radius - 10
+      } else {
+        this.position.y = this.radius + 15
+      }
     }
     this.shootTimer++
   }
@@ -107,7 +119,11 @@ export class TrumpBoss {
 
 export class ElonBoss {
   constructor(canvas) {
-    this.position = new Vector2(canvas.width / 2, 100)
+    if (window.innerWidth < 1025) {
+      this.position = new Vector2(canvas.width / 2, 55) // Más arriba en móviles
+    } else {
+      this.position = new Vector2(canvas.width / 2, 100)
+    }
     this.velocity = new Vector2(0, 0)
     this.radius = 40
     this.health = 10

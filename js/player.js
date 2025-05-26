@@ -24,8 +24,13 @@ export class Player {
     // Nuevas propiedades para salto
     this.isJumping = false
     this.jumpVelocity = 0
-    this.gravity = 0.8
-    this.jumpPower = -15
+    if (window.innerWidth < 1025) {
+      this.gravity = 1.1 // Más gravedad en móviles
+      this.jumpPower = -13 // Salto un poco más alto en móviles
+    } else {
+      this.gravity = 0.8
+      this.jumpPower = -15
+    }
     this.groundY = canvas.height - 75
     this.baseY = this.groundY
   }

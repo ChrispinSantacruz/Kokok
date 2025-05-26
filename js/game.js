@@ -457,5 +457,24 @@ export class Game {
 
 // Inicializar el juego cuando se carga la página
 document.addEventListener("DOMContentLoaded", () => {
-  new Game()
+  const isMobile = window.innerWidth < 1025;
+  const rotateOverlay = document.getElementById("rotateOverlay");
+  const rotatePlayBtn = document.getElementById("rotatePlayBtn");
+  if (isMobile && rotateOverlay && rotatePlayBtn) {
+    rotateOverlay.classList.remove("hidden");
+    rotatePlayBtn.addEventListener("click", async () => {
+      // Intentar poner en landscape
+      if (window.screen.orientation && window.screen.orientation.lock) {
+        try {
+          await window.screen.orientation.lock("landscape");
+        } catch (e) {
+          // No pasa nada si falla
+        }
+      }
+      rotateOverlay.classList.add("hidden");
+      new Game();
+    });
+  } else {
+    new Game();
+  }
 })

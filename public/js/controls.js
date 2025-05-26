@@ -44,40 +44,6 @@ export class Controls {
       e.preventDefault()
     })
 
-    // Controles táctiles solo para los lados
-    this.canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault()
-      this.isTouching = true
-      this.autoShoot = true
-      const rect = this.canvas.getBoundingClientRect()
-      const touch = e.touches[0]
-      this.touch.x = touch.clientX - rect.left
-      this.touch.y = touch.clientY - rect.top
-
-      // Solo movimiento horizontal táctil
-      this.player.moveTo(this.touch.x, this.player.position.y)
-    })
-
-    this.canvas.addEventListener("touchmove", (e) => {
-      e.preventDefault()
-      if (this.isTouching) {
-        const rect = this.canvas.getBoundingClientRect()
-        const touch = e.touches[0]
-        this.touch.x = touch.clientX - rect.left
-
-        // Solo movimiento horizontal
-        this.player.moveTo(this.touch.x, this.player.position.y)
-      }
-    })
-
-    this.canvas.addEventListener("touchend", (e) => {
-      e.preventDefault()
-      this.isTouching = false
-      this.autoShoot = false
-      // Saltar al levantar el dedo
-      this.player.jump()
-    })
-
     // Botón de salto móvil
     const upBtn = document.getElementById("upPad")
     if (upBtn) {

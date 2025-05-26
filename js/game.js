@@ -134,12 +134,28 @@ export class Game {
     this.gameState.bossSpawned = false
     this.spawnBoss()
     this.gameLoop()
+    const mobileControls = document.getElementById("mobileControls");
+    if (mobileControls) {
+      // Solo mostrar controles móviles si es móvil o landscape móvil
+      const isMobile = window.innerWidth < 1025;
+      if (isMobile) {
+        mobileControls.classList.add("active");
+        mobileControls.classList.remove("hidden");
+      } else {
+        mobileControls.classList.remove("active");
+        mobileControls.classList.add("hidden");
+      }
+    }
   }
 
   showMainMenu() {
     document.getElementById("gameOverScreen").classList.add("hidden")
     document.getElementById("gameUI").classList.add("hidden")
-    document.getElementById("mobileControls").classList.add("hidden")
+    const mobileControls = document.getElementById("mobileControls")
+    if (mobileControls) {
+      mobileControls.classList.remove("active")
+      mobileControls.classList.add("hidden")
+    }
     document.getElementById("mainMenu").classList.remove("hidden")
   }
 

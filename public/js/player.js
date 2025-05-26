@@ -71,6 +71,14 @@ export class Player {
       this.position.y = Utils.clamp(this.position.y, this.groundY - 100, this.groundY)
     }
 
+    // Forzar la posición de la cucaracha más arriba si está fuera de pantalla
+    if (this.position.y > this.canvas.height - this.radius) {
+      this.position.y = this.canvas.height - this.radius - 10;
+    }
+    if (this.position.y < this.radius) {
+      this.position.y = this.radius + 10;
+    }
+
     // Actualizar invulnerabilidad
     if (this.invulnerable) {
       this.invulnerabilityTime--

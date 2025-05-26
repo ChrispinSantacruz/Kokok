@@ -334,6 +334,27 @@
         }
       }
     });
+
+    // Ajustar tamaño al entrar/salir de fullscreen
+    function resizeGame() {
+      const gameContainer = document.getElementById('gameContainer');
+      const gameCanvas = document.getElementById('gameCanvas');
+      if (document.fullscreenElement) {
+        gameContainer.style.width = '100vw';
+        gameContainer.style.height = '100vh';
+        gameCanvas.style.width = '100vw';
+        gameCanvas.style.height = '100vh';
+      } else {
+        gameContainer.style.width = '';
+        gameContainer.style.height = '';
+        gameCanvas.style.width = '';
+        gameCanvas.style.height = '';
+      }
+    }
+    document.addEventListener('fullscreenchange', resizeGame);
+    window.addEventListener('resize', resizeGame);
+    // Llamar al cargar
+    resizeGame();
     </script>
 </body>
 </html>

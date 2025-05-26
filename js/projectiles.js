@@ -81,8 +81,8 @@ export class Bomb {
     // Calcular velocidad inicial para llegar al objetivo
     const distance = Utils.getDistance(this.position, this.target)
     const time = Math.sqrt((2 * distance) / this.gravity)
-    this.velocity.x = (this.target.x - this.position.x) / time
-    this.velocity.y = (this.target.y - this.position.y) / time - (this.gravity * time) / 2
+    this.velocity.x = (this.target.x - this.position.x) / time * 1.5 // velocidad aumentada
+    this.velocity.y = (this.target.y - this.position.y) / time * 1.5 - (this.gravity * time) / 2
   }
 
   update() {
@@ -145,41 +145,33 @@ export class Rocket {
   constructor(x, y, target) {
     this.position = new Vector2(x, y)
     this.target = target
-    this.velocity = new Vector2(0, 3)
-    this.radius = 10
+    this.velocity = new Vector2(0, 0)
+    this.radius = 14
     this.active = true
-    this.speed = 2.5
-    this.turnSpeed = 0.02
-    this.trail = []
     this.exploded = false
     this.explosionRadius = 0
-    this.maxExplosionRadius = 40
+    this.maxExplosionRadius = 70
+    this.trail = []
+    this.speed = 8
+    this.turnSpeed = 0.15
+    this.health = 1
   }
 
   update() {
     if (!this.active) return
 
     if (!this.exploded) {
-    // Seguimiento básico del objetivo
-    const targetDirection = new Vector2(
-      this.target.position.x - this.position.x,
-      this.target.position.y - this.position.y,
-    ).normalize()
+      // Calcular dirección hacia el objetivo
+      const targetDirection = new Vector2(
+        this.target.position.x - this.position.x,
+        this.target.position.y - this.position.y
+      ).normalize()
 
-    // Ajustar velocidad gradualmente hacia el objetivo
-    this.velocity.x = Utils.lerp(this.velocity.x, targetDirection.x * this.speed, this.turnSpeed)
-    this.velocity.y = Utils.lerp(this.velocity.y, targetDirection.y * this.speed, this.turnSpeed)
+      // Aplicar velocidad con un poco de inercia
+      this.velocity.x += (targetDirection.x * this.speed - this.velocity.x) * this.turnSpeed
+      this.velocity.y += (targetDirection.y * this.speed - this.velocity.y) * this.turnSpeed
 
-      // Limitar la velocidad máxima
-      const maxSpeed = this.speed * 1.2
-      const currentSpeed = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y)
-      if (currentSpeed > maxSpeed) {
-        const scale = maxSpeed / currentSpeed
-        this.velocity.x *= scale
-        this.velocity.y *= scale
-      }
-
-    this.position.add(this.velocity)
+      this.position.add(this.velocity)
 
       // Explotar si toca el suelo
       if (this.position.y >= this.target.groundY) {
@@ -187,10 +179,10 @@ export class Rocket {
         this.position.y = this.target.groundY
       }
 
-    // Rastro de humo
-    this.trail.push(this.position.copy())
-    if (this.trail.length > 8) {
-      this.trail.shift()
+      // Rastro de humo
+      this.trail.push(this.position.copy())
+      if (this.trail.length > 8) {
+        this.trail.shift()
       }
     } else {
       // Expandir explosión
@@ -206,40 +198,56 @@ export class Rocket {
     }
   }
 
+  takeDamage() {
+    this.health--
+    if (this.health <= 0) {
+      this.exploded = true
+      return true
+    }
+    return false
+  }
+
   draw(ctx) {
     if (!this.active) return
 
     if (!this.exploded) {
-    // Rastro de humo
-    for (let i = 0; i < this.trail.length; i++) {
-      const alpha = ((i + 1) / this.trail.length) * 0.3
-      const size = this.radius * alpha
-      ctx.globalAlpha = alpha
-      Utils.drawCircle(ctx, this.trail[i].x, this.trail[i].y, size, "#888888")
-    }
-    ctx.globalAlpha = 1
+      // Rastro de humo
+      for (let i = 0; i < this.trail.length; i++) {
+        const alpha = ((i + 1) / this.trail.length) * 0.3
+        const size = this.radius * alpha
+        ctx.globalAlpha = alpha
+        Utils.drawCircle(ctx, this.trail[i].x, this.trail[i].y, size, "#888888")
+      }
+      ctx.globalAlpha = 1
 
-    // Cuerpo del cohete
-    Utils.drawRect(ctx, this.position.x - 4, this.position.y - 12, 8, 24, "#C0C0C0")
-    Utils.drawRect(ctx, this.position.x - 3, this.position.y - 10, 6, 20, "#E74C3C")
+      // Cuerpo del cohete
+      Utils.drawRect(ctx, this.position.x - 4, this.position.y - 12, 8, 24, "#C0C0C0")
+      Utils.drawRect(ctx, this.position.x - 3, this.position.y - 10, 6, 20, "#E74C3C")
 
-    // Punta del cohete
-    ctx.fillStyle = "#FFD700"
-    ctx.beginPath()
-    ctx.moveTo(this.position.x, this.position.y - 12)
-    ctx.lineTo(this.position.x - 4, this.position.y - 8)
-    ctx.lineTo(this.position.x + 4, this.position.y - 8)
-    ctx.closePath()
-    ctx.fill()
+      // Punta del cohete
+      ctx.fillStyle = "#FFD700"
+      ctx.beginPath()
+      ctx.moveTo(this.position.x, this.position.y - 12)
+      ctx.lineTo(this.position.x - 4, this.position.y - 8)
+      ctx.lineTo(this.position.x + 4, this.position.y - 8)
+      ctx.closePath()
+      ctx.fill()
 
-    // Llama del cohete
-    ctx.fillStyle = "#FF4500"
-    ctx.beginPath()
-    ctx.moveTo(this.position.x - 2, this.position.y + 12)
-    ctx.lineTo(this.position.x, this.position.y + 18)
-    ctx.lineTo(this.position.x + 2, this.position.y + 12)
-    ctx.closePath()
-    ctx.fill()
+      // Llama del cohete
+      ctx.fillStyle = "#FF4500"
+      ctx.beginPath()
+      ctx.moveTo(this.position.x - 2, this.position.y + 12)
+      ctx.lineTo(this.position.x, this.position.y + 18)
+      ctx.lineTo(this.position.x + 2, this.position.y + 12)
+      ctx.closePath()
+      ctx.fill()
+
+      // Indicador de daño (parpadeo rojo cuando está dañado)
+      if (this.health === 1) {
+        ctx.globalAlpha = 0.5
+        Utils.drawCircle(ctx, this.position.x, this.position.y, this.radius + 2, "#FF0000")
+        ctx.globalAlpha = 1
+      }
     } else {
       // Dibujar explosión
       const alpha = 1 - this.explosionRadius / this.maxExplosionRadius

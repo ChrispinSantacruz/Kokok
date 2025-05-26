@@ -15,6 +15,8 @@ export class TrumpBoss {
     this.type = "trump"
     this.baseSpeed = 2
     this.speedMultiplier = 1
+    this.isRandomMovement = false;
+    this.randomMovementTimer = 0;
     
     // Cargar imagen de Trump
     this.image = new Image()
@@ -24,28 +26,28 @@ export class TrumpBoss {
   update() {
     if (!this.active) return
 
-    // Movimiento horizontal con velocidad variable
-    this.position.add(this.velocity)
-    this.moveTimer++
-
-    // Rebotar en los bordes con velocidad aumentada
-    if (this.position.x <= this.radius || this.position.x >= this.canvas.width - this.radius) {
-      this.velocity.x *= -1
-      // Añadir aleatoriedad al rebote
-      this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
+    // Movimiento tipo péndulo horizontal rápido
+    if (!this.isRandomMovement) {
+      this.position.x += this.velocity.x
+      // Rebote horizontal
+      if (this.position.x <= this.radius || this.position.x >= this.canvas.width - this.radius) {
+        this.velocity.x *= -1
+      }
+      // Fijar la posición vertical en un valor constante
+      this.position.y = this.radius + 15
+    } else {
+      // Movimiento aleatorio temporal tras recibir daño
+      this.position.add(this.velocity)
+      this.randomMovementTimer--
+      if (this.randomMovementTimer <= 0) {
+        this.isRandomMovement = false;
+        // Restaurar velocidad horizontal tipo péndulo
+        this.velocity.x = (Math.random() > 0.5 ? 1 : -1) * Math.abs(this.velocity.x || 6)
+        this.velocity.y = 0
+      }
+      // Limitar el rango vertical aún más
+      this.position.y = this.radius + 15
     }
-
-    // Movimiento vertical más frecuente y aleatorio
-    if (this.moveTimer % 120 === 0) { // Reducido de 240 a 120 para más frecuencia
-      this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
-    }
-
-    // Cambio de dirección horizontal aleatorio
-    if (this.moveTimer % 180 === 0) {
-      this.velocity.x = Utils.randomBetween(-2, 2) * this.speedMultiplier
-    }
-
-    this.position.y = Utils.clamp(this.position.y, 50, 150)
     this.shootTimer++
   }
 
@@ -83,9 +85,12 @@ export class TrumpBoss {
 
   takeDamage(damage = 1) {
     this.health -= damage
+    // Activar movimiento aleatorio temporal
+    this.isRandomMovement = true;
+    this.randomMovementTimer = 30 + Math.floor(Math.random() * 20); // frames aleatorios
     // Aumentar velocidad y aleatoriedad al recibir daño
     this.speedMultiplier += 0.2
-    this.velocity.x = Utils.randomBetween(-2, 2) * this.speedMultiplier
+    this.velocity.x = Utils.randomBetween(-8, 8) * this.speedMultiplier
     this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
     
     if (this.health <= 0) {
@@ -102,80 +107,93 @@ export class TrumpBoss {
 
 export class ElonBoss {
   constructor(canvas) {
-    this.canvas = canvas
-    this.position = new Vector2(canvas.width / 2, 80)
-    this.velocity = new Vector2(3, 0)
-    this.radius = 45
+    this.position = new Vector2(canvas.width / 2, 100)
+    this.velocity = new Vector2(0, 0)
+    this.radius = 40
     this.health = 10
-    this.maxHealth = 10
     this.active = true
-    this.shootTimer = 0
-    this.shootInterval = 90
-    this.moveTimer = 0
-    this.directionChangeInterval = 60
     this.type = "elon"
-    this.speedMultiplier = 1
-    
-    // Cargar imagen de Elon
-    this.image = new Image()
-    this.image.src = 'assents/Elon.png'
+    this.canvas = canvas
+    this.shootInterval = 3000 // 3 segundos entre disparos
+    this.lastShootTime = 0
+    this.isVisible = true
+    this.visibilityTimer = 0
+    this.rocketTimer = 0
+    this.hasActiveRocket = false
   }
 
   update() {
     if (!this.active) return
 
-    // Movimiento más errático y rápido
-    this.position.add(this.velocity)
-    this.moveTimer++
-
-    // Rebotar en los bordes con velocidad aumentada
-    if (this.position.x <= this.radius || this.position.x >= this.canvas.width - this.radius) {
-      this.velocity.x *= -1
-      // Añadir aleatoriedad al rebote
-      this.velocity.y = Utils.randomBetween(-3, 3) * this.speedMultiplier
-    }
-
-    // Cambio de dirección más frecuente y aleatorio
-    if (this.moveTimer % this.directionChangeInterval === 0) {
-      this.velocity.x = Utils.randomBetween(-3, 3) * this.speedMultiplier
-      this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
-      // Ocasionalmente hacer un movimiento más brusco
-      if (Math.random() < 0.3) {
-        this.velocity.multiply(1.5)
+    // Actualizar timers
+    const currentTime = Date.now()
+    
+    // Manejar visibilidad
+    if (!this.isVisible) {
+      this.visibilityTimer -= 16 // Aproximadamente 60fps
+      if (this.visibilityTimer <= 0) {
+        this.isVisible = true
       }
     }
 
-    // Mantener dentro de límites verticales
-    this.position.y = Utils.clamp(this.position.y, 50, 150)
-    this.shootTimer++
-  }
+    // Manejar timer del cohete
+    if (this.hasActiveRocket) {
+      this.rocketTimer -= 16
+      if (this.rocketTimer <= 0) {
+        this.hasActiveRocket = false
+        this.isVisible = false
+        this.visibilityTimer = 2000 // 2 segundos de invisibilidad
+      }
+    }
 
-  draw(ctx) {
-    if (!this.active) return
+    // Movimiento horizontal
+    this.velocity.x = Math.sin(Date.now() * 0.001) * 3
+    this.position.add(this.velocity)
 
-    // Dibujar imagen de Elon
-    ctx.save()
-    ctx.translate(this.position.x, this.position.y)
-    ctx.drawImage(this.image, -this.radius, -this.radius, this.radius * 2, this.radius * 2)
-    ctx.restore()
-
-    // Dibujar barra de vida
-    const healthBarWidth = this.radius * 2
-    const healthBarHeight = 5
-    const healthPercentage = this.health / this.maxHealth
-
-    ctx.fillStyle = '#ff0000'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 10, healthBarWidth, healthBarHeight)
-    ctx.fillStyle = '#00ff00'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 10, healthBarWidth * healthPercentage, healthBarHeight)
+    // Mantener dentro de los límites
+    if (this.position.x < this.radius) {
+      this.position.x = this.radius
+      this.velocity.x *= -1
+    } else if (this.position.x > this.canvas.width - this.radius) {
+      this.position.x = this.canvas.width - this.radius
+      this.velocity.x *= -1
+    }
   }
 
   shouldShoot() {
-    if (this.shootTimer >= this.shootInterval) {
-      this.shootTimer = 0
+    if (!this.isVisible || this.hasActiveRocket) return false
+
+    const currentTime = Date.now()
+    if (currentTime - this.lastShootTime >= this.shootInterval) {
+      this.lastShootTime = currentTime
+      this.hasActiveRocket = true
+      this.rocketTimer = 2000 // 2 segundos para impactar el cohete
       return true
     }
     return false
+  }
+
+  draw(ctx) {
+    if (!this.active || !this.isVisible) return
+
+    // Dibujar cuerpo
+    Utils.drawCircle(ctx, this.position.x, this.position.y, this.radius, "#E74C3C")
+    
+    // Dibujar cara
+    ctx.fillStyle = "white"
+    ctx.font = "30px Arial"
+    ctx.textAlign = "center"
+    ctx.fillText("👨‍💼", this.position.x, this.position.y + 10)
+
+    // Dibujar indicador de cohete activo
+    if (this.hasActiveRocket) {
+      const alpha = Math.sin(Date.now() * 0.005) * 0.5 + 0.5
+      ctx.globalAlpha = alpha
+      ctx.fillStyle = "#FFD700"
+      ctx.font = "20px Arial"
+      ctx.fillText("🚀", this.position.x, this.position.y - 40)
+      ctx.globalAlpha = 1
+    }
   }
 
   getShootPosition() {
@@ -183,6 +201,9 @@ export class ElonBoss {
   }
 
   takeDamage(damage = 1) {
+    // No recibir daño si está invisible
+    if (!this.isVisible) return false
+
     this.health -= damage
     // Aumentar velocidad y aleatoriedad al recibir daño
     this.speedMultiplier += 0.3
@@ -208,9 +229,32 @@ export class FinalBoss {
     this.elon = new ElonBoss(canvas)
     this.roach = new BossRoach(canvas)
 
-    // Posicionar a los jefes
-    this.trump.position.x = canvas.width * 0.25
-    this.elon.position.x = canvas.width * 0.75
+    // Posicionar a los jefes y ajustar dificultad en responsive landscape
+    if (window.innerWidth < 1025 && window.innerWidth > window.innerHeight) {
+      // Mucha más separación y jefes extremadamente pequeños (85% menos)
+      this.trump.position.x = canvas.width * 0.12
+      this.elon.position.x = canvas.width * 0.88
+      this.trump.radius = Math.round(50 * 0.15) // original 50
+      this.elon.radius = Math.round(45 * 0.15)  // original 45
+      this.roach.radius = Math.round(35 * 0.15) // original 35
+      // Más velocidad y aleatoriedad
+      this.trump.baseSpeed = 4
+      this.trump.speedMultiplier = 2
+      this.elon.baseSpeed = 5
+      this.elon.speedMultiplier = 2.2
+      this.trump.velocity.x = 4
+      this.elon.velocity.x = 5
+      // Cambios de dirección y rebotes más frecuentes
+      this.trump.shootInterval = 90
+      this.elon.shootInterval = 70
+      this.trump.moveTimer = 0
+      this.elon.moveTimer = 0
+      this.trump.directionChangeInterval = 40
+      this.elon.directionChangeInterval = 30
+    } else {
+      this.trump.position.x = canvas.width * 0.25
+      this.elon.position.x = canvas.width * 0.75
+    }
     this.roach.position.y = canvas.height / 2
 
     this.active = true

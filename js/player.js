@@ -4,7 +4,12 @@ export class Player {
   constructor(canvas) {
     this.canvas = canvas
     this.position = new Vector2(canvas.width / 2, canvas.height - 75)
-    this.radius = 35
+    // Ajustar tamaño en responsive landscape
+    if (window.innerWidth < 1025 && window.innerWidth > window.innerHeight) {
+      this.radius = 22
+    } else {
+      this.radius = 35
+    }
     this.speed = 24
     this.targetPosition = this.position.copy()
     this.health = 3

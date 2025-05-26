@@ -12,6 +12,8 @@ export class Game {
     this.canvas = document.getElementById("gameCanvas")
     this.ctx = this.canvas.getContext("2d")
     this.gameState = new GameState()
+    this.shootCooldown = 0
+    this.shootCooldownTime = 300 // 300ms entre disparos
 
     this.setupCanvas()
     this.init()
@@ -77,16 +79,17 @@ export class Game {
     // Controles de teclado
     window.addEventListener("keydown", (e) => {
       if (!this.gameState.gameRunning) return
-
-      switch (e.code) {
-        case "Space":
-          e.preventDefault()
-          this.addBullet()
-          break
-        case "ArrowUp":
-          e.preventDefault()
-          this.player.jump()
-          break
+      if (!e.repeat) {
+        switch (e.code) {
+          case "Space":
+            e.preventDefault()
+            this.addBullet()
+            break
+          case "ArrowUp":
+            e.preventDefault()
+            this.player.jump()
+            break
+        }
       }
     })
 
@@ -97,11 +100,7 @@ export class Game {
     // Control de disparo móvil
     const shootBtn = document.getElementById("shootBtn")
     if (shootBtn) {
-      shootBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault()
-        this.addBullet()
-      })
-      shootBtn.addEventListener("mousedown", (e) => {
+      shootBtn.addEventListener("click", (e) => {
         e.preventDefault()
         this.addBullet()
       })
@@ -160,6 +159,11 @@ export class Game {
     this.controls.update()
     this.player.update()
     this.powerUpManager.update(this.canvas)
+
+    // Actualizar cooldown de disparo
+    if (this.shootCooldown > 0) {
+      this.shootCooldown -= deltaTime
+    }
 
     // Actualizar balas del jugador
     this.bullets = this.bullets.filter((bullet) => {
@@ -249,11 +253,17 @@ export class Game {
   }
 
   addBullet() {
+    // Verificar cooldown
+    if (this.shootCooldown > 0) return
+
     const playerPos = this.player.getPosition()
     const bullet = new Bullet(playerPos.x, playerPos.y - this.player.radius)
     // Hacer las balas más rápidas
     bullet.velocity.multiply(1.5)
     this.bullets.push(bullet)
+    
+    // Activar cooldown
+    this.shootCooldown = this.shootCooldownTime
   }
 
   addBomb(x, y) {
@@ -291,6 +301,20 @@ export class Game {
         if (hit) {
           bullet.destroy()
           this.createExplosion(bullet.position.x, bullet.position.y)
+        }
+      })
+
+      // Verificar colisión de balas con cohetes
+      this.enemyProjectiles.forEach((projectile) => {
+        if (projectile instanceof Rocket && !projectile.exploded) {
+          const distance = Utils.getDistance(bullet.position, projectile.position)
+          if (distance < (projectile.radius + bullet.radius)) {
+            if (projectile.takeDamage()) {
+              this.createExplosion(projectile.position.x, projectile.position.y)
+            }
+            bullet.destroy()
+            this.createExplosion(bullet.position.x, bullet.position.y)
+          }
         }
       })
     })

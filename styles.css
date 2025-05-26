@@ -469,37 +469,137 @@ body {
     max-height: 90vh !important;
     border-radius: 15px !important;
   }
-  #mobileControls.landscape-controls {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: static !important;
-    width: 30vw !important;
-    height: 90vh !important;
-    min-width: 180px;
+  #mobileControls {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
     z-index: 1001;
-    background: none;
   }
-  .mobile-pad-container.landscape-layout {
-    flex-direction: column !important;
-    gap: 40px !important;
-    width: 100% !important;
-    height: 100% !important;
-    justify-content: center !important;
-    align-items: center !important;
-  }
-  .pad-stack, .shoot-group {
+  .dpad-container {
+    position: absolute;
+    left: 2vw;
+    bottom: 2vw;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0;
+    pointer-events: auto;
   }
-  .pad-btn, .shoot-btn {
-    width: 70px !important;
-    height: 70px !important;
+  .dpad-row {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    margin-top: 0;
+  }
+  #upPad {
+    margin-bottom: 8px;
+    align-self: center;
+  }
+  .pad-btn {
+    width: 54px !important;
+    height: 54px !important;
+    font-size: 2rem !important;
+    border-radius: 50%;
+    margin: 0;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  #shootBtn.shoot-btn {
+    position: absolute;
+    right: 2vw;
+    bottom: 2vw;
+    width: 62px !important;
+    height: 62px !important;
     font-size: 2.2rem !important;
+    border-radius: 50%;
+    pointer-events: auto;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    max-width: 72px !important;
+    max-height: 72px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .mobile-pad-container {
+    position: absolute !important;
+    left: 2vw !important;
+    bottom: 2vw !important;
+    top: auto !important;
+    right: auto !important;
+    width: auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    z-index: 1001 !important;
+    pointer-events: auto !important;
+  }
+  .pad-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .pad-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+  .pad-btn {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.5rem !important;
     margin: 0 !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 56px !important;
+    max-height: 56px !important;
+  }
+  .shoot-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-left: 10px;
+  }
+  .shoot-btn {
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 1.5rem !important;
+    margin: 0 !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
+  }
+  /* Menús más pequeños y desplazables */
+  .menu-content, .instructions-content, .gameover-content {
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 10px !important;
+    font-size: 0.95em !important;
+  }
+  .game-title {
+    font-size: 2em !important;
+  }
+  .menu-btn {
+    min-width: 120px !important;
+    font-size: 14px !important;
+    padding: 10px 18px !important;
+  }
+  .instructions-content h2 {
+    font-size: 1.5em !important;
+  }
+  .score-circle {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  .score-number, .record-number {
+    font-size: 1.2em !important;
   }
 }
 /* Ocultar controles móviles en portrait y escritorio */

@@ -17,14 +17,16 @@ export class Controls {
   setupEventListeners() {
     // Controles de teclado
     document.addEventListener("keydown", (e) => {
-      this.keys[e.code] = true
-      if (e.code === "Space") {
-        e.preventDefault()
-        this.player.jump()
-      }
-      if (e.code === "KeyW" || e.code === "ArrowUp") {
-        e.preventDefault()
-        this.player.jump()
+      if (!this.keys[e.code]) {
+        this.keys[e.code] = true
+        if (e.code === "Space") {
+          e.preventDefault()
+          this.shoot()
+        }
+        if (e.code === "KeyW" || e.code === "ArrowUp") {
+          e.preventDefault()
+          this.player.jump()
+        }
       }
     })
 
@@ -77,51 +79,34 @@ export class Controls {
     })
 
     // Botón de salto móvil
-    const jumpBtn = document.createElement("button")
-    jumpBtn.id = "jumpBtn"
-    jumpBtn.className = "jump-btn"
-    jumpBtn.textContent = "⬆️"
-    jumpBtn.style.cssText = `
-      position: absolute;
-      bottom: 120px;
-      left: 20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 3px solid #000;
-      background: linear-gradient(45deg, #00ff00, #32cd32);
-      color: #000;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 15;
-    `
-    document.getElementById("mobileControls").appendChild(jumpBtn)
-
-    jumpBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault()
-      this.player.jump()
-    })
-
-    jumpBtn.addEventListener("click", (e) => {
-      e.preventDefault()
-      this.player.jump()
-    })
+    const upBtn = document.getElementById("upPad")
+    if (upBtn) {
+      upBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
+        this.player.jump()
+      })
+      upBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        this.player.jump()
+      })
+    }
 
     // Botón de disparo
-    document.getElementById("shootBtn").addEventListener("touchstart", (e) => {
-      e.preventDefault()
-      this.autoShoot = true
-    })
-
-    document.getElementById("shootBtn").addEventListener("touchend", (e) => {
-      e.preventDefault()
-      this.autoShoot = false
-    })
-
-    document.getElementById("shootBtn").addEventListener("click", (e) => {
-      e.preventDefault()
-      this.autoShoot = !this.autoShoot
-    })
+    const shootBtn = document.getElementById("shootBtn")
+    if (shootBtn) {
+      shootBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
+        this.shoot()
+      })
+      shootBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault()
+        this.shoot()
+      })
+      shootBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        this.shoot()
+      })
+    }
 
     // Prevenir zoom en móviles
     document.addEventListener(
@@ -133,6 +118,55 @@ export class Controls {
       },
       { passive: false },
     )
+
+    // Botón izquierda
+    const leftBtn = document.getElementById("leftPad")
+    if (leftBtn) {
+      leftBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
+        this.keys["ArrowLeft"] = true
+      })
+      leftBtn.addEventListener("touchend", (e) => {
+        e.preventDefault()
+        this.keys["ArrowLeft"] = false
+      })
+      leftBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault()
+        this.keys["ArrowLeft"] = true
+      })
+      leftBtn.addEventListener("mouseup", (e) => {
+        e.preventDefault()
+        this.keys["ArrowLeft"] = false
+      })
+      leftBtn.addEventListener("mouseleave", (e) => {
+        e.preventDefault()
+        this.keys["ArrowLeft"] = false
+      })
+    }
+    // Botón derecha
+    const rightBtn = document.getElementById("rightPad")
+    if (rightBtn) {
+      rightBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault()
+        this.keys["ArrowRight"] = true
+      })
+      rightBtn.addEventListener("touchend", (e) => {
+        e.preventDefault()
+        this.keys["ArrowRight"] = false
+      })
+      rightBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault()
+        this.keys["ArrowRight"] = true
+      })
+      rightBtn.addEventListener("mouseup", (e) => {
+        e.preventDefault()
+        this.keys["ArrowRight"] = false
+      })
+      rightBtn.addEventListener("mouseleave", (e) => {
+        e.preventDefault()
+        this.keys["ArrowRight"] = false
+      })
+    }
   }
 
   update() {
@@ -147,16 +181,6 @@ export class Controls {
     }
     if (this.keys["ArrowDown"] || this.keys["KeyS"]) {
       this.player.moveTo(this.player.position.x, this.player.position.y + moveSpeed)
-    }
-
-    // Disparo automático más rápido
-    if (this.autoShoot) {
-      this.shootTimer++
-      if (this.shootTimer >= 6) {
-        // Aún más rápido
-        this.shoot()
-        this.shootTimer = 0
-      }
     }
   }
 

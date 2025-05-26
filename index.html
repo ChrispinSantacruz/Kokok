@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOKOK The Roach - Crypto Shooter</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4B3621, #6B4C3B);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            border: 3px solid #A67B5B;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: #5C4033;
+        }
+        
+        .ui-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #E3C6A8;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+        
+        .controls-info {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #D2B48C;
+            font-size: 12px;
+            text-align: center;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 768px) {
+            .controls-info {
+                font-size: 10px;
+            }
+        }
+
+        .mobile-pad-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            z-index: 1001;
+        }
+        .pad-btn {
+            font-size: 2.2rem;
+            background: #A67B5B;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            margin: 0 10px;
+            outline: none;
+            transition: background 0.2s;
+        }
+        .pad-btn:active {
+            background: #8B5C2B;
+        }
+        .shoot-btn {
+            font-size: 2.2rem;
+            background: #FFD700;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: #5C4033;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            margin: 0 10px;
+            outline: none;
+            transition: background 0.2s;
+        }
+        .shoot-btn:active {
+            background: #FFC300;
+        }
+        @media (min-width: 769px) {
+            .mobile-pad-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- UI del juego -->
+        <div id="gameUI" class="hidden">
+            <div id="score">Puntos: 0</div>
+            <div id="lives">Vidas: 3</div>
+            <div id="powerUpStatus"></div>
+            <div id="bossAlert" class="boss-alert hidden">¡JEFE APARECE!</div>
+        </div>
+
+        <!-- Pantalla principal -->
+        <div id="mainMenu" class="screen">
+            <div class="forest-bg"></div>
+            <div class="menu-content">
+                <h1 class="game-title">KOKOK<br>THE ROACH</h1>
+                <p class="subtitle">🪙 Crypto Shooter Game 🪙</p>
+                <div class="menu-buttons">
+                    <button id="playBtn" class="menu-btn play-btn">JUGAR</button>
+                    <button id="instructionsBtn" class="menu-btn">INSTRUCCIONES</button>
+                    <button id="leaderboardBtn" class="menu-btn">LEADERBOARDS</button>
+                </div>
+                <div class="powered-by">POWERED BY KOKOK COIN</div>
+            </div>
+        </div>
+
+        <!-- Pantalla de instrucciones -->
+        <div id="instructionsScreen" class="screen hidden">
+            <div class="forest-bg"></div>
+            <div class="instructions-content">
+                <h2>INSTRUCCIONES</h2>
+                <div class="instructions-grid">
+                    <div class="instruction-item">
+                        <div class="roach-icon">🪳</div>
+                        <p>Eres KOKOK, una cucaracha que dispara fajos de billetes</p>
+                    </div>
+                    <div class="instruction-item">
+                        <div class="boss-icon">👨‍💼</div>
+                        <p>Derrota a Trump (bombas), Elon (cohetes) y el dúo final</p>
+                    </div>
+                    <div class="instruction-item">
+                        <div class="powerup-icon">🛡️</div>
+                        <p>Recoge escudos y bolsas de azúcar para poder especial</p>
+                    </div>
+                    <div class="instruction-item">
+                        <div class="control-icon">📱</div>
+                        <p>Toca para mover, mantén presionado para disparar</p>
+                    </div>
+                </div>
+                <button id="backBtn" class="menu-btn">VOLVER</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Game Over -->
+        <div id="gameOverScreen" class="screen hidden">
+            <div class="forest-bg"></div>
+            <div class="gameover-content">
+                <h2 class="gameover-title">GAME<br>OVER</h2>
+                <div class="score-circle">
+                    <div class="score-info">
+                        <div class="coin-icon">🪙</div>
+                        <div class="score-text">PUNTOS</div>
+                        <div id="finalScore" class="score-number">0</div>
+                        <div class="record-text">RÉCORD</div>
+                        <div id="highScore" class="record-number">0</div>
+                    </div>
+                </div>
+                <div class="roach-mascot">🪳</div>
+                <div class="gameover-buttons">
+                    <button id="restartBtn" class="menu-btn play-btn">JUGAR DE NUEVO</button>
+                    <button id="shareTwitterBtn" class="menu-btn share-btn">COMPARTIR EN TWITTER</button>
+                    <button id="backToMenuBtn" class="menu-btn">MENÚ PRINCIPAL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles móviles -->
+        <div id="mobileControls" class="hidden">
+            <div class="mobile-pad-container">
+                <div class="pad-stack">
+                    <button id="jumpPad" class="pad-btn">⤴️</button>
+                    <div class="pad-group">
+                        <button id="leftPad" class="pad-btn">⬅️</button>
+                        <button id="rightPad" class="pad-btn">➡️</button>
+                    </div>
+                </div>
+                <div class="shoot-group">
+                    <button id="shootBtn" class="shoot-btn">💰</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+</body>
+</html>

@@ -686,13 +686,13 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 90px 0 40px 0;
+  padding: 30px 0 40px 0; /* Antes: 90px 0 40px 0 */
 }
 .rotate-overlay video {
   max-width: 92vw;
   max-height: 60vh;
   border-radius: 18px;
-  margin-bottom: 50px;
+  margin-bottom: 30px; /* Antes: 50px */
   box-shadow: 0 0 30px #000a;
 }
 .rotate-overlay .menu-btn {

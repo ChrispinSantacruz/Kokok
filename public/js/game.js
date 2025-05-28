@@ -6,6 +6,7 @@ import { GameState } from "./gameState.js"
 import { Controls } from "./controls.js"
 import { Utils } from "./utils.js"
 import { Vector2 } from "./utils.js"
+import { TelegramIntegration } from "./telegramIntegration.js"
 
 export class Game {
   constructor() {
@@ -14,10 +15,12 @@ export class Game {
     this.gameState = new GameState()
     this.shootCooldown = 0
     this.shootCooldownTime = 300 // 300ms entre disparos
+    this.telegram = new TelegramIntegration()
 
     this.setupCanvas()
     this.init()
     this.setupEventListeners()
+    this.telegram.init()
   }
 
   setupCanvas() {
@@ -121,6 +124,28 @@ export class Game {
     window.addEventListener("resize", handleMobileControls)
     window.addEventListener("orientationchange", handleMobileControls)
     handleMobileControls()
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const fullscreenBtn = document.getElementById("fullscreen-btn")
+
+      // Mostrar el botón solo en modo responsive
+      if (window.innerWidth < 768) {
+        fullscreenBtn.style.display = "block"
+      }
+
+      fullscreenBtn.addEventListener("click", () => {
+        if (this.canvas.requestFullscreen) {
+          this.canvas.requestFullscreen()
+        } else if (this.canvas.webkitRequestFullscreen) {
+          this.canvas.webkitRequestFullscreen()
+        }
+
+        // Intentar girar la pantalla horizontalmente
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock("landscape").catch((err) => console.warn("No se pudo girar la pantalla: ", err))
+        }
+      })
+    })
   }
 
   startGame() {
@@ -134,16 +159,16 @@ export class Game {
     this.gameState.bossSpawned = false
     this.spawnBoss()
     this.gameLoop()
-    const mobileControls = document.getElementById("mobileControls");
+    const mobileControls = document.getElementById("mobileControls")
     if (mobileControls) {
       // Solo mostrar controles móviles si es móvil o landscape móvil
-      const isMobile = window.innerWidth < 1025;
+      const isMobile = window.innerWidth < 1025
       if (isMobile) {
-        mobileControls.classList.add("active");
-        mobileControls.classList.remove("hidden");
+        mobileControls.classList.add("active")
+        mobileControls.classList.remove("hidden")
       } else {
-        mobileControls.classList.remove("active");
-        mobileControls.classList.add("hidden");
+        mobileControls.classList.remove("active")
+        mobileControls.classList.add("hidden")
       }
     }
   }
@@ -450,7 +475,26 @@ export class Game {
       this.ctx.fillStyle = "#228B22"
       this.ctx.font = "40px Arial"
       this.ctx.textAlign = "center"
-      this.ctx.fillText("🌲", x, y)
+      this.ctx.fillText("��", x, y)
+    }
+  }
+
+  gameOver() {
+    this.gameState.gameRunning = false
+    cancelAnimationFrame(this.animationId)
+    
+    // Compartir puntuación en Telegram
+    this.telegram.shareScore(this.gameState.score)
+    
+    document.getElementById("gameOverScreen").classList.remove("hidden")
+    document.getElementById("gameUI").classList.add("hidden")
+    document.getElementById("finalScore").textContent = this.gameState.score
+    
+    // Ocultar controles móviles
+    const mobileControls = document.getElementById("mobileControls")
+    if (mobileControls) {
+      mobileControls.classList.remove("active")
+      mobileControls.classList.add("hidden")
     }
   }
 }

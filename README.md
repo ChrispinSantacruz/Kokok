@@ -33,3 +33,6 @@ No requiere instalación. Solo abre `index.html` en tu navegador favorito.
 Para soporte o sugerencias, contáctanos en Telegram o a través de la comunidad KOKOK COIN.
 
 ¡Diviértete y alcanza la cima del ranking!
+
+las vidas
+mensajes aleatorios

@@ -790,3 +790,24 @@ body {
   height: 100vh !important;
   padding: 0 !important;
 }
+
+#fullscreen-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #fullscreen-btn {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 10px 20px;
+    background-color: #FFD700;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

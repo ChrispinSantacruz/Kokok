@@ -72,8 +72,16 @@ export class PowerUp {
     return distance < collisionDistance
   }
 
-  collect() {
+  collect(player) {
     this.active = false
+
+    if (this.type === "speed") {
+      // Duplica la velocidad del jugador por un tiempo limitado
+      player.speed *= 2
+      setTimeout(() => {
+        player.speed /= 2 // Restaura la velocidad original después de 5 segundos
+      }, 5000)
+    }
   }
 }
 
@@ -118,7 +126,7 @@ export class PowerUpManager {
       const powerUp = this.powerUps[i]
       if (powerUp.active && powerUp.checkCollision(player)) {
         const type = powerUp.type
-        powerUp.collect()
+        powerUp.collect(player)
         console.log(`Power-up collected: ${type}`)
         return type
       }

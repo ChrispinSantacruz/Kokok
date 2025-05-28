@@ -203,6 +203,28 @@
                 min-width: 120px;
             }
         }
+
+        /* Botón de pantalla completa - estilo */
+        #fullscreen-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            #fullscreen-btn {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -300,7 +322,7 @@
           <button id="rotatePlayBtn" class="menu-btn play-btn">GIRAR Y JUGAR</button>
         </div>
 
-        <button id="fullscreenBtn" class="menu-btn" style="position: absolute; top: 10px; right: 10px; z-index: 2000;">Pantalla Completa</button>
+        <button id="fullscreen-btn" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background-color: #FFD700; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">Pantalla Completa</button>
     </div>
 
     <script type="module" src="js/game.js"></script>
@@ -316,6 +338,7 @@
 
     // Pantalla completa
     const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const fullscreenResponsiveBtn = document.getElementById('fullscreen-btn');
     fullscreenBtn.addEventListener('click', () => {
       const elem = document.documentElement;
       if (!document.fullscreenElement) {
@@ -335,6 +358,15 @@
       }
     });
 
+    // Mostrar botón de pantalla completa en modo responsive
+    function toggleFullscreenButton() {
+      if (window.innerWidth <= 768) {
+        fullscreenResponsiveBtn.style.display = 'block';
+      } else {
+        fullscreenResponsiveBtn.style.display = 'none';
+      }
+    }
+
     // Ajustar tamaño al entrar/salir de fullscreen
     function resizeGame() {
       const gameContainer = document.getElementById('gameContainer');
@@ -350,6 +382,7 @@
         gameCanvas.style.width = '';
         gameCanvas.style.height = '';
       }
+      toggleFullscreenButton();
     }
     document.addEventListener('fullscreenchange', resizeGame);
     window.addEventListener('resize', resizeGame);

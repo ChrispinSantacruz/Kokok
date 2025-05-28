@@ -22,10 +22,17 @@ const bot = new TelegramBot(token, { polling: true });
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
     const chatType = msg.chat.type; // Obtener el tipo de chat
+    const gameBaseUrl = process.env.GAME_URL;
+
+    if (!gameBaseUrl) {
+        console.error('Error: Variable de entorno GAME_URL no configurada.');
+        bot.sendMessage(chatId, 'Error en la configuración del juego. Por favor, inténtalo más tarde.');
+        return;
+    }
 
     if (chatType === 'private') {
-        // Respuesta para chat privado
-        const gameUrl = `${process.env.GAME_URL}`;
+        // Respuesta para chat privado: usar botón web_app
+        const gameUrl = `${gameBaseUrl}`;
         const startMessage = `¡Bienvenido al juego de las cucarachas! 🪳\n\n🎮 *KOKOK THE ROACH*\nUn juego donde disparas a los jefes más poderosos del mundo.\n\n*Características:*\n• Jefes únicos: Trump y Elon\n• Power-ups especiales\n• Sistema de puntuación\n\n¡Haz clic en el botón de abajo para comenzar!`;
 
         bot.sendMessage(chatId, startMessage, {
@@ -37,11 +44,17 @@ bot.onText(/\/start/, (msg) => {
             }
         });
     } else {
-        // Respuesta para grupos
-        const groupStartMessage = `¡Hola! Para jugar *KOKOK THE ROACH* en este grupo, por favor haz clic en el botón del menú del juego junto al campo de texto. 👇\n\nBusca el botón con el nombre del juego o su ícono.`;
+        // Respuesta para grupos: usar botón url y explicar cómo usar el Menu Button
+        const gameUrlWithChatId = `${gameBaseUrl}?chat_id=${chatId}`;
+        const groupStartMessage = `¡Hola! ¡Bienvenido a *KOKOK THE ROACH*! 🪳🎮\n\nPara iniciar el juego, haz clic en el botón de abajo:\n\n(Recomendamos usar el botón del menú del juego junto al campo de texto para una mejor experiencia en grupos, si aparece).`;
 
         bot.sendMessage(chatId, groupStartMessage, {
-            parse_mode: 'Markdown'
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [[
+                    { text: '▶️ Jugar KOKOK THE ROACH', url: gameUrlWithChatId }
+                ]]
+            }
         });
     }
 });
@@ -56,7 +69,7 @@ bot.onText(/\/help/, (msg) => {
     });
 });
 
-// Endpoint para recibir puntuaciones del juego (si quieres que el bot publique en el chat)
+// Endpoint para recibir puntuaciones del juego
 app.post('/api/share-score', async (req, res) => {
     const { chatId, score, message } = req.body;
     

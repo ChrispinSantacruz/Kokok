@@ -21,9 +21,6 @@ export class Game {
     this.init()
     this.setupEventListeners()
     this.telegram.init()
-    
-    // Inicializar botón de pantalla completa
-    this.initializeFullscreenButton()
   }
 
   setupCanvas() {
@@ -106,22 +103,16 @@ export class Game {
     // Mostrar controles móviles solo en landscape móvil
     const handleMobileControls = () => {
       const isLandscape = window.innerWidth < 1025 && window.innerWidth > window.innerHeight
+      const isPortrait = window.innerWidth < 1025 && window.innerHeight > window.innerWidth
       const mobileControls = document.getElementById("mobileControls")
       
       if (mobileControls) {
-        if (isLandscape) {
+        // Mostrar controles en landscape O portrait móvil/tablet
+        if (isLandscape || isPortrait) {
           mobileControls.classList.remove("hidden")
         } else {
           mobileControls.classList.add("hidden")
         }
-      }
-      
-      // Solo mostrar/ocultar botón de pantalla completa si estamos en el menú principal
-      const fullscreenBtn = document.getElementById("fullscreen-btn")
-      const mainMenu = document.getElementById("mainMenu")
-      if (fullscreenBtn && mainMenu && !mainMenu.classList.contains("hidden")) {
-        const isMobile = window.innerWidth < 1025
-        fullscreenBtn.style.display = isMobile ? "block" : "none"
       }
     }
     window.addEventListener("resize", handleMobileControls)
@@ -136,69 +127,6 @@ export class Game {
         this.addBullet()
       })
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const fullscreenBtn = document.getElementById("fullscreen-btn")
-      
-      if (fullscreenBtn) {
-        // Mostrar el botón solo en modo responsive (móviles)
-        const isMobile = window.innerWidth < 1025
-        if (isMobile) {
-          fullscreenBtn.style.display = "block"
-        } else {
-          fullscreenBtn.style.display = "none"
-        }
-
-        fullscreenBtn.addEventListener("click", async () => {
-          try {
-            // Primero intentar entrar en pantalla completa
-            if (document.documentElement.requestFullscreen) {
-              await document.documentElement.requestFullscreen()
-            } else if (document.documentElement.webkitRequestFullscreen) {
-              await document.documentElement.webkitRequestFullscreen()
-            } else if (document.documentElement.mozRequestFullScreen) {
-              await document.documentElement.mozRequestFullScreen()
-            } else if (document.documentElement.msRequestFullscreen) {
-              await document.documentElement.msRequestFullscreen()
-            }
-
-            // Después intentar rotar a landscape y bloquear orientación
-            if (screen.orientation && screen.orientation.lock) {
-              try {
-                await screen.orientation.lock("landscape-primary")
-                console.log("Orientación bloqueada en landscape")
-              } catch (err) {
-                console.warn("No se pudo bloquear la orientación:", err)
-                // Fallback: intentar solo landscape sin especificar primary
-                try {
-                  await screen.orientation.lock("landscape")
-                } catch (err2) {
-                  console.warn("Fallback de orientación también falló:", err2)
-                }
-              }
-            }
-
-            // Redimensionar canvas en pantalla completa
-            setTimeout(() => {
-              this.setupCanvas()
-            }, 100)
-
-          } catch (err) {
-            console.warn("Error al entrar en pantalla completa:", err)
-          }
-        })
-
-        // Manejar salida de pantalla completa
-        document.addEventListener("fullscreenchange", () => {
-          if (!document.fullscreenElement) {
-            // Salió de pantalla completa, restaurar canvas
-            setTimeout(() => {
-              this.setupCanvas()
-            }, 100)
-          }
-        })
-      }
-    })
   }
 
   startGame() {
@@ -213,17 +141,12 @@ export class Game {
     this.spawnBoss()
     this.gameLoop()
     
-    // Ocultar botón de pantalla completa durante el juego
-    const fullscreenBtn = document.getElementById("fullscreen-btn")
-    if (fullscreenBtn) {
-      fullscreenBtn.style.display = "none"
-    }
-    
     const mobileControls = document.getElementById("mobileControls")
     if (mobileControls) {
-      // Solo mostrar controles móviles si es móvil o landscape móvil
-      const isMobile = window.innerWidth < 1025
-      if (isMobile) {
+      // Solo mostrar controles móviles si es móvil en landscape O portrait
+      const isLandscape = window.innerWidth < 1025 && window.innerWidth > window.innerHeight
+      const isPortrait = window.innerWidth < 1025 && window.innerHeight > window.innerWidth
+      if (isLandscape || isPortrait) {
         mobileControls.classList.add("active")
         mobileControls.classList.remove("hidden")
       } else {
@@ -240,13 +163,6 @@ export class Game {
     if (mobileControls) {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
-    }
-    
-    // Mostrar botón de pantalla completa solo en el menú si es móvil
-    const fullscreenBtn = document.getElementById("fullscreen-btn")
-    if (fullscreenBtn) {
-      const isMobile = window.innerWidth < 1025
-      fullscreenBtn.style.display = isMobile ? "block" : "none"
     }
     
     document.getElementById("mainMenu").classList.remove("hidden")
@@ -680,69 +596,6 @@ export class Game {
     if (mobileControls) {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
-    }
-  }
-
-  initializeFullscreenButton() {
-    // Inicializar botón de pantalla completa
-    const fullscreenBtn = document.getElementById("fullscreen-btn")
-    if (fullscreenBtn) {
-      // Mostrar el botón solo en modo responsive (móviles)
-      const isMobile = window.innerWidth < 1025
-      if (isMobile) {
-        fullscreenBtn.style.display = "block"
-      } else {
-        fullscreenBtn.style.display = "none"
-      }
-
-      fullscreenBtn.addEventListener("click", async () => {
-        try {
-          // Primero intentar entrar en pantalla completa
-          if (document.documentElement.requestFullscreen) {
-            await document.documentElement.requestFullscreen()
-          } else if (document.documentElement.webkitRequestFullscreen) {
-            await document.documentElement.webkitRequestFullscreen()
-          } else if (document.documentElement.mozRequestFullScreen) {
-            await document.documentElement.mozRequestFullScreen()
-          } else if (document.documentElement.msRequestFullscreen) {
-            await document.documentElement.msRequestFullscreen()
-          }
-
-          // Después intentar rotar a landscape y bloquear orientación
-          if (screen.orientation && screen.orientation.lock) {
-            try {
-              await screen.orientation.lock("landscape-primary")
-              console.log("Orientación bloqueada en landscape")
-            } catch (err) {
-              console.warn("No se pudo bloquear la orientación:", err)
-              // Fallback: intentar solo landscape sin especificar primary
-              try {
-                await screen.orientation.lock("landscape")
-              } catch (err2) {
-                console.warn("Fallback de orientación también falló:", err2)
-              }
-            }
-          }
-
-          // Redimensionar canvas en pantalla completa
-          setTimeout(() => {
-            this.setupCanvas()
-          }, 100)
-
-        } catch (err) {
-          console.warn("Error al entrar en pantalla completa:", err)
-        }
-      })
-
-      // Manejar salida de pantalla completa
-      document.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement) {
-          // Salió de pantalla completa, restaurar canvas
-          setTimeout(() => {
-            this.setupCanvas()
-          }, 100)
-        }
-      })
     }
   }
 }

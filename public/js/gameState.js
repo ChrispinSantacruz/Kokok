@@ -90,8 +90,9 @@ export class GameState {
   }
 
   updateUI() {
-    document.getElementById("score").textContent = `Puntos: ${this.score}`
-    document.getElementById("lives").textContent = `Vidas: ${this.lives}`
+    // Formato vertical: título arriba, número abajo
+    document.getElementById("score").innerHTML = `<div class="score-label">PUNTOS</div><div class="score-number">${this.score}</div>`
+    document.getElementById("lives").innerHTML = `<div class="lives-label">VIDAS</div><div class="lives-number">${this.lives}</div>`
   }
 
   updatePowerUpStatus(type, active) {

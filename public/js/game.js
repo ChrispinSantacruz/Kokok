@@ -130,6 +130,9 @@ export class Game {
   }
 
   startGame() {
+    // Agregar clase al body para indicar que el juego está activo
+    document.body.classList.add("game-active")
+    
     this.gameState.start()
     this.bullets = []
     this.enemyProjectiles = []
@@ -157,6 +160,9 @@ export class Game {
   }
 
   showMainMenu() {
+    // Quitar clase del body cuando se vuelve al menú
+    document.body.classList.remove("game-active")
+    
     document.getElementById("gameOverScreen").classList.add("hidden")
     document.getElementById("gameUI").classList.add("hidden")
     const mobileControls = document.getElementById("mobileControls")

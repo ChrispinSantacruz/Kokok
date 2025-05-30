@@ -55,7 +55,8 @@ export class Player {
     }
 
     // Movimiento horizontal suave MÁS RÁPIDO
-    const lerpFactor = this.speedBoost ? 0.3 : 0.25 // Aumentado para movimiento lateral más rápido
+    const speedMultiplier = this.speedBoost ? 2.0 : 1.0 // Duplicar velocidad si tiene speed boost
+    const lerpFactor = (this.speedBoost ? 0.5 : 0.25) * speedMultiplier // Movimiento más rápido con speed boost
     this.position.x = Utils.lerp(this.position.x, this.targetPosition.x, lerpFactor)
 
     // Solo mover verticalmente si no está saltando
@@ -158,18 +159,23 @@ export class Player {
       ctx.setLineDash([])
     }
 
-    // Efecto de velocidad
-    if (this.speedBoost) {
-      for (let i = 0; i < 3; i++) {
-        ctx.globalAlpha = 0.3 - i * 0.1
-        Utils.drawEllipse(
-          ctx,
-          this.position.x - i * 8,
-          this.position.y,
-          this.radius * (1 - i * 0.2),
-          this.radius * 0.7 * (1 - i * 0.2),
-          "#FFD700",
-        )
+    // Círculo amarillo para power-up de velocidad
+    if (this.speedBoost || window.kokokSpeedPowerUp) {
+      const pulseEffect = Math.sin(this.animationFrame * 0.3) * 3 + 3 // Efecto de pulsación
+      ctx.strokeStyle = "#FFD700"
+      ctx.lineWidth = 3
+      ctx.setLineDash([3, 3])
+      ctx.beginPath()
+      ctx.arc(this.position.x, this.position.y, this.radius + 8 + pulseEffect, 0, Math.PI * 2)
+      ctx.stroke()
+      ctx.setLineDash([])
+      
+      // Partículas amarillas giratorias
+      for (let i = 0; i < 8; i++) {
+        const angle = (this.animationFrame * 0.1 + i * Math.PI / 4) % (Math.PI * 2)
+        const particleX = this.position.x + Math.cos(angle) * (this.radius + 15)
+        const particleY = this.position.y + Math.sin(angle) * (this.radius + 15)
+        Utils.drawCircle(ctx, particleX, particleY, 2, "#FFD700")
       }
     }
 

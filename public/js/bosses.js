@@ -22,6 +22,14 @@ export class TrumpBoss {
     this.isRandomMovement = false;
     this.randomMovementTimer = 0;
     
+    // Nuevas propiedades para la secuencia de jefes
+    this.bombCount = 1 // Número de bombas a disparar
+    this.attackType = 'bomb' // Tipo de ataque
+    
+    // Propiedades para el estado inicial
+    this.isSpawning = true
+    this.spawnTimer = 60 // 1 segundo pausado (60 frames a 60fps)
+    
     // Cargar imagen de Trump
     this.image = new Image()
     this.image.src = 'assents/Trump.png'
@@ -29,6 +37,15 @@ export class TrumpBoss {
 
   update() {
     if (!this.active) return
+
+    // Manejar estado de spawn (pausado)
+    if (this.isSpawning) {
+      this.spawnTimer--
+      if (this.spawnTimer <= 0) {
+        this.isSpawning = false
+      }
+      return // No hacer nada más mientras está spawneando
+    }
 
     // Movimiento tipo péndulo horizontal rápido
     if (!this.isRandomMovement) {
@@ -66,11 +83,20 @@ export class TrumpBoss {
   draw(ctx) {
     if (!this.active) return
 
+    // Efecto visual durante el spawn
+    if (this.isSpawning) {
+      const alpha = Math.sin(Date.now() * 0.01) * 0.3 + 0.7 // Parpadeo suave
+      ctx.globalAlpha = alpha
+    }
+
     // Dibujar imagen de Trump
     ctx.save()
     ctx.translate(this.position.x, this.position.y)
     ctx.drawImage(this.image, -this.radius, -this.radius, this.radius * 2, this.radius * 2)
     ctx.restore()
+
+    // Restaurar alpha normal
+    ctx.globalAlpha = 1
 
     // Dibujar barra de vida
     const healthBarWidth = this.radius * 2
@@ -84,6 +110,8 @@ export class TrumpBoss {
   }
 
   shouldShoot() {
+    if (this.isSpawning) return false // No disparar mientras está spawneando
+    
     if (this.shootTimer >= this.shootInterval) {
       this.shootTimer = 0
       return true
@@ -93,6 +121,22 @@ export class TrumpBoss {
 
   getShootPosition() {
     return new Vector2(this.position.x, this.position.y + this.radius)
+  }
+
+  getShootPositions() {
+    const positions = []
+    const shouldUseParabolic = this.bombCount > 1 // Usar parabólica si dispara más de 1 bomba
+    
+    for (let i = 0; i < this.bombCount; i++) {
+      // Distribuir las bombas horizontalmente si hay múltiples
+      const offsetX = this.bombCount > 1 ? (i - (this.bombCount - 1) / 2) * 30 : 0
+      positions.push({
+        pos: new Vector2(this.position.x + offsetX, this.position.y + this.radius),
+        type: "bomb",
+        isParabolic: shouldUseParabolic
+      })
+    }
+    return positions
   }
 
   takeDamage(damage = 1) {
@@ -123,10 +167,10 @@ export class ElonBoss {
     const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
     if ((isMobile && isLandscape) || isFullscreen) {
       this.position = new Vector2(canvas.width / 2, 40);
-      this.radius = 22;
+      this.radius = 35;
     } else if (isMobile) {
       this.position = new Vector2(canvas.width / 2, 55);
-      this.radius = 28;
+      this.radius = 35;
     } else {
       this.position = new Vector2(canvas.width / 2, 100);
       this.radius = 40;
@@ -142,10 +186,28 @@ export class ElonBoss {
     this.visibilityTimer = 0
     this.rocketTimer = 0
     this.hasActiveRocket = false
+    
+    // Nuevas propiedades para la secuencia de jefes
+    this.attackType = 'rocket' // 'rocket', 'hybrid'
+    this.canUseInvisibility = false
+    this.speedMultiplier = 1 // Multiplicador de velocidad
+    
+    // Propiedades para el estado inicial
+    this.isSpawning = true
+    this.spawnTimer = 60 // 1 segundo pausado (60 frames a 60fps)
   }
 
   update() {
     if (!this.active) return
+
+    // Manejar estado de spawn (pausado)
+    if (this.isSpawning) {
+      this.spawnTimer--
+      if (this.spawnTimer <= 0) {
+        this.isSpawning = false
+      }
+      return // No hacer nada más mientras está spawneando
+    }
 
     // Actualizar timers
     const currentTime = Date.now()
@@ -163,13 +225,16 @@ export class ElonBoss {
       this.rocketTimer -= 16
       if (this.rocketTimer <= 0) {
         this.hasActiveRocket = false
-        this.isVisible = false
-        this.visibilityTimer = 2000 // 2 segundos de invisibilidad
+        // Solo usar invisibilidad si está habilitada
+        if (this.canUseInvisibility) {
+          this.isVisible = false
+          this.visibilityTimer = 2000 // 2 segundos de invisibilidad
+        }
       }
     }
 
     // Movimiento horizontal
-    this.velocity.x = Math.sin(Date.now() * 0.001) * 3
+    this.velocity.x = Math.sin(Date.now() * 0.001) * 3 * this.speedMultiplier
     this.position.add(this.velocity)
 
     // Mantener dentro de los límites
@@ -183,6 +248,7 @@ export class ElonBoss {
   }
 
   shouldShoot() {
+    if (this.isSpawning) return false // No disparar mientras está spawneando
     if (!this.isVisible || this.hasActiveRocket) return false
 
     const currentTime = Date.now()
@@ -197,6 +263,12 @@ export class ElonBoss {
 
   draw(ctx) {
     if (!this.active || !this.isVisible) return
+
+    // Efecto visual durante el spawn
+    if (this.isSpawning) {
+      const alpha = Math.sin(Date.now() * 0.01) * 0.3 + 0.7 // Parpadeo suave
+      ctx.globalAlpha = alpha
+    }
 
     // Dibujar cuerpo
     Utils.drawCircle(ctx, this.position.x, this.position.y, this.radius, "#E74C3C")
@@ -214,12 +286,36 @@ export class ElonBoss {
       ctx.fillStyle = "#FFD700"
       ctx.font = "20px Arial"
       ctx.fillText("🚀", this.position.x, this.position.y - 40)
-      ctx.globalAlpha = 1
     }
+    
+    // Restaurar alpha normal
+    ctx.globalAlpha = 1
   }
 
   getShootPosition() {
     return new Vector2(this.position.x, this.position.y + this.radius)
+  }
+
+  getShootPositions() {
+    const positions = []
+    if (this.attackType === 'rocket') {
+      positions.push({
+        pos: new Vector2(this.position.x, this.position.y + this.radius),
+        type: "rocket"
+      })
+    } else if (this.attackType === 'hybrid') {
+      // Disparar cohete y bomba
+      positions.push({
+        pos: new Vector2(this.position.x - 20, this.position.y + this.radius),
+        type: "rocket"
+      })
+      positions.push({
+        pos: new Vector2(this.position.x + 20, this.position.y + this.radius),
+        type: "bomb",
+        isParabolic: true // Bomba parabólica en modo híbrido
+      })
+    }
+    return positions
   }
 
   takeDamage(damage = 1) {

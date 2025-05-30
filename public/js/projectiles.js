@@ -66,7 +66,7 @@ export class Bullet {
 }
 
 export class Bomb {
-  constructor(x, y, targetX, targetY) {
+  constructor(x, y, targetX, targetY, isParabolic = false) {
     this.position = new Vector2(x, y)
     this.target = new Vector2(targetX, targetY)
     this.velocity = new Vector2(0, 0)
@@ -77,12 +77,48 @@ export class Bomb {
     this.maxExplosionRadius = 60
     this.fuseTime = 120 // 2 segundos
     this.gravity = 0.2
+    this.isParabolic = isParabolic
+
+    // Detectar si es responsive
+    const isResponsive = window.innerWidth < 1025
 
     // Calcular velocidad inicial para llegar al objetivo
     const distance = Utils.getDistance(this.position, this.target)
-    const time = Math.sqrt((2 * distance) / this.gravity)
-    this.velocity.x = (this.target.x - this.position.x) / time * 1.5 // velocidad aumentada
-    this.velocity.y = (this.target.y - this.position.y) / time * 1.5 - (this.gravity * time) / 2
+    
+    if (isParabolic) {
+      // Trayectoria más parabólica con mayor arco
+      const deltaX = this.target.x - this.position.x
+      const deltaY = this.target.y - this.position.y
+      const timeMultiplier = isResponsive ? 2.0 : 1.5 // Más tiempo en responsive para mayor arco
+      const time = Math.sqrt((2 * Math.abs(deltaY)) / this.gravity) * timeMultiplier
+      
+      this.velocity.x = deltaX / time
+      this.velocity.y = (deltaY / time) - (this.gravity * time) / 2
+      
+      // Si el resultado da velocidad hacia arriba, corregir
+      if (this.velocity.y < 0 && deltaY > 0) {
+        this.velocity.y = Math.abs(this.velocity.y) * 0.5
+      }
+      
+      this.gravity = isResponsive ? 0.12 : 0.18 // Menos gravedad en responsive
+      
+      // Reducir velocidad en responsive
+      if (isResponsive) {
+        this.velocity.x *= 0.8 // 20% más lento
+        this.velocity.y *= 0.8
+      }
+    } else {
+      // Trayectoria normal
+      const time = Math.sqrt((2 * distance) / this.gravity)
+      this.velocity.x = (this.target.x - this.position.x) / time * 1.5
+      this.velocity.y = (this.target.y - this.position.y) / time * 1.5 - (this.gravity * time) / 2
+      
+      // Reducir velocidad en responsive también para bombas normales
+      if (isResponsive) {
+        this.velocity.x *= 0.8 // 20% más lento
+        this.velocity.y *= 0.8
+      }
+    }
   }
 
   update() {
@@ -152,7 +188,10 @@ export class Rocket {
     this.explosionRadius = 0
     this.maxExplosionRadius = 70
     this.trail = []
-    this.speed = 8
+    
+    // Ajustar velocidad según si es responsive
+    const isResponsive = window.innerWidth < 1025
+    this.speed = isResponsive ? 6.4 : 8 // 20% más lento en responsive
     this.turnSpeed = 0.15
     this.health = 1
   }

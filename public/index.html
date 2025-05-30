@@ -335,59 +335,6 @@
         rotateOverlay.classList.add('hidden');
       };
     }
-
-    // Pantalla completa
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    const fullscreenResponsiveBtn = document.getElementById('fullscreen-btn');
-    fullscreenBtn.addEventListener('click', () => {
-      const elem = document.documentElement;
-      if (!document.fullscreenElement) {
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) { /* Firefox */
-          elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-          elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE/Edge */
-          elem.msRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
-    });
-
-    // Mostrar botón de pantalla completa en modo responsive
-    function toggleFullscreenButton() {
-      if (window.innerWidth <= 768) {
-        fullscreenResponsiveBtn.style.display = 'block';
-      } else {
-        fullscreenResponsiveBtn.style.display = 'none';
-      }
-    }
-
-    // Ajustar tamaño al entrar/salir de fullscreen
-    function resizeGame() {
-      const gameContainer = document.getElementById('gameContainer');
-      const gameCanvas = document.getElementById('gameCanvas');
-      if (document.fullscreenElement) {
-        gameContainer.style.width = '100vw';
-        gameContainer.style.height = '100vh';
-        gameCanvas.style.width = '100vw';
-        gameCanvas.style.height = '100vh';
-      } else {
-        gameContainer.style.width = '';
-        gameContainer.style.height = '';
-        gameCanvas.style.width = '';
-        gameCanvas.style.height = '';
-      }
-      toggleFullscreenButton();
-    }
-    document.addEventListener('fullscreenchange', resizeGame);
-    window.addEventListener('resize', resizeGame);
-    // Llamar al cargar
-    resizeGame();
     </script>
 </body>
 </html>

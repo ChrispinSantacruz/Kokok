@@ -21,6 +21,9 @@ export class Game {
     this.init()
     this.setupEventListeners()
     this.telegram.init()
+    
+    // Inicializar botón de pantalla completa
+    this.initializeFullscreenButton()
   }
 
   setupCanvas() {
@@ -100,6 +103,31 @@ export class Game {
       this.setupCanvas()
     })
 
+    // Mostrar controles móviles solo en landscape móvil
+    const handleMobileControls = () => {
+      const isLandscape = window.innerWidth < 1025 && window.innerWidth > window.innerHeight
+      const mobileControls = document.getElementById("mobileControls")
+      
+      if (mobileControls) {
+        if (isLandscape) {
+          mobileControls.classList.remove("hidden")
+        } else {
+          mobileControls.classList.add("hidden")
+        }
+      }
+      
+      // Solo mostrar/ocultar botón de pantalla completa si estamos en el menú principal
+      const fullscreenBtn = document.getElementById("fullscreen-btn")
+      const mainMenu = document.getElementById("mainMenu")
+      if (fullscreenBtn && mainMenu && !mainMenu.classList.contains("hidden")) {
+        const isMobile = window.innerWidth < 1025
+        fullscreenBtn.style.display = isMobile ? "block" : "none"
+      }
+    }
+    window.addEventListener("resize", handleMobileControls)
+    window.addEventListener("orientationchange", handleMobileControls)
+    handleMobileControls()
+
     // Control de disparo móvil
     const shootBtn = document.getElementById("shootBtn")
     if (shootBtn) {
@@ -109,42 +137,67 @@ export class Game {
       })
     }
 
-    // Mostrar controles móviles solo en landscape móvil
-    const handleMobileControls = () => {
-      const isLandscape = window.innerWidth < 1025 && window.innerWidth > window.innerHeight
-      const mobileControls = document.getElementById("mobileControls")
-      if (mobileControls) {
-        if (isLandscape) {
-          mobileControls.classList.remove("hidden")
-        } else {
-          mobileControls.classList.add("hidden")
-        }
-      }
-    }
-    window.addEventListener("resize", handleMobileControls)
-    window.addEventListener("orientationchange", handleMobileControls)
-    handleMobileControls()
-
     document.addEventListener("DOMContentLoaded", () => {
       const fullscreenBtn = document.getElementById("fullscreen-btn")
+      
+      if (fullscreenBtn) {
+        // Mostrar el botón solo en modo responsive (móviles)
+        const isMobile = window.innerWidth < 1025
+        if (isMobile) {
+          fullscreenBtn.style.display = "block"
+        } else {
+          fullscreenBtn.style.display = "none"
+        }
 
-      // Mostrar el botón solo en modo responsive
-      if (window.innerWidth < 768) {
-        fullscreenBtn.style.display = "block"
+        fullscreenBtn.addEventListener("click", async () => {
+          try {
+            // Primero intentar entrar en pantalla completa
+            if (document.documentElement.requestFullscreen) {
+              await document.documentElement.requestFullscreen()
+            } else if (document.documentElement.webkitRequestFullscreen) {
+              await document.documentElement.webkitRequestFullscreen()
+            } else if (document.documentElement.mozRequestFullScreen) {
+              await document.documentElement.mozRequestFullScreen()
+            } else if (document.documentElement.msRequestFullscreen) {
+              await document.documentElement.msRequestFullscreen()
+            }
+
+            // Después intentar rotar a landscape y bloquear orientación
+            if (screen.orientation && screen.orientation.lock) {
+              try {
+                await screen.orientation.lock("landscape-primary")
+                console.log("Orientación bloqueada en landscape")
+              } catch (err) {
+                console.warn("No se pudo bloquear la orientación:", err)
+                // Fallback: intentar solo landscape sin especificar primary
+                try {
+                  await screen.orientation.lock("landscape")
+                } catch (err2) {
+                  console.warn("Fallback de orientación también falló:", err2)
+                }
+              }
+            }
+
+            // Redimensionar canvas en pantalla completa
+            setTimeout(() => {
+              this.setupCanvas()
+            }, 100)
+
+          } catch (err) {
+            console.warn("Error al entrar en pantalla completa:", err)
+          }
+        })
+
+        // Manejar salida de pantalla completa
+        document.addEventListener("fullscreenchange", () => {
+          if (!document.fullscreenElement) {
+            // Salió de pantalla completa, restaurar canvas
+            setTimeout(() => {
+              this.setupCanvas()
+            }, 100)
+          }
+        })
       }
-
-      fullscreenBtn.addEventListener("click", () => {
-        if (this.canvas.requestFullscreen) {
-          this.canvas.requestFullscreen()
-        } else if (this.canvas.webkitRequestFullscreen) {
-          this.canvas.webkitRequestFullscreen()
-        }
-
-        // Intentar girar la pantalla horizontalmente
-        if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock("landscape").catch((err) => console.warn("No se pudo girar la pantalla: ", err))
-        }
-      })
     })
   }
 
@@ -159,6 +212,13 @@ export class Game {
     this.gameState.bossSpawned = false
     this.spawnBoss()
     this.gameLoop()
+    
+    // Ocultar botón de pantalla completa durante el juego
+    const fullscreenBtn = document.getElementById("fullscreen-btn")
+    if (fullscreenBtn) {
+      fullscreenBtn.style.display = "none"
+    }
+    
     const mobileControls = document.getElementById("mobileControls")
     if (mobileControls) {
       // Solo mostrar controles móviles si es móvil o landscape móvil
@@ -181,6 +241,14 @@ export class Game {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
     }
+    
+    // Mostrar botón de pantalla completa solo en el menú si es móvil
+    const fullscreenBtn = document.getElementById("fullscreen-btn")
+    if (fullscreenBtn) {
+      const isMobile = window.innerWidth < 1025
+      fullscreenBtn.style.display = isMobile ? "block" : "none"
+    }
+    
     document.getElementById("mainMenu").classList.remove("hidden")
   }
 
@@ -205,6 +273,9 @@ export class Game {
     if (this.shootCooldown > 0) {
       this.shootCooldown -= deltaTime
     }
+
+    // Actualizar alerta de jefe
+    this.gameState.updateBossAlert()
 
     // Actualizar balas del jugador
     this.bullets = this.bullets.filter((bullet) => {
@@ -232,16 +303,28 @@ export class Game {
         const shootData = boss.getShootPositions()
         shootData.forEach((data) => {
           if (data.type === "bomb") {
-            this.addBomb(data.pos.x, data.pos.y)
+            this.addBomb(data.pos.x, data.pos.y, data.isParabolic || false)
           } else if (data.type === "rocket") {
             this.addRocket(data.pos.x, data.pos.y)
           }
         })
       } else if (boss.shouldShoot()) {
         if (boss.type === "trump") {
-          this.addBomb(boss.position.x, boss.position.y + boss.radius)
+          // Usar el nuevo método para múltiples bombas
+          const shootData = boss.getShootPositions()
+          shootData.forEach((data) => {
+            this.addBomb(data.pos.x, data.pos.y, data.isParabolic || false)
+          })
         } else if (boss.type === "elon") {
-          this.addRocket(boss.position.x, boss.position.y + boss.radius)
+          // Usar el nuevo método para ataques híbridos
+          const shootData = boss.getShootPositions()
+          shootData.forEach((data) => {
+            if (data.type === "bomb") {
+              this.addBomb(data.pos.x, data.pos.y, data.isParabolic || false)
+            } else if (data.type === "rocket") {
+              this.addRocket(data.pos.x, data.pos.y)
+            }
+          })
         }
       }
 
@@ -255,7 +338,7 @@ export class Game {
     this.updateParticles()
 
     // Verificar power-ups con mejor detección de colisión
-    const powerUpCollected = this.powerUpManager.checkCollisions(this.player)
+    const powerUpCollected = this.powerUpManager.checkCollisions(this.player, this.gameState)
     if (powerUpCollected) {
       console.log(`Power-up collected: ${powerUpCollected}`)
       this.gameState.updatePowerUpStatus(powerUpCollected, true)
@@ -263,12 +346,15 @@ export class Game {
       // Crear efecto visual
       this.createExplosion(this.player.position.x, this.player.position.y - 20, false, ["#00FFFF", "#FFD700"])
 
-      setTimeout(
-        () => {
-          this.gameState.updatePowerUpStatus(powerUpCollected, false)
-        },
-        powerUpCollected === "shield" ? 10000 : 5000, // Escudo dura 10 segundos
-      )
+      // Solo aplicar timeout para power-ups temporales (no vida)
+      if (powerUpCollected !== "life") {
+        setTimeout(
+          () => {
+            this.gameState.updatePowerUpStatus(powerUpCollected, false)
+          },
+          powerUpCollected === "shield" ? 10000 : 5000, // Escudo dura 10 segundos
+        )
+      }
     }
   }
 
@@ -277,17 +363,96 @@ export class Game {
     if (this.gameState.currentBoss || this.bosses.length > 0) {
       return
     }
+    
     let boss
-    // Alternar usando el contador de jefes derrotados
-    if (this.gameState.bossDefeated % 2 === 0) {
-      boss = new ElonBoss(this.canvas)
-      boss.health = 10
-      boss.type = 'elon'
+    const bossCount = this.gameState.bossDefeated
+    
+    // Calcular multiplicador de velocidad (20% más rápido cada 6 jefes)
+    const speedMultiplier = 1 + (Math.floor(bossCount / 6) * 0.2)
+    
+    if (bossCount < 6) {
+      // Primeras 6 apariciones: ciclo inicial
+      const bossPhase = bossCount % 6
+      
+      switch (bossPhase) {
+        case 0: // Primera aparición: Trump - 1 bomba
+          boss = new TrumpBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'trump'
+          boss.bombCount = 1
+          boss.attackType = 'bomb'
+          break
+          
+        case 1: // Primera aparición: Elon - solo cohetes
+          boss = new ElonBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'elon'
+          boss.attackType = 'rocket'
+          boss.canUseInvisibility = false
+          break
+          
+        case 2: // Segunda aparición: Trump - 2 bombas
+          boss = new TrumpBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'trump'
+          boss.bombCount = 2
+          boss.attackType = 'bomb'
+          break
+          
+        case 3: // Segunda aparición: Elon - cohete + bomba
+          boss = new ElonBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'elon'
+          boss.attackType = 'hybrid'
+          boss.canUseInvisibility = false
+          break
+          
+        case 4: // Tercera aparición: Trump - 3 bombas
+          boss = new TrumpBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'trump'
+          boss.bombCount = 3
+          boss.attackType = 'bomb'
+          break
+          
+        case 5: // Tercera aparición: Elon - solo cohete + invisibilidad
+          boss = new ElonBoss(this.canvas)
+          boss.health = 10
+          boss.type = 'elon'
+          boss.attackType = 'rocket'
+          boss.canUseInvisibility = true
+          break
+      }
     } else {
-      boss = new TrumpBoss(this.canvas)
-      boss.health = 10
-      boss.type = 'trump'
+      // Después de las primeras 6 apariciones: alternar entre las versiones más difíciles
+      const isEvenBoss = (bossCount - 6) % 2 === 0
+      
+      if (isEvenBoss) {
+        // Trump nivel 3 - 3 bombas parabólicas
+        boss = new TrumpBoss(this.canvas)
+        boss.health = 12 // Incrementar vida ligeramente
+        boss.type = 'trump'
+        boss.bombCount = 3
+        boss.attackType = 'bomb'
+      } else {
+        // Elon nivel 3 - cohete + invisibilidad
+        boss = new ElonBoss(this.canvas)
+        boss.health = 12 // Incrementar vida ligeramente
+        boss.type = 'elon'
+        boss.attackType = 'rocket'
+        boss.canUseInvisibility = true
+      }
     }
+    
+    // Aplicar multiplicador de velocidad
+    if (boss.type === 'trump') {
+      boss.velocity.x *= speedMultiplier
+      boss.baseSpeed *= speedMultiplier
+    } else if (boss.type === 'elon') {
+      // Para Elon, afectar la velocidad del movimiento sinusoidal
+      boss.speedMultiplier = speedMultiplier
+    }
+    
     this.bosses.push(boss)
     this.gameState.currentBoss = boss
     this.gameState.bossSpawned = true
@@ -307,10 +472,21 @@ export class Game {
     this.shootCooldown = this.shootCooldownTime
   }
 
-  addBomb(x, y) {
-    const targetX = this.player.position.x + Utils.randomBetween(-50, 50)
-    const targetY = this.canvas.height - 75 // Ajustado para coincidir con el suelo
-    const bomb = new Bomb(x, y, targetX, targetY)
+  addBomb(x, y, isParabolic = false) {
+    let targetX, targetY, bomb
+    
+    if (isParabolic) {
+      // Trayectoria parabólica más amplia
+      targetX = this.player.position.x + Utils.randomBetween(-100, 100)
+      targetY = this.canvas.height - 75
+      bomb = new Bomb(x, y, targetX, targetY, true) // true para parabólica
+    } else {
+      // Trayectoria normal
+      targetX = this.player.position.x + Utils.randomBetween(-50, 50)
+      targetY = this.canvas.height - 75
+      bomb = new Bomb(x, y, targetX, targetY, false)
+    }
+    
     this.enemyProjectiles.push(bomb)
   }
 
@@ -336,6 +512,12 @@ export class Game {
             this.bosses = []
             this.gameState.currentBoss = null
             this.gameState.bossSpawned = false
+            
+            // Spawnear power-up de vida después de derrotar jefe
+            setTimeout(() => {
+              this.powerUpManager.spawnLifePowerUp(this.canvas)
+            }, 2000) // Aparece 2 segundos después
+            
             setTimeout(() => this.spawnBoss(), 1000)
           }
         }
@@ -440,6 +622,9 @@ export class Game {
       Utils.drawCircle(this.ctx, particle.x, particle.y, particle.size, particle.color)
       this.ctx.globalAlpha = 1
     })
+
+    // Dibujar alerta de jefe (se dibuja encima de todo)
+    this.gameState.drawBossAlert(this.ctx, this.canvas)
   }
 
   drawBackground() {
@@ -495,6 +680,69 @@ export class Game {
     if (mobileControls) {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
+    }
+  }
+
+  initializeFullscreenButton() {
+    // Inicializar botón de pantalla completa
+    const fullscreenBtn = document.getElementById("fullscreen-btn")
+    if (fullscreenBtn) {
+      // Mostrar el botón solo en modo responsive (móviles)
+      const isMobile = window.innerWidth < 1025
+      if (isMobile) {
+        fullscreenBtn.style.display = "block"
+      } else {
+        fullscreenBtn.style.display = "none"
+      }
+
+      fullscreenBtn.addEventListener("click", async () => {
+        try {
+          // Primero intentar entrar en pantalla completa
+          if (document.documentElement.requestFullscreen) {
+            await document.documentElement.requestFullscreen()
+          } else if (document.documentElement.webkitRequestFullscreen) {
+            await document.documentElement.webkitRequestFullscreen()
+          } else if (document.documentElement.mozRequestFullScreen) {
+            await document.documentElement.mozRequestFullScreen()
+          } else if (document.documentElement.msRequestFullscreen) {
+            await document.documentElement.msRequestFullscreen()
+          }
+
+          // Después intentar rotar a landscape y bloquear orientación
+          if (screen.orientation && screen.orientation.lock) {
+            try {
+              await screen.orientation.lock("landscape-primary")
+              console.log("Orientación bloqueada en landscape")
+            } catch (err) {
+              console.warn("No se pudo bloquear la orientación:", err)
+              // Fallback: intentar solo landscape sin especificar primary
+              try {
+                await screen.orientation.lock("landscape")
+              } catch (err2) {
+                console.warn("Fallback de orientación también falló:", err2)
+              }
+            }
+          }
+
+          // Redimensionar canvas en pantalla completa
+          setTimeout(() => {
+            this.setupCanvas()
+          }, 100)
+
+        } catch (err) {
+          console.warn("Error al entrar en pantalla completa:", err)
+        }
+      })
+
+      // Manejar salida de pantalla completa
+      document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+          // Salió de pantalla completa, restaurar canvas
+          setTimeout(() => {
+            this.setupCanvas()
+          }, 100)
+        }
+      })
     }
   }
 }

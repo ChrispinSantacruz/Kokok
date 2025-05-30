@@ -55,11 +55,21 @@ export class PowerUp {
       ctx.font = "16px Arial"
       ctx.textAlign = "center"
       ctx.fillText("⚡", 0, 5)
+    } else if (this.type === "life") {
+      // Vida extra
+      Utils.drawCircle(ctx, 0, 0, this.radius, "#FF69B4")
+      Utils.drawCircle(ctx, 0, 0, this.radius - 3, "#FF1493")
+
+      // Símbolo de corazón
+      ctx.fillStyle = "white"
+      ctx.font = "16px Arial"
+      ctx.textAlign = "center"
+      ctx.fillText("❤️", 0, 5)
     }
 
     // Brillo exterior
     ctx.globalAlpha = 0.3
-    Utils.drawCircle(ctx, 0, 0, this.radius + 5, this.type === "shield" ? "#00FFFF" : "#FFD700")
+    Utils.drawCircle(ctx, 0, 0, this.radius + 5, this.type === "shield" ? "#00FFFF" : this.type === "life" ? "#FF69B4" : "#FFD700")
     ctx.globalAlpha = 1
 
     ctx.restore()
@@ -72,7 +82,7 @@ export class PowerUp {
     return distance < collisionDistance
   }
 
-  collect(player) {
+  collect(player, gameState = null) {
     this.active = false
 
     if (this.type === "speed") {
@@ -81,6 +91,14 @@ export class PowerUp {
       setTimeout(() => {
         player.speed /= 2 // Restaura la velocidad original después de 5 segundos
       }, 5000)
+    } else if (this.type === "life") {
+      // Añadir una vida extra usando gameState si está disponible
+      if (gameState && gameState.lives < 3) {
+        gameState.lives++
+        gameState.updateUI()
+      } else if (player.health < player.maxHealth) {
+        player.health++
+      }
     }
   }
 }
@@ -111,22 +129,31 @@ export class PowerUpManager {
   spawnPowerUp(canvas) {
     const x = Utils.randomBetween(50, canvas.width - 50)
     const y = Utils.randomBetween(100, canvas.height - 200) // Spawnar en área accesible
-    const type = Math.random() < 0.5 ? "shield" : "speed"
+    const type = Math.random() < 0.5 ? "shield" : "speed" // Solo shield y speed en spawns normales
     const powerUp = new PowerUp(x, y, type)
     this.powerUps.push(powerUp)
     console.log(`Power-up spawned: ${type} at (${x}, ${y})`)
+  }
+
+  spawnLifePowerUp(canvas) {
+    // Método específico para spawnear vida después de derrotar jefes
+    const x = Utils.randomBetween(50, canvas.width - 50)
+    const y = Utils.randomBetween(100, canvas.height - 200)
+    const powerUp = new PowerUp(x, y, "life")
+    this.powerUps.push(powerUp)
+    console.log(`Life power-up spawned at (${x}, ${y})`)
   }
 
   draw(ctx) {
     this.powerUps.forEach((powerUp) => powerUp.draw(ctx))
   }
 
-  checkCollisions(player) {
+  checkCollisions(player, gameState = null) {
     for (let i = 0; i < this.powerUps.length; i++) {
       const powerUp = this.powerUps[i]
       if (powerUp.active && powerUp.checkCollision(player)) {
         const type = powerUp.type
-        powerUp.collect(player)
+        powerUp.collect(player, gameState)
         console.log(`Power-up collected: ${type}`)
         return type
       }

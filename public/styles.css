@@ -35,13 +35,13 @@ body {
   background: linear-gradient(180deg, #87ceeb 0%, #98fb98 100%) !important;
   margin: 0 !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-  margin-top: 2vh !important;
+  margin-top: -2vh !important;
 }
 
 /* UI del juego */
 #gameUI {
   position: absolute !important;
-  top: 3.5vh !important;
+  top: 1vh !important;
   left: 50% !important;
   z-index: 10;
 }
@@ -76,14 +76,17 @@ body {
   transform: translate(-50%, -50%);
   background: linear-gradient(45deg, #ff0000, #ff4500);
   color: white;
-  padding: 25px 50px;
+  padding: 20px 30px;
   border-radius: 15px;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
   animation: bossAlert 2s ease-in-out;
   z-index: 20;
   border: 3px solid #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  max-width: 250px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 @keyframes bossAlert {
@@ -346,11 +349,15 @@ body {
 
 /* Controles móviles */
 #mobileControls {
-  display: none !important;
-}
-
-#mobileControls.active {
   display: block !important;
+  position: absolute !important;
+  bottom: 5vh !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 18vh !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+  pointer-events: none !important;
+  z-index: 20 !important;
 }
 
 .move-area {
@@ -727,7 +734,7 @@ body {
   /* UI del juego reposicionada - VERTICAL */
   #gameUI {
     position: absolute !important;
-    top: 3.5vh !important;
+    top: 1vh !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     z-index: 15 !important;
@@ -771,24 +778,24 @@ body {
     border-color: #ff6b6b !important;
   }
 
-  /* Controles móviles mejorados */
+  /* Controles móviles más arriba */
   #mobileControls {
     display: block !important;
     position: absolute !important;
-    bottom: 0 !important;
+    bottom: 5vh !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 22vh !important;
+    height: 18vh !important;
     background: rgba(0, 0, 0, 0.1) !important;
     pointer-events: none !important;
     z-index: 20 !important;
   }
 
-  /* Cruceta en esquina inferior izquierda */
+  /* Cruceta más arriba */
   .dpad-container {
     position: absolute !important;
     left: 15px !important;
-    bottom: 30px !important;
+    bottom: 20px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -829,11 +836,11 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
   }
 
-  /* Botón de dinero en esquina inferior derecha */
+  /* Botón de dinero más arriba */
   #shootBtn.shoot-btn {
     position: absolute !important;
     right: 20px !important;
-    bottom: 50px !important;
+    bottom: 40px !important;
     width: 90px !important;
     height: 90px !important;
     font-size: 36px !important;
@@ -855,24 +862,24 @@ body {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6) !important;
   }
 
-  /* Power-up status */
+  /* Power-up status - menos estirado horizontalmente */
   #powerUpStatus {
     position: absolute !important;
-    top: 15vh !important;
+    top: 12vh !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     background: rgba(0, 0, 0, 0.9) !important;
     color: #ffd700 !important;
-    padding: 8px 15px !important;
-    border-radius: 12px !important;
-    font-size: 12px !important;
+    padding: 10px 20px !important;
+    border-radius: 15px !important;
+    font-size: 14px !important;
     font-weight: bold !important;
     text-align: center !important;
     z-index: 25 !important;
     border: 2px solid #ffd700 !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
-    min-width: 140px !important;
-    max-width: 200px !important;
+    max-width: 180px !important;
+    white-space: nowrap !important;
   }
 
   /* MENÚ GAME OVER - UNA SOLA COLUMNA */

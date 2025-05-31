@@ -157,8 +157,8 @@ export class TelegramIntegration {
 
     async sendToN8nWebhook(data) {
         try {
-            // URL específica del webhook de n8n del usuario
-            const n8nWebhookUrl = 'https://chriscodex1.app.n8n.cloud/webhook-test/1017d610-1159-4eed-b4e7-8644b0f3ace9';
+            // URL específica del webhook de n8n del usuario (CORREGIDA PARA PRODUCCIÓN)
+            const n8nWebhookUrl = 'https://chriscodex1.app.n8n.cloud/webhook/1017d610-1159-4eed-b4e7-8644b0f3ace9';
             
             const response = await fetch(n8nWebhookUrl, {
                 method: 'POST',

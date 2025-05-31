@@ -164,23 +164,41 @@ export class TelegramIntegration {
             // URL específica del webhook de n8n del usuario (CORREGIDA PARA PRODUCCIÓN)
             const n8nWebhookUrl = 'https://chriscodex1.app.n8n.cloud/webhook/1017d610-1159-4eed-b4e7-8644b0f3ace9';
             
-            const response = await fetch(n8nWebhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+            // MÉTODO ALTERNATIVO SIN CORS: Usar iframe invisible
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.name = 'webhook-frame';
+            document.body.appendChild(iframe);
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = n8nWebhookUrl;
+            form.target = 'webhook-frame'; // Enviar al iframe invisible
+            form.style.display = 'none';
+            
+            // Convertir data a campos de formulario
+            Object.keys(data).forEach(key => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key];
+                form.appendChild(input);
             });
-
-            if (response.ok) {
-                console.log('Datos enviados a n8n webhook correctamente:', data);
-                const responseData = await response.text();
-                console.log('Respuesta de n8n:', responseData);
-            } else {
-                console.error('Error al enviar datos a n8n webhook:', response.status, response.statusText);
-            }
+            
+            document.body.appendChild(form);
+            form.submit();
+            
+            console.log('Datos enviados a n8n webhook correctamente (método iframe):', data);
+            
+            // Limpiar después de 3 segundos
+            setTimeout(() => {
+                if (form.parentNode) document.body.removeChild(form);
+                if (iframe.parentNode) document.body.removeChild(iframe);
+            }, 3000);
+            
         } catch (error) {
             console.error('Error en llamada a n8n webhook:', error);
+            throw error; // Re-lanzar el error para que el game.js lo maneje
         }
     }
 

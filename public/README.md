@@ -33,3 +33,7 @@ No requiere instalación. Solo abre `index.html` en tu navegador favorito.
 Para soporte o sugerencias, contáctanos en Telegram o a través de la comunidad KOKOK COIN.
 
 ¡Diviértete y alcanza la cima del ranking!
+
+https://ibb.co/6RsnkHg7 cucaracha jugando 
+
+https://i.ibb.co/7dqyS5x4/Chat-GPT-Image-31-may-2025-06-42-22-a-m.png cucaracha muerta

@@ -20,11 +20,44 @@
             overflow: hidden;
         }
         
-        #game-container {
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #gameCanvas {
             border: 3px solid #A67B5B;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             background: #5C4033;
+            display: none; /* Oculto por defecto hasta que inicie el juego */
+        }
+
+        /* Mostrar canvas solo cuando el juego esté activo */
+        body.game-active #gameCanvas {
+            display: block;
+        }
+
+        /* Ocultar canvas en pantallas de menú */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background: linear-gradient(135deg, #4B3621, #6B4C3B);
+        }
+
+        .screen.hidden {
+            display: none;
         }
         
         .ui-overlay {
@@ -52,6 +85,285 @@
         @media (max-width: 768px) {
             .controls-info {
                 font-size: 10px;
+            }
+        }
+
+        /* === ESTILOS MEJORADOS PARA LA PANTALLA DE LOGIN === */
+        #loginScreen {
+            padding: 20px;
+        }
+
+        .login-content {
+            text-align: center;
+            color: #E3C6A8;
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .login-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .login-subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: #D2B48C;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+        }
+
+        .login-form {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: #E3C6A8;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .player-name-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            border: 3px solid #A67B5B;
+            border-radius: 12px;
+            background: #F5F5DC;
+            color: #4B3621;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .player-name-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: scale(1.02);
+        }
+
+        .player-name-input:focus::selection {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+            font-weight: bold;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 12px;
+            color: #4B3621;
+            cursor: pointer;
+            transition: all 0.3s ease, background 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .login-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .login-btn:disabled {
+            background: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .roach-icon-large {
+            font-size: clamp(4rem, 12vw, 6rem);
+            margin-bottom: 20px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .powered-by {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: #A67B5B;
+            font-weight: bold;
+        }
+
+        /* === MENÚ PRINCIPAL MEJORADO === */
+        #mainMenu .menu-content {
+            text-align: center;
+            color: #E3C6A8;
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: #D2B48C;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* === PANTALLA DE INSTRUCCIONES === */
+        #instructionsScreen .instructions-content {
+            text-align: center;
+            color: #E3C6A8;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #instructionsScreen h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: #FFD700;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+        }
+
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .instruction-item {
+            background: rgba(166, 123, 91, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #A67B5B;
+        }
+
+        .instruction-item > div:first-child {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .instruction-item p {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* === ESTILOS CONSISTENTES PARA BOTONES === */
+        .menu-btn, .play-btn, .share-btn {
+            background: linear-gradient(135deg, #A67B5B, #8B5C2B);
+            color: #E3C6A8;
+            border: none;
+            padding: 18px 20px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #4B3621;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #0088cc, #006699);
+            color: white;
+        }
+
+        .menu-btn:hover, .play-btn:hover, .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .play-btn:hover {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+        }
+
+        .share-btn:hover {
+            background: linear-gradient(135deg, #006699, #004466);
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(135deg, #8B5C2B, #6B4C1B);
+        }
+
+        /* Botones deshabilitados */
+        .menu-btn:disabled, .play-btn:disabled, .share-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            color: #999;
+        }
+
+        /* Mejoras específicas para responsive */
+        @media (max-width: 480px) {
+            .menu-btn, .play-btn, .share-btn {
+                padding: 20px 15px;
+                font-size: clamp(1rem, 4vw, 1.2rem);
+                min-height: 65px;
+                letter-spacing: 0.5px;
             }
         }
 
@@ -106,13 +418,19 @@
         }
 
         /* --- GAME OVER SCREEN RESPONSIVE --- */
+        #gameOverScreen .gameover-card {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
         #gameOverScreen .score-circle {
-            width: 32vw;
-            max-width: 340px;
-            min-width: 180px;
-            height: 32vw;
-            max-height: 340px;
-            min-height: 180px;
+            width: min(40vw, 300px);
+            height: min(40vw, 300px);
+            min-width: 150px;
+            min-height: 150px;
             background: linear-gradient(135deg, #00FF00 60%, #009900 100%);
             border-radius: 50%;
             margin: 0 auto 20px auto;
@@ -125,82 +443,69 @@
         #gameOverScreen .score-info {
             text-align: center;
             color: #111;
-            font-size: 2.2vw;
+            font-size: clamp(1rem, 3vw, 1.3rem);
             width: 100%;
         }
         #gameOverScreen .score-number {
-            font-size: 3vw;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: bold;
         }
         #gameOverScreen .record-number {
-            font-size: 2vw;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             font-weight: bold;
         }
         #gameOverScreen .gameover-title {
-            font-size: 5vw;
+            font-size: clamp(2rem, 6vw, 3rem);
             color: #FF0000;
             text-align: center;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             text-shadow: 2px 2px 0 #000;
         }
         #gameOverScreen .gameover-buttons {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 15px;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 20px;
+            width: 100%;
         }
-        #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
-            width: 80vw;
-            max-width: 340px;
-            min-width: 180px;
-            font-size: 1.5vw;
-            padding: 12px 0;
+        #gameOverScreen .menu-btn, 
+        #gameOverScreen .play-btn, 
+        #gameOverScreen .share-btn {
+            max-width: 400px;
+            min-width: 200px;
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
         }
-        @media (max-width: 900px) {
+
+        /* Responsive para orientación horizontal en Game Over */
+        @media (max-height: 600px) and (orientation: landscape) {
+            #gameOverScreen .gameover-card {
+                max-width: 700px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 30px;
+            }
+
             #gameOverScreen .score-circle {
-                width: 48vw;
-                height: 48vw;
+                width: min(25vh, 200px);
+                height: min(25vh, 200px);
+                margin: 0;
+                flex-shrink: 0;
             }
-            #gameOverScreen .score-info {
-                font-size: 3vw;
+
+            #gameOverScreen .gameover-buttons {
+                gap: 10px;
+                margin-top: 0;
+                flex: 1;
             }
-            #gameOverScreen .score-number {
-                font-size: 4vw;
-            }
-            #gameOverScreen .record-number {
-                font-size: 3vw;
-            }
-            #gameOverScreen .gameover-title {
-                font-size: 7vw;
-            }
+
             #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
-                font-size: 2.5vw;
-            }
-        }
-        @media (max-width: 600px) {
-            #gameOverScreen .score-circle {
-                width: 70vw;
-                height: 70vw;
-                min-width: 120px;
-                min-height: 120px;
-            }
-            #gameOverScreen .score-info {
-                font-size: 4vw;
-            }
-            #gameOverScreen .score-number {
-                font-size: 6vw;
-            }
-            #gameOverScreen .record-number {
-                font-size: 4vw;
-            }
-            #gameOverScreen .gameover-title {
-                font-size: 10vw;
-            }
-            #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
-                font-size: 4vw;
-                min-width: 120px;
+                padding: 12px 20px;
+                font-size: clamp(1rem, 2.5vh, 1.2rem);
             }
         }
 
@@ -225,6 +530,107 @@
                 display: block;
             }
         }
+
+        /* === ESTILOS PARA MENSAJE DE ERROR === */
+        .error-message {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === ESTILOS PARA MENSAJE DE ÉXITO === */
+        .success-message {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        /* === ESTILOS PARA MENSAJE DE BIENVENIDA === */
+        .welcome-message {
+            margin: 20px 0;
+        }
+
+        .welcome-message > div {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive para orientación horizontal en móviles */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .login-content, #mainMenu .menu-content, #instructionsScreen .instructions-content {
+                max-width: 600px;
+            }
+            
+            .login-title, .game-title {
+                font-size: clamp(2rem, 5vh, 3rem);
+                margin-bottom: 8px;
+            }
+            
+            .login-subtitle, .subtitle {
+                font-size: clamp(0.9rem, 2.5vh, 1.1rem);
+                margin-bottom: 20px;
+            }
+            
+            .roach-icon-large {
+                font-size: clamp(3rem, 8vh, 4rem);
+                margin-bottom: 15px;
+            }
+            
+            .powered-by {
+                font-size: clamp(0.8rem, 2vh, 1rem);
+            }
+
+            .menu-buttons {
+                gap: 10px;
+                margin: 20px 0;
+            }
+
+            .menu-btn, .play-btn, .share-btn {
+                padding: 15px 20px;
+                font-size: clamp(1rem, 2.5vh, 1.2rem);
+                min-height: 50px;
+            }
+
+            .instructions-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .instruction-item {
+                padding: 15px;
+            }
+
+            #instructionsScreen h2 {
+                font-size: clamp(1.8rem, 4vh, 2.5rem);
+                margin-bottom: 20px;
+            }
+        }
+
+        /* === GAME OVER BUTTONS ESPECÍFICOS === */
+        #gameOverScreen .gameover-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        #gameOverScreen .menu-btn, 
+        #gameOverScreen .play-btn, 
+        #gameOverScreen .share-btn {
+            max-width: 400px;
+            min-width: 200px;
+            width: 100%;
+            margin: 0;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -241,26 +647,46 @@
             <div id="bossAlert" class="boss-alert hidden">¡JEFE APARECE!</div>
         </div>
 
-        <!-- Pantalla principal -->
-        <div id="mainMenu" class="screen">
-            <!-- <div class="forest-bg"></div> -->
+        <!-- Pantalla de login optimizada -->
+        <div id="loginScreen" class="screen">
+            <div class="login-content">
+                <span class="roach-icon-large">🪳</span>
+                <h1 class="login-title">KOKOK<br>THE ROACH</h1>
+                <p class="login-subtitle">🪙 Crypto Shooter Game 🪙</p>
+                
+                <div class="login-form">
+                    <div class="input-group">
+                        <label for="playerName" class="input-label">¿Cuál es tu nombre de cucaracha?</label>
+                        <input type="text" id="playerName" class="player-name-input" 
+                               placeholder="Ingresa tu nombre..." maxlength="20" autocomplete="off">
+                    </div>
+                    <button id="loginBtn" class="login-btn" disabled>🎮 Entrar al Juego</button>
+                </div>
+                
+                <div class="powered-by">POWERED BY KOKOK COIN</div>
+            </div>
+        </div>
+
+        <!-- Pantalla principal optimizada -->
+        <div id="mainMenu" class="screen hidden">
             <div class="menu-content">
                 <h1 class="game-title">KOKOK<br>THE ROACH</h1>
                 <p class="subtitle">🪙 Crypto Shooter Game 🪙</p>
+                <div id="welcomeMessage" class="welcome-message"></div>
                 <div class="menu-buttons">
-                    <button id="playBtn" class="menu-btn play-btn">JUGAR</button>
-                    <button id="instructionsBtn" class="menu-btn">INSTRUCCIONES</button>
-                    <button id="leaderboardBtn" class="menu-btn">LEADERBOARDS</button>
+                    <button id="playBtn" class="menu-btn play-btn">🎮 JUGAR</button>
+                    <button id="instructionsBtn" class="menu-btn">📖 INSTRUCCIONES</button>
+                    <button id="leaderboardBtn" class="menu-btn">🏆 LEADERBOARDS</button>
+                    <button id="changeNameBtn" class="menu-btn">✏️ CAMBIAR NOMBRE</button>
                 </div>
                 <div class="powered-by">POWERED BY KOKOK COIN</div>
             </div>
         </div>
 
-        <!-- Pantalla de instrucciones -->
+        <!-- Pantalla de instrucciones optimizada -->
         <div id="instructionsScreen" class="screen hidden">
-            <!-- <div class="forest-bg"></div> -->
             <div class="instructions-content">
-                <h2>INSTRUCCIONES</h2>
+                <h2>📖 INSTRUCCIONES</h2>
                 <div class="instructions-grid">
                     <div class="instruction-item">
                         <div class="roach-icon">🪳</div>
@@ -279,28 +705,33 @@
                         <p>Toca para mover, mantén presionado para disparar</p>
                     </div>
                 </div>
-                <button id="backBtn" class="menu-btn">VOLVER</button>
+                <button id="backBtn" class="menu-btn">⬅️ VOLVER</button>
             </div>
         </div>
 
-        <!-- Pantalla de Game Over -->
+        <!-- Pantalla de Game Over optimizada -->
         <div id="gameOverScreen" class="screen hidden">
             <div class="gameover-card">
-                <h2 class="gameover-title">GAME OVER</h2>
-                <div class="gameover-layout">
-                    <div class="score-info">
-                        <div class="coin-icon">🪙</div>
-                        <div class="score-text">PUNTOS</div>
-                        <div id="finalScore" class="score-number">0</div>
-                        <div class="record-text">RÉCORD</div>
-                        <div id="highScore" class="record-number">0</div>
+                <div class="score-section">
+                    <h2 class="gameover-title">GAME OVER</h2>
+                    <div class="score-circle">
+                        <div class="score-info">
+                            <div class="coin-icon">🪙</div>
+                            <div class="score-text">PUNTOS</div>
+                            <div id="finalScore" class="score-number">0</div>
+                            <div class="record-text">RÉCORD</div>
+                            <div id="highScore" class="record-number">0</div>
+                        </div>
                     </div>
-                    <div class="gameover-buttons">
-                        <button id="restartBtn" class="menu-btn play-btn">JUGAR DE NUEVO</button>
-                        <button id="shareTwitterBtn" class="menu-btn share-btn">COMPARTIR EN TWITTER</button>
-                        <button id="shareTelegramBtn" class="menu-btn share-btn">📱 COMPARTIR EN TELEGRAM</button>
-                        <button id="backToMenuBtn" class="menu-btn">MENÚ PRINCIPAL</button>
-                    </div>
+                </div>
+                <div class="gameover-buttons">
+                    <button id="restartBtn" class="menu-btn play-btn">🔄 JUGAR DE NUEVO</button>
+                    <button id="shareTelegramScoreBtn" class="menu-btn share-btn">
+                        <span>📱</span>
+                        <span>COMPARTIR PUNTUACIÓN</span>
+                    </button>
+                    <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 COMPARTIR EN TWITTER</button>
+                    <button id="backToMenuBtn" class="menu-btn">🏠 MENÚ PRINCIPAL</button>
                 </div>
             </div>
         </div>

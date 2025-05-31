@@ -6,6 +6,13 @@ export class TelegramIntegration {
         const urlParams = new URLSearchParams(window.location.search);
         this.chatId = urlParams.get('chat_id');
         this.gameStartTime = null; // Para calcular tiempo de juego
+        
+        // DEBUG: Mostrar información del chat_id
+        console.log('🔍 DEBUG TelegramIntegration:');
+        console.log('- URL completa:', window.location.href);
+        console.log('- URL params:', window.location.search);
+        console.log('- Chat ID capturado:', this.chatId);
+        console.log('- Es Telegram WebApp:', this.isTelegramWebApp);
     }
 
     init() {
@@ -78,6 +85,11 @@ export class TelegramIntegration {
     }
 
     async shareScore(score) {
+        console.log('🎮 DEBUG shareScore llamada:');
+        console.log('- Score:', score);
+        console.log('- ChatId disponible:', this.chatId);
+        console.log('- Es Telegram WebApp:', this.isTelegramWebApp);
+        
         if (!this.isTelegramWebApp || !this.chatId) {
             console.warn("No se puede compartir la puntuación: No estamos en Telegram WebApp o no se encontró el chatId.");
             // Si no estamos en Telegram WebApp, no hacer nada
@@ -86,23 +98,14 @@ export class TelegramIntegration {
         
         const playerName = this.getUserName();
         const gameTime = this.getGameTime();
+        
+        console.log('📋 Datos del juego:');
+        console.log('- Player Name:', playerName);
+        console.log('- Game Time:', gameTime);
+        
         const message = `🎮 ¡Juego terminado! 🎮\n\n🏆 ${playerName} ha conseguido ${score} puntos en KOKOK THE ROACH! 🪳\n\n💪 ¿Crees que puedes superarlo? ¡Intentalo ahora!\n\n#KokokTheRoach #CryptoGame`;
         
         try {
-            // Enviar automáticamente la puntuación al chat
-            const response = await fetch('/api/share-score', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chatId: this.chatId,
-                    score: score,
-                    message: message,
-                    playerName: playerName
-                })
-            });
-
             // También enviar datos al webhook de n8n para automatización
             const webhookData = {
                 // Información básica del juego
@@ -118,30 +121,27 @@ export class TelegramIntegration {
                 
                 // Información adicional del juego
                 additionalData: {
-                    isNewRecord: this.isNewRecord(score),
-                    previousHighScore: this.getPreviousHighScore(),
-                    totalBossesDefeated: this.getTotalBossesDefeated(),
-                    powerUpsUsed: this.getPowerUpsUsed(),
-                    gameVersion: '1.0',
                     platform: this.getPlatform()
-                },
-                
-                // Información del chat/usuario
-                userInfo: {
-                    userId: this.getUserId(),
-                    chatType: this.getChatType(),
-                    isFirstTime: this.isFirstTimePlayer()
-                },
-                
-                // Metadatos del juego
-                game: {
-                    name: "KOKOK The Roach",
-                    version: "1.0",
-                    type: "crypto_shooter"
                 }
             };
 
+            console.log('🚀 Enviando al webhook:', webhookData);
             await this.sendToN8nWebhook(webhookData);
+
+            // Comentamos el envío al backend por ahora
+            /*
+            const response = await fetch('/api/share-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chatId: this.chatId,
+                    score: score,
+                    message: message,
+                    playerName: playerName
+                })
+            });
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -149,6 +149,7 @@ export class TelegramIntegration {
             } else {
                 console.log('Puntuación enviada automáticamente al chat de Telegram.');
             }
+            */
         } catch (error) {
             console.error('Error en la llamada fetch para compartir puntuación:', error);
         }
@@ -251,13 +252,13 @@ export class TelegramIntegration {
         const message = `🎮 ¡Mira mi puntuación! 🎮\n\n🏆 ${playerName} ha conseguido ${score} puntos en KOKOK THE ROACH! 🪳\n\n💪 ¿Puedes superarme? ¡Inténtalo!\n\n#KokokTheRoach #CryptoGame`;
         
         // Mostrar popup con opciones para compartir manualmente
-        this.telegram.showPopup({
+                 this.telegram.showPopup({
             title: '🎮 ¡Compartir Puntuación!',
             message: `¡Has conseguido ${score} puntos!\n\n¿Quieres compartir tu puntuación?`,
-            buttons: [
+                    buttons: [
                 {id: 'share_telegram', type: 'text', text: '📱 Compartir en Telegram'},
                 {id: 'close', type: 'close', text: '❌ Cerrar'}
-            ]
+                    ]
         }, (buttonId) => {
             if (buttonId === 'share_telegram' && this.chatId) {
                 // Si tenemos chatId, enviar al chat
@@ -299,7 +300,7 @@ export class TelegramIntegration {
                 });
             } else {
                 console.log('Mensaje enviado al chat correctamente.');
-                this.telegram.showPopup({
+                 this.telegram.showPopup({
                     title: '✅ ¡Enviado!',
                     message: 'Tu puntuación ha sido compartida en el chat.',
                     buttons: [{id: 'close', type: 'close'}]
@@ -307,7 +308,7 @@ export class TelegramIntegration {
             }
         } catch (error) {
             console.error('Error al enviar mensaje al chat:', error);
-            this.telegram.showPopup({
+             this.telegram.showPopup({
                 title: 'Error de conexión',
                 message: 'No se pudo conectar con el servidor.',
                 buttons: [{id: 'close', type: 'close'}]

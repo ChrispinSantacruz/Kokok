@@ -7,6 +7,7 @@ import { Controls } from "./controls.js"
 import { Utils } from "./utils.js"
 import { Vector2 } from "./utils.js"
 import { TelegramIntegration } from "./telegramIntegration.js"
+import { PlayerManager } from "./playerManager.js"
 
 export class Game {
   constructor() {
@@ -16,6 +17,8 @@ export class Game {
     this.shootCooldown = 0
     this.shootCooldownTime = 300 // 300ms entre disparos
     this.telegram = new TelegramIntegration()
+    this.playerManager = new PlayerManager()
+    this.hasSharedCurrentGame = false // Control para evitar múltiples compartidas por partida
 
     this.setupCanvas()
     this.init()
@@ -57,13 +60,12 @@ export class Game {
     })
 
     document.getElementById("instructionsBtn").addEventListener("click", () => {
-      document.getElementById("mainMenu").classList.add("hidden")
+      this.playerManager.hideAllScreens()
       document.getElementById("instructionsScreen").classList.remove("hidden")
     })
 
     document.getElementById("backBtn").addEventListener("click", () => {
-      document.getElementById("instructionsScreen").classList.add("hidden")
-      document.getElementById("mainMenu").classList.remove("hidden")
+      this.playerManager.showMainMenu()
     })
 
     // Botones de game over
@@ -75,8 +77,9 @@ export class Game {
       this.gameState.shareOnTwitter()
     })
 
-    document.getElementById("shareTelegramBtn").addEventListener("click", () => {
-      this.telegram.shareScoreManually(this.gameState.score)
+    // Nuevo botón de compartir en Telegram (manual)
+    document.getElementById("shareTelegramScoreBtn").addEventListener("click", () => {
+      this.shareScoreInTelegram()
     })
 
     document.getElementById("backToMenuBtn").addEventListener("click", () => {
@@ -137,6 +140,17 @@ export class Game {
     // Agregar clase al body para indicar que el juego está activo
     document.body.classList.add("game-active")
     
+    // Resetear flag de compartir para nueva partida
+    this.hasSharedCurrentGame = false
+    
+    // Resetear completamente el botón de compartir para nueva partida
+    const shareBtn = document.getElementById("shareTelegramScoreBtn")
+    if (shareBtn) {
+      shareBtn.disabled = false
+      shareBtn.innerHTML = '<span>📱</span><span>COMPARTIR PUNTUACIÓN</span>'
+      shareBtn.style.background = ''
+    }
+    
     // Iniciar timer de juego para n8n
     this.telegram.startGameTimer()
     
@@ -178,7 +192,7 @@ export class Game {
       mobileControls.classList.add("hidden")
     }
     
-    document.getElementById("mainMenu").classList.remove("hidden")
+    this.playerManager.showMainMenu()
   }
 
   gameLoop(currentTime = 0) {
@@ -597,18 +611,115 @@ export class Game {
     this.gameState.gameRunning = false
     cancelAnimationFrame(this.animationId)
     
-    // Compartir puntuación en Telegram
-    this.telegram.shareScore(this.gameState.score)
+    // REMOVER compartir automático - ahora será manual
+    // this.telegram.shareScore(this.gameState.score)
     
     document.getElementById("gameOverScreen").classList.remove("hidden")
     document.getElementById("gameUI").classList.add("hidden")
     document.getElementById("finalScore").textContent = this.gameState.score
+    
+    // Actualizar récord en pantalla
+    const highScore = localStorage.getItem("kokokHighScore") || 0
+    document.getElementById("highScore").textContent = highScore
+    
+    // Resetear estado del botón de compartir
+    const shareBtn = document.getElementById("shareTelegramScoreBtn")
+    if (shareBtn) {
+      shareBtn.disabled = false
+      shareBtn.innerHTML = '<span>📱</span><span>COMPARTIR PUNTUACIÓN</span>'
+      shareBtn.style.background = ''
+    }
     
     // Ocultar controles móviles
     const mobileControls = document.getElementById("mobileControls")
     if (mobileControls) {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
+    }
+  }
+
+  // Nueva función para compartir puntuación manualmente
+  async shareScoreInTelegram() {
+    const shareBtn = document.getElementById("shareTelegramScoreBtn")
+    const score = this.gameState.score
+    
+    // 🚫 NUEVA VALIDACIÓN: Prohibir compartir con 0 puntos
+    if (score === 0) {
+      shareBtn.innerHTML = '<span>🚫</span><span>NO SE PUEDE COMPARTIR 0 PUNTOS</span>'
+      shareBtn.style.background = 'linear-gradient(135deg, #8B4513, #A0522D)'
+      shareBtn.disabled = true
+      
+      // Restaurar botón después de 3 segundos
+      setTimeout(() => {
+        shareBtn.innerHTML = '<span>📱</span><span>COMPARTIR PUNTUACIÓN</span>'
+        shareBtn.style.background = ''
+        shareBtn.disabled = false
+      }, 3000)
+      return
+    }
+    
+    // Verificar si ya se compartió esta partida
+    if (this.hasSharedCurrentGame) {
+      shareBtn.innerHTML = '<span>✅</span><span>YA COMPARTIDO</span>'
+      shareBtn.disabled = true
+      shareBtn.style.background = 'linear-gradient(135deg, #666, #888)'
+      return
+    }
+    
+    // Deshabilitar botón temporalmente
+    shareBtn.disabled = true
+    shareBtn.innerHTML = '<span>⏳</span><span>ENVIANDO...</span>'
+    shareBtn.style.background = 'linear-gradient(135deg, #ff8c00, #ffa500)'
+    
+    try {
+      const playerName = this.playerManager.getPlayerName()
+      
+      // Preparar datos para el webhook (simplificados)
+      const webhookData = {
+        chatId: this.telegram.chatId || '-1002291915890', // Chat ID por defecto si no hay uno específico
+        playerName: playerName,
+        score: score,
+        event: 'manual_share',
+        timestamp: new Date().toISOString(),
+        gameSession: this.telegram.generateSessionId(),
+        additionalData: {
+          platform: this.telegram.getPlatform(),
+          isManualShare: true
+        }
+      }
+      
+      console.log('🎯 Compartiendo puntuación manual:', webhookData)
+      
+      // Enviar al webhook de n8n
+      await this.telegram.sendToN8nWebhook(webhookData)
+      
+      // Mostrar mensaje de éxito
+      shareBtn.innerHTML = '<span>✅</span><span>¡COMPARTIDO EXITOSAMENTE!</span>'
+      shareBtn.style.background = 'linear-gradient(135deg, #00aa00, #00dd00)'
+      
+      // Marcar como compartido
+      this.hasSharedCurrentGame = true
+      
+      // Después de 5 segundos, cambiar a estado "ya compartido"
+      setTimeout(() => {
+        shareBtn.innerHTML = '<span>✅</span><span>YA COMPARTIDO</span>'
+        shareBtn.style.background = 'linear-gradient(135deg, #666, #888)'
+        shareBtn.disabled = true
+      }, 5000)
+      
+    } catch (error) {
+      console.error('Error al compartir puntuación:', error)
+      
+      // Mostrar mensaje de error
+      shareBtn.innerHTML = '<span>❌</span><span>ERROR - REINTENTAR</span>'
+      shareBtn.style.background = 'linear-gradient(135deg, #aa0000, #dd0000)'
+      
+      // Permitir reintento después de 3 segundos
+      setTimeout(() => {
+        shareBtn.disabled = false
+        shareBtn.innerHTML = '<span>📱</span><span>COMPARTIR PUNTUACIÓN</span>'
+        shareBtn.style.background = ''
+      }, 3000)
     }
   }
 }

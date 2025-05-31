@@ -24,26 +24,30 @@ export class TelegramIntegration {
         
         // Inicializar el WebApp de Telegram
         this.telegram.expand();
-        this.telegram.enableClosingConfirmation();
+        
+        // COMENTADO: enableClosingConfirmation no soportado en versión 6.0
+        // this.telegram.enableClosingConfirmation();
         
         // Configurar el tema según Telegram
         document.body.classList.add(this.telegram.colorScheme);
 
-        // Mostrar mensaje de bienvenida al cargar la WebApp si no hay un chatId (ej. chat privado o acceso directo)
-        // Si hay chatId, asumimos que viene de un grupo y el mensaje de inicio ya fue manejado por el bot.
+        // COMENTADO: showPopup no soportado en versión 6.0
+        // Mostrar mensaje de bienvenida al cargar la WebApp si no hay un chatId
+        /*
         if (!this.chatId) {
              this.showStartMessage();
         }
+        */
 
         // Manejar comandos de Telegram (si se envían dentro de la WebApp)
         this.telegram.onEvent('command', (command) => {
             switch(command) {
                 case 'start':
                     // Si ya estamos en la WebApp, al enviar /start de nuevo mostramos el mensaje de inicio
-                    this.showStartMessage();
+                    // this.showStartMessage(); // COMENTADO por compatibilidad
                     break;
                 case 'help':
-                    this.showHelp();
+                    // this.showHelp(); // COMENTADO por compatibilidad
                     break;
             }
         });
@@ -51,7 +55,7 @@ export class TelegramIntegration {
         // Opcional: Manejar clics en botones del popup
         this.telegram.onEvent('popupClosed', (buttonId) => {
             if (buttonId === 'help') {
-                this.showHelp();
+                // this.showHelp(); // COMENTADO por compatibilidad
             }
         });
     }

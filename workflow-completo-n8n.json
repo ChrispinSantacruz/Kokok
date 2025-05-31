@@ -1,0 +1,414 @@
+{
+  "name": "KOKOK Game - Flujo Completo",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"]
+      },
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "telegram-bot-trigger",
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"message\"][\"text\"]}}",
+              "operation": "equal",
+              "value2": "/start"
+            }
+          ]
+        }
+      },
+      "name": "Es comando Start?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "🪳 ¡Bienvenido a KOKOK THE ROACH! 🪳\n\n🎮 El juego donde eres una cucaracha que dispara fajos de billetes para derrotar a jefes como Trump y Elon.\n\n✨ Características:\n• Jefes únicos con ataques especiales\n• Power-ups de escudo y velocidad\n• Sistema de puntuación y récords\n• Controles fáciles para móvil y PC\n\n🎯 ¡Haz clic en el botón para empezar a jugar!",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "🎮 JUGAR KOKOK THE ROACH",
+                "web_app": {
+                  "url": "https://tu-dominio.vercel.app?chat_id={{$json[\"message\"][\"chat\"][\"id\"]}}"
+                }
+              }
+            ],
+            [
+              {
+                "text": "📖 Instrucciones",
+                "callback_data": "help"
+              },
+              {
+                "text": "🏆 Mi Récord",
+                "callback_data": "record"
+              }
+            ]
+          ]
+        },
+        "options": {}
+      },
+      "name": "Enviar Mensaje de Bienvenida",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [680, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "1017d610-1159-4eed-b4e7-8644b0f3ace9",
+        "options": {}
+      },
+      "name": "Webhook Game Over",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 600],
+      "webhookId": "1017d610-1159-4eed-b4e7-8644b0f3ace9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"event\"]}}",
+              "operation": "equal",
+              "value2": "game_over"
+            }
+          ]
+        }
+      },
+      "name": "Es Game Over?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 600]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{$json[\"chatId\"]}}",
+        "text": "🎮 ¡Partida terminada! 🎮\n\n👤 Jugador: {{$json[\"playerName\"]}}\n🎯 Puntuación: {{$json[\"score\"]}} puntos\n⏱️ Tiempo: {{$json[\"gameTime\"]}}\n📱 Plataforma: {{$json[\"additionalData\"][\"platform\"]}}\n\n{{$json[\"additionalData\"][\"isNewRecord\"] ? \"🏆 ¡FELICIDADES! ¡Nuevo récord personal!\" : \"📊 Récord anterior: \" + $json[\"additionalData\"][\"previousHighScore\"] + \" puntos\"}}\n\n{{$json[\"userInfo\"][\"isFirstTime\"] ? \"👋 ¡Bienvenido! Esta fue tu primera partida.\" : \"🎮 ¡Gracias por jugar de nuevo!\"}}\n\n💪 ¿Puedes superarlo? ¡Intenta de nuevo!",
+        "replyMarkup": {
+          "inlineKeyboard": [
+            [
+              {
+                "text": "🎮 JUGAR DE NUEVO",
+                "web_app": {
+                  "url": "https://tu-dominio.vercel.app?chat_id={{$json[\"chatId\"]}}"
+                }
+              }
+            ],
+            [
+              {
+                "text": "📊 Ver Estadísticas",
+                "callback_data": "stats_{{$json[\"chatId\"]}}"
+              },
+              {
+                "text": "🏆 Ranking",
+                "callback_data": "ranking"
+              }
+            ]
+          ]
+        },
+        "options": {}
+      },
+      "name": "Enviar Puntuación Automática",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [680, 500],
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json[\"score\"]}}",
+              "operation": "larger",
+              "value2": 200
+            }
+          ]
+        }
+      },
+      "name": "Puntuación Alta?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 700]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{$json[\"chatId\"]}}",
+        "text": "🌟 ¡PUNTUACIÓN EXCEPCIONAL! 🌟\n\n🏆 {{$json[\"playerName\"]}} ha logrado {{$json[\"score\"]}} puntos!\n\n💎 ¡Eres un verdadero maestro de KOKOK!\n🎉 ¡Compartamos este logro con todos!\n\n#KokokTheRoach #HighScore #Gaming",
+        "options": {}
+      },
+      "name": "Mensaje Puntuación Alta",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [900, 620],
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json[\"additionalData\"][\"isNewRecord\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Es Nuevo Récord?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 900]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{$json[\"chatId\"]}}",
+        "text": "🏆 ¡NUEVO RÉCORD ESTABLECIDO! 🏆\n\n🎯 {{$json[\"playerName\"]}} rompió su récord anterior!\n📈 Puntuación anterior: {{$json[\"additionalData\"][\"previousHighScore\"]}}\n🚀 Nueva puntuación: {{$json[\"score\"]}}\n\n🎊 ¡Felicitaciones por tu mejora!\n💪 ¡Sigue así y alcanza las estrellas!\n\n#NewRecord #KokokTheRoach",
+        "options": {}
+      },
+      "name": "Mensaje Nuevo Récord",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [900, 820],
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "append",
+        "sheetId": "tu-google-sheet-id",
+        "range": "A:H",
+        "values": [
+          [
+            "={{$json[\"timestamp\"]}}",
+            "={{$json[\"playerName\"]}}",
+            "={{$json[\"score\"]}}",
+            "={{$json[\"gameTime\"]}}",
+            "={{$json[\"chatId\"]}}",
+            "={{$json[\"additionalData\"][\"isNewRecord\"]}}",
+            "={{$json[\"userInfo\"][\"isFirstTime\"]}}",
+            "={{$json[\"additionalData\"][\"platform\"]}}"
+          ]
+        ],
+        "options": {}
+      },
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [460, 800],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "tu-google-sheets-credentials-id",
+          "name": "Google Sheets API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Generar estadísticas del jugador\nconst data = items[0].json;\n\n// Simular carga de estadísticas previas (esto podrías mejorarlo con una base de datos)\nconst stats = {\n  totalGames: 1, // Incrementar según lógica\n  totalScore: data.score,\n  averageScore: data.score,\n  bestScore: data.additionalData.isNewRecord ? data.score : data.additionalData.previousHighScore,\n  totalTime: data.gameTime,\n  platform: data.additionalData.platform,\n  firstGameDate: data.userInfo.isFirstTime ? data.timestamp : null\n};\n\nreturn {\n  json: {\n    ...data,\n    playerStats: stats\n  }\n};"
+      },
+      "name": "Procesar Estadísticas",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 1000]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json[\"userInfo\"][\"isFirstTime\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Es Primer Juego?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 1100]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{$json[\"chatId\"]}}",
+        "text": "🎉 ¡BIENVENIDO A KOKOK! 🎉\n\n👋 {{$json[\"playerName\"]}}, esta fue tu primera partida\n🎯 Primera puntuación: {{$json[\"score\"]}} puntos\n⏱️ Tiempo: {{$json[\"gameTime\"]}}\n\n💡 Consejos para mejorar:\n• Recoge los power-ups de escudo 🛡️\n• Usa la velocidad extra ⚡\n• Esquiva las bombas de Trump 💣\n• Evita los cohetes de Elon 🚀\n\n🚀 ¡La próxima vez puedes hacerlo mejor!\n\n#Welcome #FirstGame #KokokTheRoach",
+        "options": {}
+      },
+      "name": "Mensaje Primer Juego",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [900, 1020],
+      "credentials": {
+        "telegramApi": {
+          "id": "tu-telegram-credentials-id",
+          "name": "Tu Bot Telegram"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Es comando Start?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es comando Start?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Mensaje de Bienvenida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Game Over": {
+      "main": [
+        [
+          {
+            "node": "Es Game Over?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Game Over?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Puntuación Automática",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Puntuación Alta?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Es Nuevo Récord?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Guardar en Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Procesar Estadísticas",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Es Primer Juego?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Puntuación Alta?": {
+      "main": [
+        [
+          {
+            "node": "Mensaje Puntuación Alta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Nuevo Récord?": {
+      "main": [
+        [
+          {
+            "node": "Mensaje Nuevo Récord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesar Estadísticas": {
+      "main": [
+        [
+          {
+            "node": "Es Primer Juego?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Primer Juego?": {
+      "main": [
+        [
+          {
+            "node": "Mensaje Primer Juego",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "timezone": "America/Mexico_City"
+  },
+  "staticData": null
+} 

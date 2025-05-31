@@ -1,38 +1,136 @@
-# KOKOK The Roach - Crypto Shooter
+# KOKOK The Roach - Crypto Shooter Game 🪳🎮
 
-¡Bienvenido a KOKOK The Roach! Un divertido y frenético juego arcade donde eres una cucaracha que dispara fajos de billetes para derrotar a jefes como Trump y Elon, y alcanzar el récord de puntos.
+Un juego de disparos donde controlas una cucaracha que debe derrotar a jefes famosos mientras recoges power-ups.
 
-## Características
-- **Jugabilidad arcade:** Dispara, esquiva y recoge power-ups para sobrevivir el mayor tiempo posible.
-- **Jefes únicos:** Enfréntate a Trump (bombas), Elon (cohetes) y un dúo final desafiante.
-- **Power-ups:** Recoge escudos y bolsas de azúcar para activar poderes especiales.
-- **Controles móviles y de escritorio:** Compatible con teclado, mouse y controles táctiles.
-- **Tablas de clasificación:** ¡Compite por el mejor puntaje!
+## 🚀 Características
 
-## Controles
-- **PC:**
-  - Flechas o WASD para moverse
-  - Barra espaciadora o clic para disparar
-- **Móvil:**
-  - Toca los botones en pantalla para moverte y disparar
+- **Jefes únicos**: Trump (bombas) y Elon (cohetes)
+- **Power-ups especiales**: Escudos, velocidad y vidas extra
+- **Integración con Telegram**: Comparte automáticamente las puntuaciones
+- **Automatización n8n**: Compatible con flujos de automatización
+- **Responsive**: Funciona en móviles y desktop
 
-## Cómo jugar
-1. Haz clic en "JUGAR" en el menú principal.
-2. Mueve a KOKOK para esquivar enemigos y dispararles.
-3. Recoge power-ups para obtener ventajas temporales.
-4. Derrota a los jefes y trata de superar tu récord.
+## 📦 Configuración
 
-## Instalación y ejecución
-No requiere instalación. Solo abre `index.html` en tu navegador favorito.
+### 1. Variables de Entorno
 
-## Créditos
-- Desarrollado por el equipo de KOKOK COIN
-- Imágenes y sonidos: derechos reservados a sus autores
+Crea un archivo `.env` en la raíz del proyecto con:
 
-## Contacto
-Para soporte o sugerencias, contáctanos en Telegram o a través de la comunidad KOKOK COIN.
+```env
+# Token del bot de Telegram (obtén uno con @BotFather)
+TELEGRAM_BOT_TOKEN=tu_token_del_bot_aqui
 
-¡Diviértete y alcanza la cima del ranking!
+# URL donde está desplegado el juego
+GAME_URL=https://tu-dominio.vercel.app
 
-las vidas
-mensajes aleatorios
+# Puerto del servidor (para desarrollo local)
+PORT=3000
+```
+
+### 2. Bot de Telegram
+
+1. Contacta a [@BotFather](https://t.me/BotFather) en Telegram
+2. Crea un nuevo bot con `/newbot`
+3. Copia el token y ponlo en `TELEGRAM_BOT_TOKEN`
+4. Configura el Web App del bot:
+   ```
+   /setdomain
+   Selecciona tu bot
+   Ingresa tu dominio: tu-dominio.vercel.app
+   ```
+
+### 3. Instalación y Despliegue
+
+```bash
+# Instalar dependencias
+npm install
+
+# Desarrollo local
+npm start
+
+# O usar node directamente
+node server.js
+```
+
+## 🤖 Integración con n8n
+
+### Endpoints Disponibles
+
+#### 1. Webhook de Puntuaciones
+```
+POST /api/share-score
+```
+
+**Body:**
+```json
+{
+  "chatId": "123456789",
+  "score": 150,
+  "message": "¡Jugador ha conseguido 150 puntos!",
+  "playerName": "NombreJugador"
+}
+```
+
+#### 2. Webhook para n8n
+```
+POST /api/n8n-webhook
+```
+
+**Body:**
+```json
+{
+  "chatId": "123456789",
+  "playerName": "NombreJugador",
+  "score": 150,
+  "gameTime": "2:30",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "event": "game_over"
+}
+```
+
+### Configuración en n8n
+
+1. **Webhook Node**: Escucha en `/api/n8n-webhook`
+2. **Procesamiento**: Maneja los datos de la partida
+3. **Acciones**: Envía notificaciones, guarda estadísticas, etc.
+
+## 🎮 Cómo Funciona
+
+1. **Inicio**: El jugador inicia el juego desde Telegram
+2. **Juego**: Controla la cucaracha para derrotar jefes
+3. **Game Over**: Automáticamente se envía la puntuación al chat
+4. **n8n**: Recibe los datos para procesamiento adicional
+
+## 📱 Controles
+
+- **PC**: Flechas para mover, Espacio para disparar
+- **Móvil**: Controles táctiles en pantalla
+
+## 🔧 Desarrollo
+
+```bash
+# Estructura del proyecto
+├── public/
+│   ├── js/           # Lógica del juego
+│   ├── assets/       # Imágenes y recursos
+│   └── index.html    # Página principal
+├── server.js         # Servidor backend
+└── package.json      # Dependencias
+```
+
+## 🌐 Despliegue en Vercel
+
+1. Conecta tu repositorio a Vercel
+2. Configura las variables de entorno en Vercel Dashboard
+3. Despliega automáticamente
+
+## 📊 API Reference
+
+### Game Events
+
+El juego envía eventos automáticamente cuando:
+- El jugador pierde (`game_over`)
+- Se alcanza una nueva puntuación máxima (`new_record`)
+- Se derrota un jefe (`boss_defeated`)
+
+Estos eventos pueden ser capturados por n8n para crear automatizaciones personalizadas.

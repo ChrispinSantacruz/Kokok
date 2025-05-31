@@ -1,0 +1,185 @@
+{
+  "name": "KOKOK Game Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "kokok-game-webhook",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "tu-webhook-id-aqui"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"event\"]}}",
+              "operation": "equal",
+              "value2": "game_over"
+            }
+          ]
+        }
+      },
+      "name": "Es Game Over?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json[\"score\"]}}",
+              "operation": "larger",
+              "value2": 100
+            }
+          ]
+        }
+      },
+      "name": "Puntuación Alta?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "message": "🎉 ¡{{$json[\"playerName\"]}} logró {{$json[\"score\"]}} puntos!\n\n⭐ ¡Excelente puntuación! Tiempo: {{$json[\"gameTime\"]}}\n\n#Gaming #HighScore",
+        "additionalFields": {}
+      },
+      "name": "Notificación Puntuación Alta",
+      "type": "n8n-nodes-base.telegramBot",
+      "typeVersion": 1,
+      "position": [900, 120]
+    },
+    {
+      "parameters": {
+        "message": "🎮 {{$json[\"playerName\"]}} terminó con {{$json[\"score\"]}} puntos\n\nTiempo: {{$json[\"gameTime\"]}}\n\n¡Sigue intentando!",
+        "additionalFields": {}
+      },
+      "name": "Notificación Normal",
+      "type": "n8n-nodes-base.telegramBot",
+      "typeVersion": 1,
+      "position": [900, 280]
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "append",
+        "sheetId": "tu-google-sheet-id",
+        "range": "A:F",
+        "values": [
+          [
+            "={{$json[\"timestamp\"]}}",
+            "={{$json[\"playerName\"]}}",
+            "={{$json[\"score\"]}}",
+            "={{$json[\"gameTime\"]}}",
+            "={{$json[\"chatId\"]}}",
+            "={{$json[\"additionalData\"][\"isNewRecord\"]}}"
+          ]
+        ],
+        "options": {}
+      },
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json[\"additionalData\"][\"isNewRecord\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Es Nuevo Récord?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 500]
+    },
+    {
+      "parameters": {
+        "message": "🏆 ¡NUEVO RÉCORD! 🏆\n\n{{$json[\"playerName\"]}} estableció un nuevo récord con {{$json[\"score\"]}} puntos!\n\n🎉 ¡Felicitaciones!",
+        "additionalFields": {}
+      },
+      "name": "Notificación Nuevo Récord",
+      "type": "n8n-nodes-base.telegramBot",
+      "typeVersion": 1,
+      "position": [680, 580]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Es Game Over?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Game Over?": {
+      "main": [
+        [
+          {
+            "node": "Puntuación Alta?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Guardar en Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Es Nuevo Récord?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Puntuación Alta?": {
+      "main": [
+        [
+          {
+            "node": "Notificación Puntuación Alta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notificación Normal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es Nuevo Récord?": {
+      "main": [
+        [
+          {
+            "node": "Notificación Nuevo Récord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "staticData": null
+} 

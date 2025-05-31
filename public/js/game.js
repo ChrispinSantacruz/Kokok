@@ -75,6 +75,10 @@ export class Game {
       this.gameState.shareOnTwitter()
     })
 
+    document.getElementById("shareTelegramBtn").addEventListener("click", () => {
+      this.telegram.shareScoreManually(this.gameState.score)
+    })
+
     document.getElementById("backToMenuBtn").addEventListener("click", () => {
       this.showMainMenu()
     })
@@ -132,6 +136,9 @@ export class Game {
   startGame() {
     // Agregar clase al body para indicar que el juego está activo
     document.body.classList.add("game-active")
+    
+    // Iniciar timer de juego para n8n
+    this.telegram.startGameTimer()
     
     this.gameState.start()
     this.bullets = []

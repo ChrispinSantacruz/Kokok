@@ -71,7 +71,7 @@ bot.onText(/\/help/, (msg) => {
 
 // Endpoint para recibir puntuaciones del juego
 app.post('/api/share-score', async (req, res) => {
-    const { chatId, score, message } = req.body;
+    const { chatId, score, message, playerName } = req.body;
     
     if (!chatId || score === undefined || !message) {
         console.error('Datos incompletos para compartir puntuación.', req.body);
@@ -79,12 +79,98 @@ app.post('/api/share-score', async (req, res) => {
     }
 
     try {
-        await bot.sendMessage(chatId, message);
+        // Enviar mensaje con formato mejorado
+        const gameUrl = process.env.GAME_URL;
+        const finalMessage = `${message}\n\n🎮 ¡Juega ahora y supera esta puntuación!\n👆 Usa el botón del menú o haz clic aquí: ${gameUrl}`;
+        
+        await bot.sendMessage(chatId, finalMessage, {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [[
+                    { text: '🎮 ¡Jugar KOKOK THE ROACH!', url: `${gameUrl}?chat_id=${chatId}` }
+                ]]
+            }
+        });
+        
+        console.log(`Puntuación compartida: ${playerName} - ${score} puntos en chat ${chatId}`);
         res.json({ success: true });
     } catch (error) {
         console.error('Error al enviar mensaje:', error);
         res.status(500).json({ success: false, error: error.message });
     }
+});
+
+// Endpoint específico para n8n automatization
+app.post('/api/n8n-webhook', async (req, res) => {
+    const { chatId, playerName, score, gameTime, event, additionalData } = req.body;
+    
+    if (!chatId || score === undefined || !playerName || !event) {
+        console.error('Datos incompletos para webhook n8n.', req.body);
+        return res.status(400).json({ success: false, error: 'Datos incompletos para n8n' });
+    }
+
+    try {
+        // Datos estructurados para n8n
+        const webhookData = {
+            timestamp: new Date().toISOString(),
+            chatId: chatId,
+            playerName: playerName,
+            score: score,
+            gameTime: gameTime || null,
+            event: event, // game_over, new_record, boss_defeated, etc.
+            additionalData: additionalData || {},
+            game: {
+                name: "KOKOK The Roach",
+                version: "1.0"
+            }
+        };
+
+        // Log para debugging
+        console.log(`n8n Webhook - Evento: ${event}, Jugador: ${playerName}, Puntuación: ${score}`);
+
+        // Si quieres también enviar mensaje al chat de Telegram (opcional)
+        if (event === 'game_over') {
+            const message = `🎮 ¡${playerName} terminó una partida!\n\n🏆 Puntuación: ${score} puntos\n⏱️ Tiempo: ${gameTime || 'N/A'}\n\n¡Intenta superarlo!`;
+            
+            await bot.sendMessage(chatId, message, {
+                parse_mode: 'Markdown',
+                reply_markup: {
+                    inline_keyboard: [[
+                        { text: '🎮 ¡Jugar Ahora!', url: `${process.env.GAME_URL}?chat_id=${chatId}` }
+                    ]]
+                }
+            });
+        }
+
+        // Responder con los datos para n8n
+        res.json({ 
+            success: true, 
+            data: webhookData,
+            message: 'Datos procesados correctamente para n8n'
+        });
+
+    } catch (error) {
+        console.error('Error en webhook n8n:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Endpoint para obtener estadísticas (útil para n8n)
+app.get('/api/game-stats/:chatId', (req, res) => {
+    const { chatId } = req.params;
+    
+    // Aquí podrías implementar lógica para obtener estadísticas
+    // Por ahora, devolvemos datos de ejemplo
+    const stats = {
+        chatId: chatId,
+        totalGames: 0, // Implementar contador
+        averageScore: 0, // Implementar cálculo
+        bestScore: 0, // Implementar tracking
+        lastPlayed: null, // Implementar timestamp
+        activePlayers: [] // Implementar lista de jugadores
+    };
+
+    res.json({ success: true, stats });
 });
 
 // Iniciar servidor

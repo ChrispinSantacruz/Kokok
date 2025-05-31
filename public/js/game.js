@@ -689,6 +689,11 @@ export class Game {
       }
       
       console.log('🎯 Compartiendo puntuación manual:', webhookData)
+      console.log('🔍 DEBUG DETALLADO:')
+      console.log('- Chat ID original:', this.telegram.chatId)
+      console.log('- Chat ID final:', webhookData.chatId)
+      console.log('- URL actual:', window.location.href)
+      console.log('- Parámetros URL:', window.location.search)
       
       // Enviar al webhook de n8n
       await this.telegram.sendToN8nWebhook(webhookData)

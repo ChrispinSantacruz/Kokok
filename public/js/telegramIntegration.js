@@ -161,8 +161,8 @@ export class TelegramIntegration {
 
     async sendToN8nWebhook(data) {
         try {
-            // URL específica del webhook de n8n del usuario (CORREGIDA PARA PRODUCCIÓN)
-            const n8nWebhookUrl = 'https://chriscodex1.app.n8n.cloud/webhook/1017d610-1159-4eed-b4e7-8644b0f3ace9';
+            // URL específica del webhook de n8n del usuario (CORREGIDA CON WEBHOOK-TEST)
+            const n8nWebhookUrl = 'https://chriscodex1.app.n8n.cloud/webhook-test/1017d610-1159-4eed-b4e7-8644b0f3ace9';
             
             console.log('🚀 Enviando datos a n8n (método GET):', data);
             
@@ -176,34 +176,50 @@ export class TelegramIntegration {
                 }
             });
             
+            const finalUrl = `${n8nWebhookUrl}?${params.toString()}`;
+            console.log('🔗 URL final:', finalUrl);
+            
             // Crear imagen invisible que haga la petición
             const img = new Image();
             img.style.display = 'none';
             
             return new Promise((resolve, reject) => {
-                img.onload = () => {
-                    console.log('✅ Datos enviados a n8n webhook correctamente (método imagen):', data);
-                    document.body.removeChild(img);
-                    resolve({ success: true });
-                };
+                let resolved = false;
                 
-                img.onerror = () => {
-                    console.log('⚠️ Imagen falló pero datos probablemente enviados:', data);
-                    document.body.removeChild(img);
-                    // No rechazar, porque aunque la "imagen" falle, los datos se envían
-                    resolve({ success: true });
-                };
-                
-                // Timeout para limpiar después de 5 segundos
-                setTimeout(() => {
+                const cleanup = () => {
                     if (img.parentNode) {
                         document.body.removeChild(img);
                     }
-                    resolve({ success: true });
-                }, 5000);
+                };
                 
-                img.src = `${n8nWebhookUrl}?${params.toString()}`;
+                const resolveOnce = (result) => {
+                    if (!resolved) {
+                        resolved = true;
+                        cleanup();
+                        resolve(result);
+                    }
+                };
+                
+                img.onload = () => {
+                    console.log('✅ Imagen cargó - Datos enviados exitosamente');
+                    resolveOnce({ success: true, method: 'onload' });
+                };
+                
+                img.onerror = () => {
+                    console.log('⚠️ Imagen falló (esperado) - Datos probablemente enviados');
+                    resolveOnce({ success: true, method: 'onerror' });
+                };
+                
+                // Timeout más agresivo - asumir éxito después de 3 segundos
+                setTimeout(() => {
+                    console.log('⏰ Timeout - Asumiendo envío exitoso');
+                    resolveOnce({ success: true, method: 'timeout' });
+                }, 3000);
+                
+                img.src = finalUrl;
                 document.body.appendChild(img);
+                
+                console.log('📤 Petición enviada, esperando respuesta...');
             });
             
         } catch (error) {

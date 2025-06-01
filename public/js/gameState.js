@@ -8,7 +8,7 @@ export class GameState {
     this.gameOver = false
     this.currentBoss = null
     this.bossDefeated = 0
-    this.nextBossScore = 10 // Primer jefe a los 10 puntos
+    this.nextBossScore = 10 // First boss at 10 points
     this.highScore = Number.parseInt(localStorage.getItem("kokokHighScore")) || 0
     this.playerName = "Jugador"
     this.bossSpawned = false
@@ -27,7 +27,7 @@ export class GameState {
   addScore(points) {
     this.score += points
     this.updateUI()
-    // Ya no se controla la aparición de jefe por puntos
+    // Boss appearance is no longer controlled by score
   }
 
   loseLife() {
@@ -67,7 +67,7 @@ export class GameState {
 
   showBossAlert() {
     const alert = document.getElementById("bossAlert")
-    alert.innerHTML = '<img src="assents/jefe.png" alt="Jefe en camino" style="max-width: 400px; width: 100%;">'
+    alert.innerHTML = '<img src="assents/jefe.png" alt="Boss incoming" style="max-width: 400px; width: 100%;">'
     alert.classList.remove("hidden")
     setTimeout(() => {
       alert.classList.add("hidden")
@@ -80,19 +80,19 @@ export class GameState {
     this.bossDefeated++
     this.bossSpawned = false
     
-    // Mostrar inmediatamente la pantalla de "jefe en camino"
+    // Immediately show "boss incoming" screen
     this.showBossIncomingAlert()
     
-    // Activar cooldown para el próximo jefe (después de que termine la alerta + 0.5s extra)
+    // Activate cooldown for next boss (after alert ends + 0.5s extra)
     this.bossSpawnCooldown = Date.now() + this.bossSpawnDelay // 2s total
     
-    console.log("Jefe derrotado!")
+    console.log("Boss defeated!")
   }
 
   updateUI() {
     // Formato vertical: título arriba, número abajo
-    document.getElementById("score").innerHTML = `<div class="score-label">PUNTOS</div><div class="score-number">${this.score}</div>`
-    document.getElementById("lives").innerHTML = `<div class="lives-label">VIDAS</div><div class="lives-number">${this.lives}</div>`
+    document.getElementById("score").innerHTML = `<div class="score-label">SCORE</div><div class="score-number">${this.score}</div>`
+    document.getElementById("lives").innerHTML = `<div class="lives-label">LIVES</div><div class="lives-number">${this.lives}</div>`
   }
 
   updatePowerUpStatus(type, active) {
@@ -100,13 +100,13 @@ export class GameState {
     if (active) {
       statusElement.style.display = "block"
       if (type === "shield") {
-        statusElement.textContent = "🛡️ ESCUDO ACTIVO"
+        statusElement.textContent = "🛡️ SHIELD ACTIVE"
         window.kokokShieldPowerUp = true
       } else if (type === "speed") {
-        statusElement.textContent = "⚡ VELOCIDAD ACTIVA"
+        statusElement.textContent = "⚡ SPEED ACTIVE"
         window.kokokSpeedPowerUp = true
       } else if (type === "life") {
-        statusElement.textContent = "❤️ VIDA RECUPERADA"
+        statusElement.textContent = "❤️ LIFE RECOVERED"
         statusElement.style.display = "block"
         // La vida se muestra solo por 2 segundos como notificación
         setTimeout(() => {
@@ -145,8 +145,8 @@ export class GameState {
     this.gameOver = false
     this.currentBoss = null
     this.bossDefeated = 0
-    this.nextBossScore = 10 // Aseguramos que el primer jefe aparezca a los 10 puntos
-    this.bossSpawned = false // Reiniciar el flag de jefe
+    this.nextBossScore = 10 // Ensure first boss appears at 10 points
+    this.bossSpawned = false // Reset boss flag
     this.bossSpawnCooldown = 0 // Reiniciar cooldown
     this.showingBossIncoming = false // Reiniciar flag de pantalla
     this.bossAlertTimer = 0 // Reiniciar timer de alerta
@@ -166,7 +166,7 @@ export class GameState {
   }
 
   shareOnTwitter() {
-    const text = `¡Acabo de conseguir ${this.score} puntos en KOKOK The Roach! 🪳💰 ¿Puedes superarme?`
+    const text = `I just scored ${this.score} points in KOKOK The Roach! 🪳💰 Can you beat me?`
     const url = encodeURIComponent(window.location.href)
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}&hashtags=KOKOKTheRoach,CryptoGame`
     window.open(twitterUrl, "_blank")
@@ -177,8 +177,8 @@ export class GameState {
     
     // Usar sistema interno en lugar de elemento HTML
     this.bossAlertTimer = 90 // 1.5 segundos a 60fps (reducido de 180)
-    this.bossAlertText = "⚠️ JEFE EN CAMINO ⚠️"
-    this.bossAlertSubtext = "Prepárate para la batalla..."
+    this.bossAlertText = "⚠️ BOSS INCOMING ⚠️"
+    this.bossAlertSubtext = "Get ready for battle..."
   }
 
   updateBossAlert() {

@@ -4,7 +4,7 @@ export class Player {
   constructor(canvas) {
     this.canvas = canvas
     this.position = new Vector2(canvas.width / 2, canvas.height - 75)
-    // Ajustar tamaño en responsive landscape y fullscreen
+    // Ajustar tamaño en responsive landscape and fullscreen
     const isMobile = window.innerWidth < 1025;
     const isLandscape = window.innerWidth > window.innerHeight;
     const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
@@ -72,7 +72,7 @@ export class Player {
       this.position.y = Utils.clamp(this.position.y, this.groundY - 100, this.groundY)
     }
 
-    // Forzar la posición de la cucaracha más arriba si está fuera de pantalla
+    // Force cockroach position higher if it's off screen
     if (this.position.y > this.canvas.height - this.radius) {
       this.position.y = this.canvas.height - this.radius - 10;
     }
@@ -111,11 +111,11 @@ export class Player {
       ctx.globalAlpha = 0.5
     }
 
-    // Cuerpo de la cucaracha (marrón oscuro)
+    // Cockroach body (dark brown)
     const bodyColor = "#4B3621"
     Utils.drawEllipse(ctx, this.position.x, this.position.y, this.radius, this.radius * 0.7, bodyColor)
 
-    // Cabeza de la cucaracha
+    // Cockroach head
     Utils.drawCircle(ctx, this.position.x, this.position.y - 10, this.radius * 0.6, "#6B4C3B")
 
     // Antenas
@@ -202,7 +202,7 @@ export class Player {
 
     this.health--
     this.invulnerable = true
-    this.invulnerabilityTime = 120 // 2 segundos a 60fps
+    this.invulnerabilityTime = 120 // 2 seconds at 60fps
     return true
   }
 
@@ -212,7 +212,7 @@ export class Player {
 
   activateSpeedBoost() {
     this.speedBoost = true
-    this.speedBoostTime = 300 // 5 segundos a 60fps
+    this.speedBoostTime = 300 // 5 seconds at 60fps
   }
 
   getPosition() {

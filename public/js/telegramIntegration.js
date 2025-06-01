@@ -61,7 +61,7 @@ export class TelegramIntegration {
     }
 
     showStartMessage() {
-        const startMessage = `¡Bienvenido al juego de las cucarachas! 🪳\n\n🎮 *KOKOK THE ROACH*\nUn juego donde disparas a los jefes más poderosos del mundo.\n\n*Características:*\n• Jefes únicos: Trump y Elon\n• Power-ups especiales\n• Sistema de puntuación\n\n¡Haz clic en el botón de abajo para comenzar!`;
+        const startMessage = `Welcome to the cockroach game! 🪳\n\n🎮 *KOKOK THE ROACH*\nA game where you shoot the most powerful bosses in the world.\n\n*Features:*\n• Unique bosses: Trump and Elon\n• Special power-ups\n• Scoring system\n\nClick the button below to start!`;
 
         this.telegram.showPopup({
             title: '🎮 KOKOK THE ROACH',
@@ -70,19 +70,19 @@ export class TelegramIntegration {
                 {
                     id: 'play',
                     type: 'web_app',
-                    text: '🎮 JUGAR AHORA',
+                    text: '🎮 PLAY NOW',
                     web_app: { url: window.location.href }
                 },
-                {id: 'help', type: 'text', text: '📖 INSTRUCCIONES'}
+                {id: 'help', type: 'text', text: '📖 INSTRUCTIONS'}
             ]
         });
     }
 
     showHelp() {
-        const helpMessage = `🎮 *INSTRUCCIONES DEL JUEGO* 🎮\n\n*Controles:*\n• Mover: Flechas o controles táctiles\n• Disparar: Espacio o botón de disparo\n• Saltar: Flecha arriba\n\n*Objetivos:*\n• Derrota a los jefes: Trump y Elon\n• Recoge power-ups para ventajas\n• ¡Sobrevive el mayor tiempo posible!\n\n*Power-ups:*\n• 🛡️ Escudo: Protección temporal\n• 💰 Bolsa de azúcar: Poder especial\n\n¡Buena suerte! 🪳✨`;
+        const helpMessage = `🎮 *GAME INSTRUCTIONS* 🎮\n\n*Controls:*\n• Move: Arrow keys or touch controls\n• Shoot: Space or shoot button\n• Jump: Up arrow\n\n*Objectives:*\n• Defeat the bosses: Trump and Elon\n• Collect power-ups for advantages\n• Survive as long as possible!\n\n*Power-ups:*\n• 🛡️ Shield: Temporary protection\n• 💰 Sugar bag: Special power\n\nGood luck! 🪳✨`;
 
         this.telegram.showPopup({
-            title: '📖 Instrucciones',
+            title: '📖 Instructions',
             message: helpMessage,
             buttons: [{id: 'close', type: 'close'}]
         });
@@ -95,7 +95,7 @@ export class TelegramIntegration {
         console.log('- Es Telegram WebApp:', this.isTelegramWebApp);
         
         if (!this.isTelegramWebApp || !this.chatId) {
-            console.warn("No se puede compartir la puntuación: No estamos en Telegram WebApp o no se encontró el chatId.");
+            console.warn("Cannot share score: We are not in Telegram WebApp or chatId not found.");
             // Si no estamos en Telegram WebApp, no hacer nada
             return;
         }
@@ -107,7 +107,7 @@ export class TelegramIntegration {
         console.log('- Player Name:', playerName);
         console.log('- Game Time:', gameTime);
         
-        const message = `🎮 ¡Juego terminado! 🎮\n\n🏆 ${playerName} ha conseguido ${score} puntos en KOKOK THE ROACH! 🪳\n\n💪 ¿Crees que puedes superarlo? ¡Intentalo ahora!\n\n#KokokTheRoach #CryptoGame`;
+        const message = `🎮 Game over! 🎮\n\n🏆 ${playerName} has achieved ${score} points in KOKOK THE ROACH! 🪳\n\n💪 Do you think you can beat it? Try it now!\n\n#KokokTheRoach #CryptoGame`;
         
         try {
             // También enviar datos al webhook de n8n para automatización
@@ -155,7 +155,7 @@ export class TelegramIntegration {
             }
             */
         } catch (error) {
-            console.error('Error en la llamada fetch para compartir puntuación:', error);
+            console.error('Error in fetch call to share score:', error);
         }
     }
 
@@ -292,20 +292,20 @@ export class TelegramIntegration {
 
     async shareScoreManually(score) {
         if (!this.isTelegramWebApp) {
-            console.warn("No se puede compartir la puntuación: No estamos en Telegram WebApp.");
+            console.warn("Cannot share score: We are not in Telegram WebApp.");
             return;
         }
         
         const playerName = this.getUserName();
-        const message = `🎮 ¡Mira mi puntuación! 🎮\n\n🏆 ${playerName} ha conseguido ${score} puntos en KOKOK THE ROACH! 🪳\n\n💪 ¿Puedes superarme? ¡Inténtalo!\n\n#KokokTheRoach #CryptoGame`;
+        const message = `🎮 Check out my score! 🎮\n\n🏆 ${playerName} has achieved ${score} points in KOKOK THE ROACH! 🪳\n\n💪 Can you beat me? Try it!\n\n#KokokTheRoach #CryptoGame`;
         
         // Mostrar popup con opciones para compartir manualmente
                  this.telegram.showPopup({
-            title: '🎮 ¡Compartir Puntuación!',
-            message: `¡Has conseguido ${score} puntos!\n\n¿Quieres compartir tu puntuación?`,
+            title: '🎮 Share Score!',
+            message: `You got ${score} points!\n\nDo you want to share your score?`,
                     buttons: [
-                {id: 'share_telegram', type: 'text', text: '📱 Compartir en Telegram'},
-                {id: 'close', type: 'close', text: '❌ Cerrar'}
+                {id: 'share_telegram', type: 'text', text: '📱 Share on Telegram'},
+                {id: 'close', type: 'close', text: '❌ Close'}
                     ]
         }, (buttonId) => {
             if (buttonId === 'share_telegram' && this.chatId) {
@@ -340,25 +340,25 @@ export class TelegramIntegration {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Error al enviar mensaje al chat:', errorData.error);
+                console.error('Error sharing score with backend:', errorData.error);
                 this.telegram.showPopup({
                     title: 'Error',
-                    message: 'No se pudo enviar el mensaje al chat.',
+                    message: 'Could not send message to chat.',
                     buttons: [{id: 'close', type: 'close'}]
                 });
             } else {
-                console.log('Mensaje enviado al chat correctamente.');
+                console.log('Score sent automatically to Telegram chat.');
                  this.telegram.showPopup({
-                    title: '✅ ¡Enviado!',
-                    message: 'Tu puntuación ha sido compartida en el chat.',
+                    title: '✅ Sent!',
+                    message: 'Your score has been shared in the chat.',
                     buttons: [{id: 'close', type: 'close'}]
                 });
             }
         } catch (error) {
-            console.error('Error al enviar mensaje al chat:', error);
+            console.error('Error sending message to chat:', error);
              this.telegram.showPopup({
-                title: 'Error de conexión',
-                message: 'No se pudo conectar con el servidor.',
+                title: 'Connection Error',
+                message: 'Could not connect to server.',
                 buttons: [{id: 'close', type: 'close'}]
             });
         }
@@ -370,13 +370,13 @@ export class TelegramIntegration {
     }
 
     getUserName() {
-        if (!this.isTelegramWebApp) return 'Jugador';
+        if (!this.isTelegramWebApp) return 'Player';
         // Obtener el nombre del usuario de Telegram
         const user = this.telegram.initDataUnsafe?.user;
         if (user) {
             // Usar el nombre completo si está disponible, sino el username
-            return user.first_name + (user.last_name ? ' ' + user.last_name : '') || user.username || 'Jugador';
+            return user.first_name + (user.last_name ? ' ' + user.last_name : '') || user.username || 'Player';
         }
-        return 'Jugador';
+        return 'Player';
     }
 } 

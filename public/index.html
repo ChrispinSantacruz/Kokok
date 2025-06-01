@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -641,10 +641,10 @@
         
         <!-- UI del juego -->
         <div id="gameUI" class="hidden">
-            <div id="score">Puntos: 0</div>
-            <div id="lives">Vidas: 3</div>
+            <div id="score">Score: 0</div>
+            <div id="lives">Lives: 3</div>
             <div id="powerUpStatus"></div>
-            <div id="bossAlert" class="boss-alert hidden">¡JEFE APARECE!</div>
+            <div id="bossAlert" class="boss-alert hidden">BOSS INCOMING!</div>
         </div>
 
         <!-- Pantalla de login optimizada -->
@@ -656,11 +656,11 @@
                 
                 <div class="login-form">
                     <div class="input-group">
-                        <label for="playerName" class="input-label">¿Cuál es tu nombre de cucaracha?</label>
+                        <label for="playerName" class="input-label">What's your cockroach name?</label>
                         <input type="text" id="playerName" class="player-name-input" 
-                               placeholder="Ingresa tu nombre..." maxlength="20" autocomplete="off">
+                               placeholder="Enter your name..." maxlength="20" autocomplete="off">
                     </div>
-                    <button id="loginBtn" class="login-btn" disabled>🎮 Entrar al Juego</button>
+                    <button id="loginBtn" class="login-btn" disabled>🎮 Enter Game</button>
                 </div>
                 
                 <div class="powered-by">POWERED BY KOKOK COIN</div>
@@ -674,10 +674,10 @@
                 <p class="subtitle">🪙 Crypto Shooter Game 🪙</p>
                 <div id="welcomeMessage" class="welcome-message"></div>
                 <div class="menu-buttons">
-                    <button id="playBtn" class="menu-btn play-btn">🎮 JUGAR</button>
-                    <button id="instructionsBtn" class="menu-btn">📖 INSTRUCCIONES</button>
+                    <button id="playBtn" class="menu-btn play-btn">🎮 PLAY</button>
+                    <button id="instructionsBtn" class="menu-btn">📖 INSTRUCTIONS</button>
                     <button id="leaderboardBtn" class="menu-btn">🏆 LEADERBOARDS</button>
-                    <button id="changeNameBtn" class="menu-btn">✏️ CAMBIAR NOMBRE</button>
+                    <button id="changeNameBtn" class="menu-btn">✏️ CHANGE NAME</button>
                 </div>
                 <div class="powered-by">POWERED BY KOKOK COIN</div>
             </div>
@@ -686,26 +686,26 @@
         <!-- Pantalla de instrucciones optimizada -->
         <div id="instructionsScreen" class="screen hidden">
             <div class="instructions-content">
-                <h2>📖 INSTRUCCIONES</h2>
+                <h2>📖 INSTRUCTIONS</h2>
                 <div class="instructions-grid">
                     <div class="instruction-item">
                         <div class="roach-icon">🪳</div>
-                        <p>Eres KOKOK, una cucaracha que dispara fajos de billetes</p>
+                        <p>You are KOKOK, a cockroach that shoots money bills</p>
                     </div>
                     <div class="instruction-item">
                         <div class="boss-icon">👨‍💼</div>
-                        <p>Derrota a Trump (bombas), Elon (cohetes) y el dúo final</p>
+                        <p>Defeat Trump (bombs), Elon (rockets) and the final duo</p>
                     </div>
                     <div class="instruction-item">
                         <div class="powerup-icon">🛡️</div>
-                        <p>Recoge escudos y bolsas de azúcar para poder especial</p>
+                        <p>Collect shields and sugar bags for special power</p>
                     </div>
                     <div class="instruction-item">
                         <div class="control-icon">📱</div>
-                        <p>Toca para mover, mantén presionado para disparar</p>
+                        <p>Tap to move, hold to shoot</p>
                     </div>
                 </div>
-                <button id="backBtn" class="menu-btn">⬅️ VOLVER</button>
+                <button id="backBtn" class="menu-btn">⬅️ BACK</button>
             </div>
         </div>
 
@@ -717,21 +717,21 @@
                     <div class="score-circle">
                         <div class="score-info">
                             <div class="coin-icon">🪙</div>
-                            <div class="score-text">PUNTOS</div>
+                            <div class="score-text">SCORE</div>
                             <div id="finalScore" class="score-number">0</div>
-                            <div class="record-text">RÉCORD</div>
+                            <div class="record-text">RECORD</div>
                             <div id="highScore" class="record-number">0</div>
                         </div>
                     </div>
                 </div>
                 <div class="gameover-buttons">
-                    <button id="restartBtn" class="menu-btn play-btn">🔄 JUGAR DE NUEVO</button>
+                    <button id="restartBtn" class="menu-btn play-btn">🔄 PLAY AGAIN</button>
                     <button id="shareTelegramScoreBtn" class="menu-btn share-btn">
                         <span>📱</span>
-                        <span>COMPARTIR PUNTUACIÓN</span>
+                        <span>SHARE SCORE</span>
                     </button>
-                    <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 COMPARTIR EN TWITTER</button>
-                    <button id="backToMenuBtn" class="menu-btn">🏠 MENÚ PRINCIPAL</button>
+                    <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 SHARE ON TWITTER</button>
+                    <button id="backToMenuBtn" class="menu-btn">🏠 MAIN MENU</button>
                 </div>
             </div>
         </div>
@@ -748,24 +748,8 @@
             <button id="shootBtn" class="shoot-btn">💰</button>
         </div>
 
-        <div id="rotateOverlay" class="rotate-overlay hidden">
-          <video id="rotateVideo" src="assents/Rotate.mp4" autoplay loop muted playsinline></video>
-          <div class="rotate-message">Por favor, gira tu dispositivo a modo horizontal para jugar mejor. Si ya lo hiciste, toca el botón para continuar.</div>
-          <button id="rotatePlayBtn" class="menu-btn play-btn">GIRAR Y JUGAR</button>
-        </div>
-
     </div>
 
     <script type="module" src="js/game.js"></script>
-    <script>
-    // Overlay de rotación: ocultar al pulsar el botón
-    const rotateBtn = document.getElementById('rotatePlayBtn');
-    const rotateOverlay = document.getElementById('rotateOverlay');
-    if (rotateBtn && rotateOverlay) {
-      rotateBtn.onclick = () => {
-        rotateOverlay.classList.add('hidden');
-      };
-    }
-    </script>
 </body>
 </html>

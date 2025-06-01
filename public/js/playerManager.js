@@ -62,7 +62,7 @@ export class PlayerManager {
         const name = playerNameInput.value.trim();
 
         if (name.length < 2) {
-            this.showError('El nombre debe tener al menos 2 caracteres');
+            this.showError('Name must be at least 2 characters long');
             return;
         }
 
@@ -81,7 +81,7 @@ export class PlayerManager {
         
         // Mostrar mensaje de confirmación si era un cambio de nombre
         if (this.isChangingName) {
-            this.showSuccessMessage(`¡Nombre cambiado exitosamente a "${cleanName}"!`);
+            this.showSuccessMessage(`Name successfully changed to "${cleanName}"!`);
         }
         
         this.showMainMenu();
@@ -171,14 +171,14 @@ export class PlayerManager {
                 playerNameInput.value = this.playerName;
                 playerNameInput.select(); // Seleccionar todo el texto
                 loginBtn.disabled = false;
-                inputLabel.textContent = `Cambiar nombre actual: "${this.playerName}"`;
-                loginBtn.innerHTML = '✏️ Confirmar Cambio';
+                inputLabel.textContent = `Change current name: "${this.playerName}"`;
+                loginBtn.innerHTML = '✏️ Confirm Change';
             } else {
                 // Si es login nuevo
                 playerNameInput.value = '';
                 loginBtn.disabled = true;
-                inputLabel.textContent = '¿Cuál es tu nombre de cucaracha?';
-                loginBtn.innerHTML = '🎮 Entrar al Juego';
+                inputLabel.textContent = 'What\'s your cockroach name?';
+                loginBtn.innerHTML = '🎮 Enter Game';
             }
             playerNameInput.focus();
         }
@@ -204,7 +204,7 @@ export class PlayerManager {
                     text-align: center;
                     animation: slideIn 0.5s ease-out;
                 ">
-                    ¡Bienvenido/a, ${this.playerName}! 🪳
+                    Welcome, ${this.playerName}! 🪳
                 </div>
             `;
         }
@@ -227,7 +227,7 @@ export class PlayerManager {
     }
 
     getPlayerName() {
-        return this.playerName || 'Jugador Anónimo';
+        return this.playerName || 'Anonymous Player';
     }
 
     isPlayerLoggedIn() {

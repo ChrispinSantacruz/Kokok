@@ -5,11 +5,12 @@ export class TrumpBoss {
     this.canvas = canvas
     if (window.innerWidth < 1025) {
       this.position = new Vector2(canvas.width / 2, 40)
+      this.radius = 55 // Reducido desde 60 para igualar con Elon
     } else {
       this.position = new Vector2(canvas.width / 2, 80)
+      this.radius = 65 // Reducido desde 70 para igualar con Elon
     }
     this.velocity = new Vector2(2, 0)
-    this.radius = 50
     this.health = 10
     this.maxHealth = 10
     this.active = true
@@ -32,7 +33,7 @@ export class TrumpBoss {
     
     // Cargar imagen de Trump
     this.image = new Image()
-    this.image.src = 'assents/Trump.png'
+    this.image.src = 'assents/TrumpVillano.png'
   }
 
   update() {
@@ -100,13 +101,13 @@ export class TrumpBoss {
 
     // Dibujar barra de vida
     const healthBarWidth = this.radius * 2
-    const healthBarHeight = 5
+    const healthBarHeight = 6 // Aumentado desde 5 para mejor visibilidad
     const healthPercentage = this.health / this.maxHealth
 
     ctx.fillStyle = '#ff0000'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 10, healthBarWidth, healthBarHeight)
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth, healthBarHeight)
     ctx.fillStyle = '#00ff00'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 10, healthBarWidth * healthPercentage, healthBarHeight)
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth * healthPercentage, healthBarHeight)
   }
 
   shouldShoot() {
@@ -162,21 +163,23 @@ export class TrumpBoss {
 }
 
 export class ElonBoss {
-  constructor(canvas) {    const isMobile = window.innerWidth < 1025;
+  constructor(canvas) {
+    const isMobile = window.innerWidth < 1025;
     const isLandscape = window.innerWidth > window.innerHeight;
     const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
     if ((isMobile && isLandscape) || isFullscreen) {
-      this.position = new Vector2(canvas.width / 2, 40);
-      this.radius = 35;
+      this.position = new Vector2(canvas.width / 2, 40); // Misma altura que Trump
+      this.radius = 60; // Un poco más grande que Trump (55)
     } else if (isMobile) {
-      this.position = new Vector2(canvas.width / 2, 55);
-      this.radius = 35;
+      this.position = new Vector2(canvas.width / 2, 40); // Misma altura que Trump
+      this.radius = 60; // Un poco más grande que Trump (55)
     } else {
-      this.position = new Vector2(canvas.width / 2, 100);
-      this.radius = 40;
+      this.position = new Vector2(canvas.width / 2, 80); // Misma altura que Trump
+      this.radius = 70; // Un poco más grande que Trump (65)
     }
     this.velocity = new Vector2(0, 0)
     this.health = 10
+    this.maxHealth = 10
     this.active = true
     this.type = "elon"
     this.canvas = canvas
@@ -195,6 +198,10 @@ export class ElonBoss {
     // Propiedades para el estado inicial
     this.isSpawning = true
     this.spawnTimer = 60 // 1 segundo pausado (60 frames a 60fps)
+    
+    // Cargar imagen de Elon
+    this.image = new Image()
+    this.image.src = 'assents/ElonVillano.png'
   }
 
   update() {
@@ -270,14 +277,11 @@ export class ElonBoss {
       ctx.globalAlpha = alpha
     }
 
-    // Dibujar cuerpo
-    Utils.drawCircle(ctx, this.position.x, this.position.y, this.radius, "#E74C3C")
-    
-    // Dibujar cara
-    ctx.fillStyle = "white"
-    ctx.font = "30px Arial"
-    ctx.textAlign = "center"
-    ctx.fillText("👨‍💼", this.position.x, this.position.y + 10)
+    // Dibujar imagen de Elon
+    ctx.save()
+    ctx.translate(this.position.x, this.position.y)
+    ctx.drawImage(this.image, -this.radius, -this.radius, this.radius * 2, this.radius * 2)
+    ctx.restore()
 
     // Dibujar indicador de cohete activo
     if (this.hasActiveRocket) {
@@ -285,11 +289,22 @@ export class ElonBoss {
       ctx.globalAlpha = alpha
       ctx.fillStyle = "#FFD700"
       ctx.font = "20px Arial"
+      ctx.textAlign = "center"
       ctx.fillText("🚀", this.position.x, this.position.y - 40)
     }
     
     // Restaurar alpha normal
     ctx.globalAlpha = 1
+
+    // Dibujar barra de vida
+    const healthBarWidth = this.radius * 2
+    const healthBarHeight = 6 // Aumentado desde 5 para mejor visibilidad
+    const healthPercentage = this.health / this.maxHealth
+
+    ctx.fillStyle = '#ff0000'
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth, healthBarHeight)
+    ctx.fillStyle = '#00ff00'
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth * healthPercentage, healthBarHeight)
   }
 
   getShootPosition() {
@@ -352,8 +367,8 @@ export class FinalBoss {
       // Mucha más separación y jefes extremadamente pequeños (85% menos)
       this.trump.position.x = canvas.width * 0.12
       this.elon.position.x = canvas.width * 0.88
-      this.trump.radius = Math.round(50 * 0.15) // original 50
-      this.elon.radius = Math.round(45 * 0.15)  // original 45
+      this.trump.radius = Math.round(55 * 0.15) // Trump con tamaño base 55
+      this.elon.radius = Math.round(60 * 0.15)  // Elon un poco más grande (60)
       this.roach.radius = Math.round(35 * 0.15) // original 35
       // Más velocidad y aleatoriedad
       this.trump.baseSpeed = 4

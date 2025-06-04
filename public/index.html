@@ -11,7 +11,11 @@
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #4B3621, #6B4C3B);
+            background-image: url('./assents/background_kokok.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -53,7 +57,23 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            background: linear-gradient(135deg, #4B3621, #6B4C3B);
+            background-image: url('./assents/background_kokok.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
         }
 
         .screen.hidden {
@@ -83,6 +103,18 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                background-size: contain;
+                background-position: center top;
+                background-color: #2c3e50;
+            }
+            
+            .screen {
+                background-size: contain;
+                background-position: center top;
+                background-color: #2c3e50;
+            }
+            
             .controls-info {
                 font-size: 10px;
             }
@@ -631,11 +663,59 @@
             margin: 0;
             box-sizing: border-box;
         }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            body {
+                background-size: contain;
+                background-position: center top;
+                background-color: #2c3e50;
+            }
+            
+            .screen {
+                background-size: contain;
+                background-position: center top;
+                background-color: #2c3e50;
+            }
+            
+            .controls-info {
+                font-size: 10px;
+            }
+        }
+
+        /* Responsive para orientación landscape en móviles */
+        @media (max-width: 1024px) and (orientation: landscape) {
+            body {
+                background-size: cover;
+                background-position: center;
+                background-color: #2c3e50;
+            }
+            
+            .screen {
+                background-size: cover;
+                background-position: center;
+                background-color: #2c3e50;
+            }
+        }
+
+        /* Responsive para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            body {
+                background-size: contain;
+                background-position: center center;
+                background-color: #2c3e50;
+            }
+            
+            .screen {
+                background-size: contain;
+                background-position: center center;
+                background-color: #2c3e50;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="arcadeLeft" class="arcade-side"><img src="/assents/elon2.jpg" alt="Elon" /></div>
-    <div id="arcadeRight" class="arcade-side"><img src="/assents/trump2.jpg" alt="Trump" /></div>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
         
@@ -649,6 +729,9 @@
 
         <!-- Pantalla de login optimizada -->
         <div id="loginScreen" class="screen">
+            <div class="login-title-container">
+                <div class="login-title-image"></div>
+            </div>
             <div class="login-content">
                 <span class="roach-icon-large">🪳</span>
                 <h1 class="login-title">KOKOK<br>THE ROACH</h1>
@@ -663,23 +746,25 @@
                     <button id="loginBtn" class="login-btn" disabled>🎮 Enter Game</button>
                 </div>
                 
-                <div class="powered-by">POWERED BY KOKOK COIN</div>
             </div>
         </div>
 
         <!-- Pantalla principal optimizada -->
         <div id="mainMenu" class="screen hidden">
-            <div class="menu-content">
-                <h1 class="game-title">KOKOK<br>THE ROACH</h1>
-                <p class="subtitle">🪙 Crypto Shooter Game 🪙</p>
+            <div class="main-title-container">
+                <div class="title-image"></div>
+            </div>
+            <div class="welcome-container">
                 <div id="welcomeMessage" class="welcome-message"></div>
-                <div class="menu-buttons">
-                    <button id="playBtn" class="menu-btn play-btn">🎮 PLAY</button>
-                    <button id="instructionsBtn" class="menu-btn">📖 INSTRUCTIONS</button>
-                    <button id="leaderboardBtn" class="menu-btn">🏆 LEADERBOARDS</button>
-                    <button id="changeNameBtn" class="menu-btn">✏️ CHANGE NAME</button>
+            </div>
+            <div class="main-content-container">
+                <div class="menu-content">
+                    <div class="menu-buttons">
+                        <button id="playBtn" class="menu-btn play-btn">🎮 PLAY</button>
+                        <button id="instructionsBtn" class="menu-btn">📖 INSTRUCTIONS</button>
+                        <button id="changeNameBtn" class="menu-btn">✏️ CHANGE NAME</button>
+                    </div>
                 </div>
-                <div class="powered-by">POWERED BY KOKOK COIN</div>
             </div>
         </div>
 

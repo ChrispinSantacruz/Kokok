@@ -215,11 +215,11 @@ body {
   text-align: center;
   z-index: 20;
   background-image: url('./assents/kokok_game_boox-05.png');
-  background-size: contain;
-  background-position: 70% center;
+  background-size: 65%;
+  background-position: 82% center;
   background-repeat: no-repeat;
-  width: 2200px;
-  height: 2200px;
+  width: 1500px;
+  height: 1500px;
   padding: 400px 90px 200px 60px;
   display: flex;
   flex-direction: column;
@@ -227,7 +227,7 @@ body {
   align-items: center;
   position: relative;
   overflow: hidden;
-  margin: 0 auto;
+  margin: 25px auto;
 }
 
 .character-container {
@@ -267,10 +267,10 @@ body {
 #mainMenu .menu-buttons {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
   margin: 65px auto 0 auto;
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
   align-items: center;
   justify-content: center;
 }
@@ -283,9 +283,9 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   
-  /* Tamaño y estructura */
-  width: 250px;
-  height: 60px;
+  /* Tamaño para monitores grandes */
+  width: 350px;
+  height: 80px;
   background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -308,26 +308,26 @@ body {
   filter: brightness(0.9);
 }
 
-/* Botón PLAY */
+/* Botón PLAY - Tamaño grande para desktop */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: 280px;
-  height: 70px;
+  width: 380px;
+  height: 90px;
 }
 
-/* Botón INSTRUCTIONS */
+/* Botón INSTRUCTIONS - Tamaño grande para desktop */
 #mainMenu #instructionsBtn {
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  width: 280px;
-  height: 65px;
+  width: 380px;
+  height: 85px;
 }
 
-/* Botón CHANGE NAME */
+/* Botón CHANGE NAME - Tamaño grande para desktop */
 #mainMenu #changeNameBtn {
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
-  width: 280px;
-  height: 65px;
+  width: 380px;
+  height: 85px;
 }
 
 /* Ocultar texto de los botones */
@@ -537,6 +537,37 @@ body {
 
   #mainMenu {
     padding: 15px;
+  }
+  
+  .main-title-container {
+    margin-bottom: 25px;
+  }
+  
+  .welcome-container {
+    position: absolute;
+    top: 45px;
+    right: 25px;
+    z-index: 20;
+  }
+  
+  .title-image {
+    width: 280px;
+    height: 85px;
+  }
+  
+  .main-content-container {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  #mainMenu .menu-content {
+    width: 400px;
+    height: 400px;
+    padding: 80px 40px 60px 40px;
+    margin: 0 auto;
+    background-image: url('./assents/kokok_ home-06.png');
+    background-position: center center;
+    background-size: contain;
   }
   
   .main-title-container {
@@ -2247,78 +2278,53 @@ body:not(.game-active) #mobileControls {
 
 /* Ajustes responsivos para botones de imagen */
 
-/* Para tablets y laptops */
-@media (max-width: 1024px) {
+/* Para laptops/portátiles (1025px - 1600px) */
+@media (min-width: 1025px) and (max-width: 1600px) {
   #mainMenu .menu-btn {
-    width: 220px;
-    height: 50px;
+    width: 280px;
+    height: 65px;
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 240px;
+    width: 320px;
+    height: 75px;
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: 320px;
+    height: 70px;
+  }
+  
+  #mainMenu .menu-buttons {
+    gap: 20px;
+    max-width: 350px;
+  }
+}
+
+/* Para tablets y laptops pequeños (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #mainMenu .menu-btn {
+    width: 250px;
+    height: 55px;
+  }
+  
+  #mainMenu .play-btn,
+  #mainMenu #playBtn {
+    width: 280px;
+    height: 65px;
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: 280px;
     height: 60px;
   }
   
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 240px;
-    height: 55px;
-  }
-  
   #mainMenu .menu-buttons {
-    gap: 15px;
-    max-width: 250px;
-  }
-}
-
-/* Para tablets */
-@media (max-width: 768px) {
-  #mainMenu .menu-btn {
-    width: 200px;
-    height: 45px;
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: 220px;
-    height: 55px;
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 220px;
-    height: 50px;
-  }
-  
-  #mainMenu .menu-buttons {
-    gap: 12px;
-    max-width: 230px;
-  }
-}
-
-/* Para móviles */
-@media (max-width: 480px) {
-  #mainMenu .menu-btn {
-    width: 180px;
-    height: 40px;
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: 200px;
-    height: 50px;
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 200px;
-    height: 45px;
-  }
-  
-  #mainMenu .menu-buttons {
-    gap: 10px;
-    max-width: 210px;
+    gap: 18px;
+    max-width: 300px;
   }
 }
 

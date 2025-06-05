@@ -476,38 +476,34 @@ body {
   display: none !important;
 }
 
-/* Responsive básico para el juego */
-@media (max-width: 768px) {
+/* Responsive backgrounds y mejores tamaños */
+@media (max-width: 1024px) {
   body {
-    background-size: contain;
-    background-position: center top;
-    background-color: #2c3e50;
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
   }
   
   .screen {
-    background-size: contain;
-    background-position: center top;
-    background-color: #2c3e50;
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
   }
 
   #mainMenu {
-    padding: 10px;
+    padding: 15px;
   }
   
   .main-title-container {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
   
   .welcome-container {
     position: absolute;
-    top: 40px;
-    right: 20px;
+    top: 45px;
+    right: 25px;
     z-index: 20;
   }
   
   .title-image {
-    width: 250px;
-    height: 75px;
+    width: 280px;
+    height: 85px;
   }
   
   .main-content-container {
@@ -516,52 +512,53 @@ body {
   }
   
   #mainMenu .menu-content {
-    width: 900px;
-    height: 900px;
-    padding: 200px 40px 120px 40px;
+    width: 400px;
+    height: 400px;
+    padding: 80px 40px 60px 40px;
     margin: 0 auto;
     background-image: url('./assents/kokok_ home-06.png');
     background-position: center center;
+    background-size: contain;
   }
   
   #mainMenu .welcome-message {
-    font-size: 12px;
-    padding: 6px 10px;
-    border-radius: 6px;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
   }
   
   #mainMenu .menu-buttons {
-    max-width: 180px;
-    gap: 12px;
-    margin: 35px 0 0 0;
+    max-width: 200px;
+    gap: 15px;
+    margin: 40px 0 0 0;
   }
   
   #mainMenu .menu-btn {
-    padding: 12px 16px;
-    font-size: 14px;
-    min-width: 140px;
-    min-height: 42px;
-    border-radius: 8px;
-    box-shadow: none;
+    padding: 14px 18px;
+    font-size: 15px;
+    min-width: 160px;
+    min-height: 45px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
   
   #mainMenu .play-btn {
-    font-size: 14px;
+    font-size: 16px;
   }
   
   #mainMenu .powered-by {
-    font-size: 10px;
-    margin-top: 20px;
+    font-size: 11px;
+    margin-top: 25px;
   }
 
   /* LoginScreen responsive 768px - solo logo */
   .login-title-container {
-    top: 30px;
+    top: 40px;
   }
   
   .login-title-image {
-    width: 400px;
-    height: 120px;
+    width: 420px;
+    height: 125px;
   }
 
   #gameContainer {
@@ -577,83 +574,158 @@ body {
   }
   
   #gameCanvas {
-    width: 95vw !important;
-    height: 72vh !important;
-    max-width: 95vw !important;
-    max-height: 72vh !important;
+    width: 96vw !important;
+    height: 74vh !important;
+    max-width: 96vw !important;
+    max-height: 74vh !important;
     border: 4px solid #e74c3c !important;
     border-radius: 20px !important;
     background: linear-gradient(180deg, #87ceeb 0%, #98fb98 100%) !important;
     margin: 0 !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-    margin-top: -3vh !important;
+    margin-top: -2vh !important;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  body {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+
   #mainMenu {
-    padding: 5px;
-  }
-  
-  .main-title-container {
-    margin-bottom: 15px;
-  }
-  
-  .welcome-container {
-    top: 30px;
-    right: 15px;
-  }
-  
-  .title-image {
-    width: 400px;
-    height: 120px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
   }
   
   #mainMenu .menu-content {
-    width: 500px;
-    height: 500px;
-    padding: 120px 20px 80px 20px;
-    background-image: url('./assents/kokok_ home-06.png');
-    background-position: center center;
+    width: 320px;
+    height: 400px;
+    padding: 60px 30px 30px 30px;
+    margin-right: 0;
+    order: 1;
+  }
+  
+  .character-container {
+    width: 200px;
+    height: 250px;
+    margin-top: 0;
+    order: 2;
+  }
+  
+  #mainMenu .game-title {
+    font-size: 1.6em;
+    margin-bottom: 5px;
+  }
+  
+  #mainMenu .subtitle {
+    font-size: 0.8em;
+    margin-bottom: 15px;
   }
   
   #mainMenu .welcome-message {
     font-size: 10px;
-    padding: 4px 8px;
-    border-radius: 5px;
-  }
-  
-  #mainMenu .menu-buttons {
-    max-width: 220px;
-    gap: 12px;
-    margin: 35px 0 0 0;
+    margin: 6px 0;
   }
   
   #mainMenu .menu-btn {
-    padding: 12px 20px;
-    font-size: 14px;
-    min-width: 180px;
-    min-height: 42px;
-    border-radius: 8px;
-    box-shadow: none;
+    padding: 8px 15px;
+    font-size: 12px;
+    min-width: 140px;
+    min-height: 35px;
   }
   
   #mainMenu .play-btn {
-    font-size: 12px;
+    font-size: 13px;
+  }
+  
+  #mainMenu .menu-btn:not(.play-btn) {
+    font-size: 11px;
   }
   
   #mainMenu .powered-by {
-    display: none;
+    font-size: 8px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+
+  #mainMenu {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  #mainMenu .menu-content {
+    width: 280px;
+    height: 350px;
+    padding: 50px 25px 25px 25px;
+    margin-right: 0;
+  }
+  
+  .character-container {
+    width: 160px;
+    height: 200px;
+    margin-top: 0;
+  }
+  
+  #mainMenu .game-title {
+    font-size: 1.3em;
+    margin-bottom: 3px;
+  }
+  
+  #mainMenu .subtitle {
+    font-size: 0.7em;
+    margin-bottom: 12px;
+  }
+  
+  #mainMenu .welcome-message {
+    font-size: 9px;
+    margin: 5px 0;
+    padding: 3px 8px;
+  }
+  
+  #mainMenu .menu-btn {
+    padding: 6px 12px;
+    font-size: 10px;
+    min-width: 120px;
+    min-height: 30px;
+  }
+  
+  #mainMenu .play-btn {
+    font-size: 11px;
+  }
+  
+  #mainMenu .menu-btn:not(.play-btn) {
+    font-size: 9px;
+  }
+  
+  #mainMenu .powered-by {
+    font-size: 7px;
+    margin-top: 8px;
   }
 
   /* LoginScreen responsive 480px - solo logo */
   .login-title-container {
-    top: 20px;
+    top: 25px;
   }
   
   .login-title-image {
-    width: 350px;
-    height: 105px;
+    width: 320px;
+    height: 95px;
   }
 
   /* Centrar mejor el loginScreen en móvil */
@@ -667,12 +739,20 @@ body {
 
   /* Ajustar espaciado del formulario en móvil */
   .login-form {
-    margin-top: 70px !important;
+    margin-top: 60px !important;
   }
 }
 
-/* Landscape móvil */
+/* Landscape móvil con background responsive */
 @media (max-width: 1024px) and (orientation: landscape) {
+  body {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+
   #gameContainer {
     flex-direction: row !important;
     width: 100vw !important;
@@ -1024,7 +1104,11 @@ body {
 /* RESPONSIVE VERTICAL (PORTRAIT) MOBILE Y TABLETS */
 @media (max-width: 1024px) and (orientation: portrait) {
   body {
-    background: #2c3e50 !important;
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+  }
+
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
   }
 
   #gameContainer {
@@ -1036,7 +1120,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #2c3e50 !important;
   }
 
   #gameCanvas {
@@ -1829,3 +1912,42 @@ body:not(.game-active) #mobileControls {
   background: none;
   padding: 20px;
 }
+
+/* FORZAR BACKGROUNDS RESPONSIVE - REGLAS FINALES */
+@media screen and (max-width: 1024px) {
+  body {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+}
+
+/* DESKTOP BACKGROUND */
+@media screen and (min-width: 1025px) {
+  body {
+    background-image: url('./assents/background_kokok.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/background_kokok.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+}
+

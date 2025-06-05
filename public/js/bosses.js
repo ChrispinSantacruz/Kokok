@@ -10,7 +10,9 @@ export class TrumpBoss {
       this.position = new Vector2(canvas.width / 2, 80)
       this.radius = 65 // Reducido desde 70 para igualar con Elon
     }
-    this.velocity = new Vector2(2, 0)
+    // Ajustar velocidad inicial según dispositivo
+    const isResponsive = window.innerWidth < 1025
+    this.velocity = new Vector2(isResponsive ? 1.2 : 2, 0)
     this.health = 10
     this.maxHealth = 10
     this.active = true
@@ -18,7 +20,8 @@ export class TrumpBoss {
     this.shootInterval = 120
     this.moveTimer = 0
     this.type = "trump"
-    this.baseSpeed = 2
+    // Ajustar velocidad base según dispositivo
+    this.baseSpeed = isResponsive ? 1.2 : 2  // 40% más lento en responsive
     this.speedMultiplier = 1
     this.isRandomMovement = false;
     this.randomMovementTimer = 0;
@@ -68,7 +71,9 @@ export class TrumpBoss {
       if (this.randomMovementTimer <= 0) {
         this.isRandomMovement = false;
         // Restaurar velocidad horizontal tipo péndulo
-        this.velocity.x = (Math.random() > 0.5 ? 1 : -1) * Math.abs(this.velocity.x || 6)
+        const isResponsive = window.innerWidth < 1025
+        const baseMovementSpeed = isResponsive ? 1.2 : 6  // Velocidad base más baja en responsive
+        this.velocity.x = (Math.random() > 0.5 ? 1 : -1) * Math.abs(this.velocity.x || baseMovementSpeed)
         this.velocity.y = 0
       }
       // Limitar el rango vertical aún más
@@ -147,8 +152,11 @@ export class TrumpBoss {
     this.randomMovementTimer = 30 + Math.floor(Math.random() * 20); // frames aleatorios
     // Aumentar velocidad y aleatoriedad al recibir daño
     this.speedMultiplier += 0.2
-    this.velocity.x = Utils.randomBetween(-8, 8) * this.speedMultiplier
-    this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
+    // Ajustar velocidades según dispositivo
+    const isResponsive = window.innerWidth < 1025
+    const maxSpeed = isResponsive ? 5 : 8  // Velocidades más bajas en responsive
+    this.velocity.x = Utils.randomBetween(-maxSpeed, maxSpeed) * this.speedMultiplier
+    this.velocity.y = Utils.randomBetween(-1, 1) * this.speedMultiplier  // Menos movimiento vertical
     
     if (this.health <= 0) {
       this.destroy()
@@ -241,7 +249,9 @@ export class ElonBoss {
     }
 
     // Movimiento horizontal
-    this.velocity.x = Math.sin(Date.now() * 0.001) * 3 * this.speedMultiplier
+    const isResponsive = window.innerWidth < 1025
+    const baseMovementSpeed = isResponsive ? 1.8 : 3  // Reducir velocidad en responsive
+    this.velocity.x = Math.sin(Date.now() * 0.001) * baseMovementSpeed * this.speedMultiplier
     this.position.add(this.velocity)
 
     // Mantener dentro de los límites
@@ -340,8 +350,12 @@ export class ElonBoss {
     this.health -= damage
     // Aumentar velocidad y aleatoriedad al recibir daño
     this.speedMultiplier += 0.3
-    this.velocity.x = Utils.randomBetween(-3, 3) * this.speedMultiplier
-    this.velocity.y = Utils.randomBetween(-2, 2) * this.speedMultiplier
+    // Ajustar velocidades según dispositivo
+    const isResponsive = window.innerWidth < 1025
+    const maxSpeedX = isResponsive ? 2 : 3  // Velocidades más bajas en responsive
+    const maxSpeedY = isResponsive ? 1 : 2
+    this.velocity.x = Utils.randomBetween(-maxSpeedX, maxSpeedX) * this.speedMultiplier
+    this.velocity.y = Utils.randomBetween(-maxSpeedY, maxSpeedY) * this.speedMultiplier
     
     if (this.health <= 0) {
       this.destroy()

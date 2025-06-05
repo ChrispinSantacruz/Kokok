@@ -191,7 +191,7 @@ export class Rocket {
     
     // Ajustar velocidad según si es responsive
     const isResponsive = window.innerWidth < 1025
-    this.speed = isResponsive ? 6.4 : 8 // 20% más lento en responsive
+    this.speed = isResponsive ? 4.8 : 8 // 40% más lento en responsive (era 20%)
     this.turnSpeed = 0.15
     this.health = 1
   }

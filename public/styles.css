@@ -308,12 +308,13 @@ body {
   filter: brightness(0.9);
 }
 
-/* Botón PLAY - Tamaño grande para desktop - reducido 20% */
+/* Botón PLAY - Tamaño grande para desktop - 15% más grande que los otros botones */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: 304px;
-  height: 72px;
+  width: 350px;
+  height: 83px;
+  margin-bottom: 15px;
 }
 
 /* Botón INSTRUCTIONS - Tamaño grande para desktop - reducido 20% */
@@ -2287,8 +2288,9 @@ body:not(.game-active) #mobileControls {
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 256px;
-    height: 60px;
+    width: 294px;
+    height: 69px;
+    margin-bottom: 12px;
   }
   
   #mainMenu #instructionsBtn,
@@ -2312,8 +2314,9 @@ body:not(.game-active) #mobileControls {
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 224px;
-    height: 52px;
+    width: 258px;
+    height: 60px;
+    margin-bottom: 10px;
   }
   
   #mainMenu #instructionsBtn,

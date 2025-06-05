@@ -283,9 +283,9 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   
-  /* Tamaño para monitores grandes */
-  width: 350px;
-  height: 80px;
+  /* Tamaño para monitores grandes - reducido 20% */
+  width: 280px;
+  height: 64px;
   background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -308,26 +308,26 @@ body {
   filter: brightness(0.9);
 }
 
-/* Botón PLAY - Tamaño grande para desktop */
+/* Botón PLAY - Tamaño grande para desktop - reducido 20% */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: 380px;
-  height: 90px;
+  width: 304px;
+  height: 72px;
 }
 
-/* Botón INSTRUCTIONS - Tamaño grande para desktop */
+/* Botón INSTRUCTIONS - Tamaño grande para desktop - reducido 20% */
 #mainMenu #instructionsBtn {
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  width: 380px;
-  height: 85px;
+  width: 304px;
+  height: 68px;
 }
 
-/* Botón CHANGE NAME - Tamaño grande para desktop */
+/* Botón CHANGE NAME - Tamaño grande para desktop - reducido 20% */
 #mainMenu #changeNameBtn {
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
-  width: 380px;
-  height: 85px;
+  width: 304px;
+  height: 68px;
 }
 
 /* Ocultar texto de los botones */
@@ -2281,50 +2281,50 @@ body:not(.game-active) #mobileControls {
 /* Para laptops/portátiles (1025px - 1600px) */
 @media (min-width: 1025px) and (max-width: 1600px) {
   #mainMenu .menu-btn {
-    width: 280px;
-    height: 65px;
+    width: 224px;
+    height: 52px;
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 320px;
-    height: 75px;
+    width: 256px;
+    height: 60px;
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 320px;
-    height: 70px;
+    width: 256px;
+    height: 56px;
   }
   
   #mainMenu .menu-buttons {
     gap: 20px;
-    max-width: 350px;
+    max-width: 280px;
   }
 }
 
 /* Para tablets y laptops pequeños (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   #mainMenu .menu-btn {
-    width: 250px;
-    height: 55px;
+    width: 200px;
+    height: 44px;
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 280px;
-    height: 65px;
+    width: 224px;
+    height: 52px;
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 280px;
-    height: 60px;
+    width: 224px;
+    height: 48px;
   }
   
   #mainMenu .menu-buttons {
     gap: 18px;
-    max-width: 300px;
+    max-width: 240px;
   }
 }
 

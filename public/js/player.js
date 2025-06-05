@@ -3,7 +3,8 @@ import { Utils, Vector2 } from "./utils.js"
 export class Player {
   constructor(canvas) {
     this.canvas = canvas
-    this.position = new Vector2(canvas.width / 2, canvas.height - 75)
+    // Ajustar posición para que esté un poco más abajo, justo sobre el piso
+    this.position = new Vector2(canvas.width / 2, canvas.height - 80)
     // Ajustar tamaño en responsive landscape and fullscreen
     const isMobile = window.innerWidth < 1025;
     const isLandscape = window.innerWidth > window.innerHeight;
@@ -36,7 +37,8 @@ export class Player {
       this.gravity = 0.8
       this.jumpPower = -15
     }
-    this.groundY = canvas.height - 75
+    // Ajustar groundY para que esté justo sobre el piso
+    this.groundY = canvas.height - 80
     this.baseY = this.groundY
   }
 
@@ -69,12 +71,13 @@ export class Player {
 
     // Limitar movimiento vertical al suelo
     if (!this.isJumping) {
-      this.position.y = Utils.clamp(this.position.y, this.groundY - 100, this.groundY)
+      // Permitir movimiento un poco más arriba pero manteniendo la cucaracha cerca del piso
+      this.position.y = Utils.clamp(this.position.y, this.groundY - 60, this.groundY)
     }
 
     // Force cockroach position higher if it's off screen
-    if (this.position.y > this.canvas.height - this.radius) {
-      this.position.y = this.canvas.height - this.radius - 10;
+    if (this.position.y > this.canvas.height - this.radius - 20) {
+      this.position.y = this.canvas.height - this.radius - 20;
     }
     if (this.position.y < this.radius) {
       this.position.y = this.radius + 10;
@@ -186,7 +189,9 @@ export class Player {
     this.targetPosition.x = x
     // Solo permitir movimiento vertical si no está saltando
     if (!this.isJumping) {
-      this.targetPosition.y = Math.max(y, this.canvas.height / 2)
+      // Asegurar que la cucaracha se mantenga cerca del piso pero con algo de movimiento vertical
+      this.targetPosition.y = Math.max(y, this.groundY - 40)
+      this.targetPosition.y = Math.min(this.targetPosition.y, this.groundY)
     }
   }
 

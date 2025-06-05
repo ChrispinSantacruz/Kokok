@@ -768,7 +768,23 @@
         <!-- UI del juego -->
         <div id="gameUI" class="hidden">
             <div id="score">Score: 0</div>
-            <div id="lives">Lives: 3</div>
+            <div id="lives" class="lives-container">
+                <div class="lives-label">LIVES</div>
+                <div class="lives-images">
+                    <div class="life-icon" id="life1">
+                        <img src="assents/kokok_game_face-09.png" alt="Life 1" class="life-image">
+                        <div class="life-cross">✘</div>
+                    </div>
+                    <div class="life-icon" id="life2">
+                        <img src="assents/kokok_game_face-09.png" alt="Life 2" class="life-image">
+                        <div class="life-cross">✘</div>
+                    </div>
+                    <div class="life-icon" id="life3">
+                        <img src="assents/kokok_game_face-09.png" alt="Life 3" class="life-image">
+                        <div class="life-cross">✘</div>
+                    </div>
+                </div>
+            </div>
             <div id="powerUpStatus"></div>
             <div id="bossAlert" class="boss-alert hidden">BOSS INCOMING!</div>
         </div>

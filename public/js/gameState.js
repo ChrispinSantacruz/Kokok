@@ -92,7 +92,25 @@ export class GameState {
   updateUI() {
     // Formato vertical: título arriba, número abajo
     document.getElementById("score").innerHTML = `<div class="score-label">SCORE</div><div class="score-number">${this.score}</div>`
-    document.getElementById("lives").innerHTML = `<div class="lives-label">LIVES</div><div class="lives-number">${this.lives}</div>`
+    
+    // Actualizar imágenes de vidas
+    this.updateLivesDisplay()
+  }
+
+  updateLivesDisplay() {
+    // Actualizar cada icono de vida
+    for (let i = 1; i <= 3; i++) {
+      const lifeIcon = document.getElementById(`life${i}`)
+      if (lifeIcon) {
+        if (i <= this.lives) {
+          // Vida activa - mostrar normal
+          lifeIcon.classList.remove('lost')
+        } else {
+          // Vida perdida - mostrar tachada
+          lifeIcon.classList.add('lost')
+        }
+      }
+    }
   }
 
   updatePowerUpStatus(type, active) {

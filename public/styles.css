@@ -7,7 +7,7 @@
 body {
   font-family: "Arial Black", Arial, sans-serif;
   background-image: url('./assents/background_kokok.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -116,7 +116,7 @@ body {
   align-items: center;
   z-index: 30;
   background-image: url('./assents/background_kokok.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -478,15 +478,9 @@ body {
   display: none !important;
 }
 
-/* Responsive backgrounds y mejores tamaños */
+/* SOLO CAMBIOS DE LAYOUT RESPONSIVE */
 @media (max-width: 1366px) {
-  body {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-  }
+  /* Solo ajustes de layout, background se maneja abajo */
 }
 
 @media (max-width: 1024px) {
@@ -1908,7 +1902,29 @@ body:not(.game-active) #mobileControls {
 }
 
 /* FORZAR BACKGROUNDS RESPONSIVE - REGLAS FINALES */
-@media screen and (max-width: 1366px) {
+/* Background para portátiles - sin zoom excesivo */
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+  body {
+    background-image: url('./assents/background_kokok.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/background_kokok.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
+  }
+}
+
+/* Background responsive para monitores de escritorio que necesitan mejor adaptación */
+@media screen and (min-width: 1601px) and (max-width: 1920px) {
   body {
     background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
     background-size: cover !important;
@@ -1926,8 +1942,27 @@ body:not(.game-active) #mobileControls {
   }
 }
 
-/* DESKTOP BACKGROUND */
-@media screen and (min-width: 1367px) {
+/* Background responsive para pantallas pequeñas */
+@media screen and (max-width: 1023px) {
+  body {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+  
+  .screen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+}
+
+/* DESKTOP BACKGROUND para pantallas muy grandes */
+@media screen and (min-width: 1921px) {
   body {
     background-image: url('./assents/background_kokok.png') !important;
     background-size: contain !important;

@@ -398,7 +398,7 @@ body {
   position: relative;
   overflow: hidden;
   margin: 0 auto;                        /* ← CENTRADO AUTOMÁTICO: era 25px auto */
-  transform: none;                       /* ← ELIMINAR TRANSFORM FIJO: era translateX(115px) */
+  transform: translate(-5vw, 3vh);       /* ← MOVER IZQUIERDA Y ABAJO: era none */
 }
 
 .character-container {
@@ -437,7 +437,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: min(20px, 2vh);                   /* ← RESPONSIVE: era 20px */
-  margin: min(40px, 4vh) auto 0 auto;    /* ← CENTRADO AUTOMÁTICO: era 40px auto 0 183px */
+  margin: min(80px, 8vh) auto 0 auto;    /* ← AQUÍ CAMBIAS SOLO LA ALTURA DE BOTONES */
   width: 100%;
   max-width: min(350px, 30vw);           /* ← RESPONSIVE: era 350px */
   align-items: center;                   /* ← CENTRAR BOTONES */
@@ -462,9 +462,9 @@ body {
   /* Efectos hover */
   filter: brightness(1);
   
-  /* CENTRADO DESKTOP */
+  /* CENTRADO DESKTOP - Mover a la izquierda */
   display: block;
-  margin: 0 auto;                        /* ← CENTRAR */
+  margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px CON !IMPORTANT */
 }
 
 #mainMenu .menu-btn:hover {
@@ -483,7 +483,7 @@ body {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
   width: min(320px, 28vw);               /* ← RESPONSIVE: era 320px */
   height: min(76px, 7vh);                /* ← RESPONSIVE: era 76px */
-  margin-bottom: min(15px, 1.5vh);       /* ← RESPONSIVE: era 15px */
+  margin: 0 auto min(15px, 1.5vh) 120px !important;  /* ← PLAY IZQUIERDA 120px CON !IMPORTANT */
 }
 
 /* Botón INSTRUCTIONS - Tamaño RESPONSIVE para desktop */
@@ -491,6 +491,7 @@ body {
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
   width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
   height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
+  margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px CON !IMPORTANT */
 }
 
 /* Botón CHANGE NAME - Tamaño RESPONSIVE para desktop */
@@ -498,6 +499,7 @@ body {
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
   width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
   height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
+  margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px CON !IMPORTANT */
 }
 
 /* Ocultar texto de los botones */
@@ -755,25 +757,31 @@ body {
     margin: 30px auto 0 auto !important;      /* ← CENTRAR EN TABLETS */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;        /* En lugar de center */
     justify-content: center;
   }
   
   #mainMenu .menu-btn {
-    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS para tablets */
-    height: 36px;          /* ← BOTONES MÁS BAJOS para tablets */
+    width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
+    height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 180px;          /* ← PLAY MÁS PEQUEÑO para tablets */
-    height: 44px;          /* ← PLAY MÁS BAJO para tablets */
+    width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
+    height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 180px;          /* ← BOTONES MÁS PEQUEÑOS para tablets */
-    height: 40px;          /* ← BOTONES MÁS BAJOS para tablets */
+    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
+    height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
 
   #mainMenu .powered-by {
@@ -915,18 +923,24 @@ body {
   #mainMenu .menu-btn {
     width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
     height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
     height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
     height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
+    background: none !important;          /* ← QUITAR FONDO CUADRADO */
+    border: none !important;              /* ← QUITAR BORDE */
   }
   
   #mainMenu .menu-btn:not(.play-btn) {
@@ -1237,6 +1251,8 @@ body.game-active .arcade-side {
     font-size: 12px !important;         /* ← TEXTO MÁS PEQUEÑO: era 14px */
     padding: 8px 0 !important;          /* ← PADDING MÁS PEQUEÑO: era 10px */
     margin-bottom: 6px !important;      /* ← MENOS ESPACIADO: era 8px */
+    background: none !important;        /* ← QUITAR FONDO CUADRADO */
+    border: none !important;            /* ← QUITAR BORDE */
   }
   .powered-by {
     font-size: 10px !important;
@@ -1537,8 +1553,8 @@ body.game-active .arcade-side {
   padding: 14px 18px;
   font-size: 15px;
   font-weight: bold;
-  border: 3px solid #666;
-  border-radius: 10px;
+  border: none !important;              /* ← QUITAR BORDE */
+  border-radius: 0px !important;        /* ← QUITAR BORDE REDONDEADO */
   cursor: pointer;
   transition: all 0.3s;
   text-transform: uppercase;
@@ -1547,23 +1563,23 @@ body.game-active .arcade-side {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(200, 200, 200, 0.9);
-  color: #333;
+  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
+  color: transparent !important;        /* ← OCULTAR TEXTO */
 }
 
 .play-btn {
-  background: linear-gradient(45deg, #00ff00, #32cd32);
-  color: #000;
+  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
+  color: transparent !important;        /* ← OCULTAR TEXTO */
 }
 
 .play-btn:hover {
-  background: linear-gradient(45deg, #32cd32, #00ff00);
+  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
   transform: scale(1.05);
 }
 
 .menu-btn:not(.play-btn):not(.share-btn) {
-  background: linear-gradient(45deg, #4169e1, #6495ed);
-  color: white;
+  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
+  color: transparent !important;        /* ← OCULTAR TEXTO */
 }
 
 /* Pantalla de Login/Change Name - Solo agregar logo arriba, mantener diseño original */
@@ -1812,28 +1828,34 @@ body.game-active .arcade-side {
     width: min(900px, 80vw);
     height: min(675px, 75vh);
     padding: min(200px, 12vh) min(50px, 4vw) min(100px, 8vh) min(50px, 4vw);
+    transform: translate(8vw, 4vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MEDIANOS */
   }
   
   #mainMenu .menu-buttons {
     max-width: min(320px, 28vw);
-    gap: min(18px, 1.8vh);
+    gap: min(50px, 5vh);
+    margin: min(70px, 7vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES MEDIANOS */
   }
   
+  /* Mover botones a la izquierda - MONITORES MEDIANOS */
   #mainMenu .menu-btn {
     width: min(260px, 23vw);
     height: min(60px, 5.5vh);
+    margin: 0 auto 0 50px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: min(300px, 26vw);
+    width: min(350px, 26vw);
     height: min(72px, 6.5vh);
+    margin: 0 auto min(15px, 1.5vh) -100px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: min(280px, 24vw);
     height: min(64px, 6vh);
+    margin: 0 auto 0 -80px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
   }
 }
 
@@ -1851,28 +1873,34 @@ body.game-active .arcade-side {
     width: min(1000px, 75vw);
     height: min(750px, 70vh);
     padding: min(220px, 14vh) min(60px, 4.5vw) min(120px, 9vh) min(60px, 4.5vw);
+    transform: translate(-5vw, 3vh);       /* ← AJUSTAR POSICIÓN PARA MONITORES GRANDES */
   }
   
   #mainMenu .menu-buttons {
     max-width: min(350px, 26vw);
     gap: min(20px, 2vh);
+    margin: min(80px, 8vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES GRANDES */
   }
   
+  /* Mover botones a la izquierda - MONITORES GRANDES */
   #mainMenu .menu-btn {
     width: min(280px, 22vw);
     height: min(64px, 5.8vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: min(320px, 25vw);
     height: min(76px, 6.8vh);
+    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: min(300px, 23vw);
     height: min(68px, 6.2vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
   }
 }
 
@@ -1890,28 +1918,34 @@ body.game-active .arcade-side {
     width: min(1100px, 70vw);
     height: min(825px, 65vh);
     padding: min(240px, 15vh) min(70px, 4vw) min(140px, 10vh) min(70px, 4vw);
+    transform: translate(-6vw, 3.5vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MUY GRANDES */
   }
   
   #mainMenu .menu-buttons {
     max-width: min(380px, 24vw);
     gap: min(22px, 2.2vh);
+    margin: min(90px, 9vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES MUY GRANDES */
   }
   
+  /* Mover botones a la izquierda - MONITORES MUY GRANDES */
   #mainMenu .menu-btn {
     width: min(300px, 20vw);
     height: min(68px, 5.5vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: min(340px, 23vw);
     height: min(80px, 6.5vh);
+    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: min(320px, 21vw);
     height: min(72px, 6vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
   }
   
   /* Ajustar elementos adicionales para monitores muy grandes */
@@ -1949,28 +1983,34 @@ body.game-active .arcade-side {
     width: min(1000px, 50vw);              /* ← Reducir ancho en ultra-wide */
     height: min(750px, 85vh);              /* ← Mantener altura adecuada */
     padding: min(220px, 16vh) min(60px, 3vw) min(120px, 12vh) min(60px, 3vw);
+    transform: translate(-3vw, 2vh);       /* ← AJUSTAR POSICIÓN PARA ULTRA-WIDE */
   }
   
   #mainMenu .menu-buttons {
     max-width: min(350px, 20vw);           /* ← Reducir ancho de botones */
     gap: min(20px, 2.5vh);
+    margin: min(75px, 7.5vh) auto 0 auto;  /* ← AUMENTAR MARGEN PARA ULTRA-WIDE */
   }
   
+  /* Mover botones a la izquierda - ULTRA-WIDE */
   #mainMenu .menu-btn {
     width: min(280px, 16vw);               /* ← Botones más estrechos */
     height: min(64px, 7vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: min(320px, 18vw);               /* ← Play button más estrecho */
     height: min(76px, 8vh);
+    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: min(300px, 17vw);               /* ← Botones más estrechos */
     height: min(68px, 7.5vh);
+    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
   }
   
   /* Centrar mejor en ultra-wide */

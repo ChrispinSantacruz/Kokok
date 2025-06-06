@@ -27,6 +27,10 @@ export class Player {
     this.speedBoostTime = 0
     this.animationFrame = 0
 
+    // Cargar imagen de la cucaracha
+    this.image = new Image()
+    this.image.src = 'assents/KOKOK_GAME_GFX_acc-05.png'
+
     // Nuevas propiedades para salto
     this.isJumping = false
     this.jumpVelocity = 0
@@ -114,41 +118,52 @@ export class Player {
       ctx.globalAlpha = 0.5
     }
 
-    // Cockroach body (dark brown)
-    const bodyColor = "#4B3621"
-    Utils.drawEllipse(ctx, this.position.x, this.position.y, this.radius, this.radius * 0.7, bodyColor)
+    // Dibujar imagen de la cucaracha
+    if (this.image.complete) {
+      ctx.save()
+      ctx.translate(this.position.x, this.position.y)
+      // Aumentar el tamaño mucho más (de radius * 3.5 a radius * 6)
+      const imageSize = this.radius * 6
+      ctx.drawImage(this.image, -imageSize/2, -imageSize/2, imageSize, imageSize)
+      ctx.restore()
+    } else {
+      // Fallback: dibujo original con canvas si la imagen no carga
+      // Cockroach body (dark brown)
+      const bodyColor = "#4B3621"
+      Utils.drawEllipse(ctx, this.position.x, this.position.y, this.radius, this.radius * 0.7, bodyColor)
 
-    // Cockroach head
-    Utils.drawCircle(ctx, this.position.x, this.position.y - 10, this.radius * 0.6, "#6B4C3B")
+      // Cockroach head
+      Utils.drawCircle(ctx, this.position.x, this.position.y - 10, this.radius * 0.6, "#6B4C3B")
 
-    // Antenas
-    ctx.strokeStyle = "#2C1810"
-    ctx.lineWidth = 3
-    ctx.beginPath()
-    ctx.moveTo(this.position.x - 8, this.position.y - 20)
-    ctx.lineTo(this.position.x - 12, this.position.y - 30)
-    ctx.moveTo(this.position.x + 8, this.position.y - 20)
-    ctx.lineTo(this.position.x + 12, this.position.y - 30)
-    ctx.stroke()
-
-    // Ojos
-    Utils.drawCircle(ctx, this.position.x - 6, this.position.y - 12, 3, "white")
-    Utils.drawCircle(ctx, this.position.x + 6, this.position.y - 12, 3, "white")
-    Utils.drawCircle(ctx, this.position.x - 6, this.position.y - 12, 1, "black")
-    Utils.drawCircle(ctx, this.position.x + 6, this.position.y - 12, 1, "black")
-
-    // Patas (líneas simples)
-    ctx.strokeStyle = "#2C1810"
-    ctx.lineWidth = 2
-    for (let i = 0; i < 6; i++) {
-      const legX = this.position.x - 15 + i * 6
-      const legY = this.position.y + this.radius * 0.5
-      const legOffset = Math.sin(this.animationFrame * 0.2 + i) * 3
-
+      // Antenas
+      ctx.strokeStyle = "#2C1810"
+      ctx.lineWidth = 3
       ctx.beginPath()
-      ctx.moveTo(legX, legY)
-      ctx.lineTo(legX + legOffset, legY + 8)
+      ctx.moveTo(this.position.x - 8, this.position.y - 20)
+      ctx.lineTo(this.position.x - 12, this.position.y - 30)
+      ctx.moveTo(this.position.x + 8, this.position.y - 20)
+      ctx.lineTo(this.position.x + 12, this.position.y - 30)
       ctx.stroke()
+
+      // Ojos
+      Utils.drawCircle(ctx, this.position.x - 6, this.position.y - 12, 3, "white")
+      Utils.drawCircle(ctx, this.position.x + 6, this.position.y - 12, 3, "white")
+      Utils.drawCircle(ctx, this.position.x - 6, this.position.y - 12, 1, "black")
+      Utils.drawCircle(ctx, this.position.x + 6, this.position.y - 12, 1, "black")
+
+      // Patas (líneas simples)
+      ctx.strokeStyle = "#2C1810"
+      ctx.lineWidth = 2
+      for (let i = 0; i < 6; i++) {
+        const legX = this.position.x - 15 + i * 6
+        const legY = this.position.y + this.radius * 0.5
+        const legOffset = Math.sin(this.animationFrame * 0.2 + i) * 3
+
+        ctx.beginPath()
+        ctx.moveTo(legX, legY)
+        ctx.lineTo(legX + legOffset, legY + 8)
+        ctx.stroke()
+      }
     }
 
     // Escudo si está activo

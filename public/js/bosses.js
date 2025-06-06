@@ -106,13 +106,13 @@ export class TrumpBoss {
 
     // Dibujar barra de vida
     const healthBarWidth = this.radius * 2
-    const healthBarHeight = 6 // Aumentado desde 5 para mejor visibilidad
+    const healthBarHeight = 8 // Aumentado para mejor visibilidad
     const healthPercentage = this.health / this.maxHealth
 
     ctx.fillStyle = '#ff0000'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth, healthBarHeight)
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 20, healthBarWidth, healthBarHeight)
     ctx.fillStyle = '#00ff00'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth * healthPercentage, healthBarHeight)
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 20, healthBarWidth * healthPercentage, healthBarHeight)
   }
 
   shouldShoot() {
@@ -172,27 +172,30 @@ export class TrumpBoss {
 
 export class ElonBoss {
   constructor(canvas) {
-    const isMobile = window.innerWidth < 1025;
-    const isLandscape = window.innerWidth > window.innerHeight;
-    const isFullscreen = window.innerHeight === screen.height || window.innerWidth === screen.width;
-    if ((isMobile && isLandscape) || isFullscreen) {
-      this.position = new Vector2(canvas.width / 2, 40); // Misma altura que Trump
-      this.radius = 60; // Un poco más grande que Trump (55)
-    } else if (isMobile) {
-      this.position = new Vector2(canvas.width / 2, 40); // Misma altura que Trump
-      this.radius = 60; // Un poco más grande que Trump (55)
+    this.canvas = canvas
+    if (window.innerWidth < 1025) {
+      this.position = new Vector2(canvas.width / 2, 40)
+      this.radius = 55 // Mismo tamaño que Trump
     } else {
-      this.position = new Vector2(canvas.width / 2, 80); // Misma altura que Trump
-      this.radius = 70; // Un poco más grande que Trump (65)
+      this.position = new Vector2(canvas.width / 2, 80)
+      this.radius = 65 // Mismo tamaño que Trump
     }
-    this.velocity = new Vector2(0, 0)
+    // Ajustar velocidad inicial según dispositivo (igual que Trump)
+    const isResponsive = window.innerWidth < 1025
+    this.velocity = new Vector2(isResponsive ? 1.2 : 2, 0)
     this.health = 10
     this.maxHealth = 10
     this.active = true
     this.type = "elon"
     this.canvas = canvas
-    this.shootInterval = 3000 // 3 segundos entre disparos
-    this.lastShootTime = 0
+    this.shootTimer = 0
+    this.shootInterval = 120 // Mismo intervalo que Trump
+    this.moveTimer = 0
+    // Ajustar velocidad base según dispositivo (igual que Trump)
+    this.baseSpeed = isResponsive ? 1.2 : 2
+    this.speedMultiplier = 1
+    this.isRandomMovement = false
+    this.randomMovementTimer = 0
     this.isVisible = true
     this.visibilityTimer = 0
     this.rocketTimer = 0
@@ -201,7 +204,6 @@ export class ElonBoss {
     // Nuevas propiedades para la secuencia de jefes
     this.attackType = 'rocket' // 'rocket', 'hybrid'
     this.canUseInvisibility = false
-    this.speedMultiplier = 1 // Multiplicador de velocidad
     
     // Propiedades para el estado inicial
     this.isSpawning = true
@@ -248,38 +250,67 @@ export class ElonBoss {
       }
     }
 
-    // Movimiento horizontal
-    const isResponsive = window.innerWidth < 1025
-    const baseMovementSpeed = isResponsive ? 1.8 : 3  // Reducir velocidad en responsive
-    this.velocity.x = Math.sin(Date.now() * 0.001) * baseMovementSpeed * this.speedMultiplier
-    this.position.add(this.velocity)
-
-    // Mantener dentro de los límites
-    if (this.position.x < this.radius) {
-      this.position.x = this.radius
-      this.velocity.x *= -1
-    } else if (this.position.x > this.canvas.width - this.radius) {
-      this.position.x = this.canvas.width - this.radius
-      this.velocity.x *= -1
+    // Movimiento tipo péndulo horizontal rápido (igual que Trump)
+    if (!this.isRandomMovement) {
+      this.position.x += this.velocity.x
+      // Rebote horizontal
+      if (this.position.x <= this.radius || this.position.x >= this.canvas.width - this.radius) {
+        this.velocity.x *= -1
+      }
+      // Fijar la posición vertical en un valor constante (igual que Trump)
+      if (window.innerWidth < 1025) {
+        this.position.y = this.radius - 10
+      } else {
+        this.position.y = this.radius + 15
+      }
+    } else {
+      // Movimiento aleatorio temporal tras recibir daño (igual que Trump)
+      this.position.add(this.velocity)
+      this.randomMovementTimer--
+      if (this.randomMovementTimer <= 0) {
+        this.isRandomMovement = false;
+        // Restaurar velocidad horizontal tipo péndulo
+        const isResponsive = window.innerWidth < 1025
+        const baseMovementSpeed = isResponsive ? 1.2 : 6  // Velocidad base más baja en responsive
+        this.velocity.x = (Math.random() > 0.5 ? 1 : -1) * Math.abs(this.velocity.x || baseMovementSpeed)
+        this.velocity.y = 0
+      }
+      // Limitar el rango vertical aún más (igual que Trump)
+      if (window.innerWidth < 1025) {
+        this.position.y = this.radius - 10
+      } else {
+        this.position.y = this.radius + 15
+      }
     }
+    this.shootTimer++
   }
 
   shouldShoot() {
     if (this.isSpawning) return false // No disparar mientras está spawneando
     if (!this.isVisible || this.hasActiveRocket) return false
 
-    const currentTime = Date.now()
-    if (currentTime - this.lastShootTime >= this.shootInterval) {
-      this.lastShootTime = currentTime
-      this.hasActiveRocket = true
-      this.rocketTimer = 2000 // 2 segundos para impactar el cohete
+    if (this.shootTimer >= this.shootInterval) {
+      this.shootTimer = 0
       return true
     }
     return false
   }
 
   draw(ctx) {
-    if (!this.active || !this.isVisible) return
+    if (!this.active) return
+
+    // Siempre dibujar barra de vida primero (incluso si Elon está invisible)
+    const healthBarWidth = this.radius * 2
+    const healthBarHeight = 8 // Aumentado para mejor visibilidad
+    const healthPercentage = this.health / this.maxHealth
+
+    ctx.fillStyle = '#ff0000'
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 20, healthBarWidth, healthBarHeight)
+    ctx.fillStyle = '#00ff00'
+    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 20, healthBarWidth * healthPercentage, healthBarHeight)
+
+    // Solo dibujar Elon si está visible
+    if (!this.isVisible) return
 
     // Efecto visual durante el spawn
     if (this.isSpawning) {
@@ -305,16 +336,6 @@ export class ElonBoss {
     
     // Restaurar alpha normal
     ctx.globalAlpha = 1
-
-    // Dibujar barra de vida
-    const healthBarWidth = this.radius * 2
-    const healthBarHeight = 6 // Aumentado desde 5 para mejor visibilidad
-    const healthPercentage = this.health / this.maxHealth
-
-    ctx.fillStyle = '#ff0000'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth, healthBarHeight)
-    ctx.fillStyle = '#00ff00'
-    ctx.fillRect(this.position.x - this.radius, this.position.y - this.radius - 15, healthBarWidth * healthPercentage, healthBarHeight)
   }
 
   getShootPosition() {
@@ -348,14 +369,16 @@ export class ElonBoss {
     if (!this.isVisible) return false
 
     this.health -= damage
-    // Aumentar velocidad y aleatoriedad al recibir daño
-    this.speedMultiplier += 0.3
-    // Ajustar velocidades según dispositivo
+    // Activar movimiento aleatorio temporal (igual que Trump)
+    this.isRandomMovement = true;
+    this.randomMovementTimer = 30 + Math.floor(Math.random() * 20); // frames aleatorios
+    // Aumentar velocidad y aleatoriedad al recibir daño (igual que Trump)
+    this.speedMultiplier += 0.2
+    // Ajustar velocidades según dispositivo (igual que Trump)
     const isResponsive = window.innerWidth < 1025
-    const maxSpeedX = isResponsive ? 2 : 3  // Velocidades más bajas en responsive
-    const maxSpeedY = isResponsive ? 1 : 2
-    this.velocity.x = Utils.randomBetween(-maxSpeedX, maxSpeedX) * this.speedMultiplier
-    this.velocity.y = Utils.randomBetween(-maxSpeedY, maxSpeedY) * this.speedMultiplier
+    const maxSpeed = isResponsive ? 5 : 8  // Velocidades más bajas en responsive
+    this.velocity.x = Utils.randomBetween(-maxSpeed, maxSpeed) * this.speedMultiplier
+    this.velocity.y = Utils.randomBetween(-1, 1) * this.speedMultiplier  // Menos movimiento vertical
     
     if (this.health <= 0) {
       this.destroy()

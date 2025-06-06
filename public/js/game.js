@@ -20,6 +20,14 @@ export class Game {
     this.playerManager = new PlayerManager()
     this.hasSharedCurrentGame = false // Control para avoid multiple shared by game
 
+    // Precargar imágenes de fondo
+    this.backgrounds = {
+      trump: new Image(),
+      elon: new Image()
+    }
+    this.backgrounds.trump.src = 'assents/KOKOK_GAME_GFX_acc-01.png'
+    this.backgrounds.elon.src = 'assents/KOKOK_GAME_GFX_acc-02.png'
+
     this.setupCanvas()
     this.init()
     this.setupEventListeners()
@@ -571,7 +579,38 @@ export class Game {
   }
 
   drawBackground() {
-    // Gradiente de fondo
+    // Verificar si hay un jefe actual para determinar el fondo
+    let currentBossType = null
+    if (this.gameState.currentBoss && this.gameState.currentBoss.type) {
+      currentBossType = this.gameState.currentBoss.type
+    }
+
+    // No dibujar fondo durante la alerta de jefe
+    if (this.gameState.showingBossIncoming) {
+      return // No dibujar ningún fondo durante la alerta
+    }
+
+    // Si hay un jefe específico, usar su escenario
+    if (currentBossType === 'trump') {
+      // Fondo para Trump
+      if (this.backgrounds.trump.complete) {
+        this.ctx.drawImage(this.backgrounds.trump, 0, 0, this.canvas.width, this.canvas.height)
+      }
+      // No mostrar fondo genérico mientras carga
+    } else if (currentBossType === 'elon') {
+      // Fondo para Elon
+      if (this.backgrounds.elon.complete) {
+        this.ctx.drawImage(this.backgrounds.elon, 0, 0, this.canvas.width, this.canvas.height)
+      }
+      // No mostrar fondo genérico mientras carga
+    } else {
+      // Fondo por defecto cuando no hay jefe o en menú
+      this.drawDefaultBackground()
+    }
+  }
+
+  drawDefaultBackground() {
+    // Gradiente de fondo original
     const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height)
     gradient.addColorStop(0, "#87CEEB")
     gradient.addColorStop(0.5, "#98FB98")

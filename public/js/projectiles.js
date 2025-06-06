@@ -3,7 +3,10 @@ import { Utils, Vector2 } from "./utils.js"
 export class Bullet {
   constructor(x, y, direction = new Vector2(0, -1)) {
     this.position = new Vector2(x, y)
-    this.velocity = direction.copy().multiply(10)
+    // Ajustar velocidad según dispositivo
+    const isResponsive = window.innerWidth < 1025
+    const bulletSpeed = isResponsive ? 7.5 : 10  // Reducido de 10 a 7.5 en responsive (-25%)
+    this.velocity = direction.copy().multiply(bulletSpeed)
     this.radius = 8
     this.active = true
     this.trail = []
@@ -104,8 +107,8 @@ export class Bomb {
       
       // Reducir velocidad en responsive
       if (isResponsive) {
-        this.velocity.x *= 0.8 // 20% más lento
-        this.velocity.y *= 0.8
+        this.velocity.x *= 0.6 // Reducido de 0.8 a 0.6 (-25% adicional)
+        this.velocity.y *= 0.6
       }
     } else {
       // Trayectoria normal
@@ -115,8 +118,8 @@ export class Bomb {
       
       // Reducir velocidad en responsive también para bombas normales
       if (isResponsive) {
-        this.velocity.x *= 0.8 // 20% más lento
-        this.velocity.y *= 0.8
+        this.velocity.x *= 0.6 // Reducido de 0.8 a 0.6 (-25% adicional)
+        this.velocity.y *= 0.6
       }
     }
   }
@@ -191,7 +194,7 @@ export class Rocket {
     
     // Ajustar velocidad según si es responsive
     const isResponsive = window.innerWidth < 1025
-    this.speed = isResponsive ? 4.8 : 8 // 40% más lento en responsive (era 20%)
+    this.speed = isResponsive ? 3.6 : 8 // Reducido de 4.8 a 3.6 en responsive (-25% adicional)
     this.turnSpeed = 0.15
     this.health = 1
   }

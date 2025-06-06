@@ -62,7 +62,10 @@ export class Player {
 
     // Movimiento horizontal suave MÁS RÁPIDO
     const speedMultiplier = this.speedBoost ? 2.0 : 1.0 // Duplicar velocidad si tiene speed boost
-    const lerpFactor = (this.speedBoost ? 0.5 : 0.25) * speedMultiplier // Movimiento más rápido con speed boost
+    // Ajustar velocidad según dispositivo
+    const isResponsive = window.innerWidth < 1025
+    const baseSpeed = isResponsive ? 0.1875 : 0.25  // Reducido de 0.25 a 0.1875 en responsive (-25%)
+    const lerpFactor = (this.speedBoost ? 0.5 : baseSpeed) * speedMultiplier // Movimiento más rápido con speed boost
     this.position.x = Utils.lerp(this.position.x, this.targetPosition.x, lerpFactor)
 
     // Solo mover verticalmente si no está saltando
@@ -122,8 +125,9 @@ export class Player {
     if (this.image.complete) {
       ctx.save()
       ctx.translate(this.position.x, this.position.y)
-      // Aumentar el tamaño mucho más (de radius * 3.5 a radius * 6)
-      const imageSize = this.radius * 6
+      // Tamaño ajustado: más pequeño en responsive
+      const isMobile = window.innerWidth < 1025
+      const imageSize = isMobile ? this.radius * 4 : this.radius * 6  // Reducido de 6 a 4 en móvil
       ctx.drawImage(this.image, -imageSize/2, -imageSize/2, imageSize, imageSize)
       ctx.restore()
     } else {

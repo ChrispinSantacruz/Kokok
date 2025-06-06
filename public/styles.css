@@ -368,8 +368,8 @@ body {
 .welcome-container {
   display: block !important;              /* ← MOSTRAR EN DESKTOP */
   position: absolute;
-  top: 50px;
-  right: 50px;
+  top: 3vh;                               /* ← RESPONSIVE: era 50px */
+  right: 3vw;                             /* ← RESPONSIVE: era 50px */
   z-index: 20;
 }
 
@@ -388,32 +388,32 @@ body {
   background-size: contain;              /* ← TAMAÑO NORMAL DESKTOP */
   background-position: center center;    /* ← CENTRADO DESKTOP */
   background-repeat: no-repeat;
-  width: 1000px;                         /* ← AUMENTAR TAMAÑO: era 800px */
-  height: 750px;                         /* ← AUMENTAR TAMAÑO: era 600px */
-  padding: 220px 60px 120px 60px;        /* ← CORREGIR PADDING: era incorrecto */
+  width: min(1000px, 85vw);               /* ← RESPONSIVE: máximo 85% del viewport */
+  height: min(750px, 80vh);               /* ← RESPONSIVE: máximo 80% del viewport */
+  padding: min(220px, 15vh) min(60px, 5vw) min(120px, 10vh) min(60px, 5vw);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;                   /* ← CENTRAR BOTONES: era flex-start */
+  align-items: center;                   /* ← CENTRAR BOTONES */
   position: relative;
   overflow: hidden;
-  margin: 25px auto;
-  transform: translateX(115px);        /* ← MOVER HACIA LA IZQUIERDA */
+  margin: 0 auto;                        /* ← CENTRADO AUTOMÁTICO: era 25px auto */
+  transform: none;                       /* ← ELIMINAR TRANSFORM FIJO: era translateX(115px) */
 }
 
 .character-container {
   display: block;                        /* ← MOSTRAR EN DESKTOP */
   position: absolute;
-  right: -50px;
-  bottom: 50px;
-  width: 300px;
-  height: 350px;
+  right: max(-50px, -5vw);               /* ← RESPONSIVE: era -50px */
+  bottom: max(50px, 5vh);                /* ← RESPONSIVE: era 50px */
+  width: min(300px, 25vw);               /* ← RESPONSIVE: era 300px */
+  height: min(350px, 30vh);              /* ← RESPONSIVE: era 350px */
   z-index: 15;
 }
 
 .title-image {
-  width: 400px;
-  height: 120px;
+  width: min(400px, 35vw);               /* ← RESPONSIVE: era 400px */
+  height: min(120px, 10vh);              /* ← RESPONSIVE: era 120px */
   background-image: url('./assents/kokok_game_ buttons-05.png');
   background-size: contain;
   background-position: center;
@@ -436,10 +436,10 @@ body {
 #mainMenu .menu-buttons {
   display: flex;
   flex-direction: column;
-  gap: 20px;                             /* ← REDUCIR GAP: era 25px */
-  margin: 40px auto 0 183px;              /* ← CENTRAR BOTONES: era 65px 0 0 0 */
+  gap: min(20px, 2vh);                   /* ← RESPONSIVE: era 20px */
+  margin: min(40px, 4vh) auto 0 auto;    /* ← CENTRADO AUTOMÁTICO: era 40px auto 0 183px */
   width: 100%;
-  max-width: 350px;                      /* ← REDUCIR ANCHO MÁXIMO: era 400px */
+  max-width: min(350px, 30vw);           /* ← RESPONSIVE: era 350px */
   align-items: center;                   /* ← CENTRAR BOTONES */
   justify-content: center;               /* ← CENTRAR BOTONES */
 }
@@ -452,9 +452,9 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   
-  /* Tamaño REDUCIDO para desktop */
-  width: 280px;                          /* ← REDUCIR TAMAÑO: era 350px */
-  height: 64px;                          /* ← REDUCIR TAMAÑO: era 80px */
+  /* Tamaño RESPONSIVE para desktop */
+  width: min(280px, 25vw);               /* ← RESPONSIVE: era 280px */
+  height: min(64px, 6vh);                /* ← RESPONSIVE: era 64px */
   background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -464,7 +464,7 @@ body {
   
   /* CENTRADO DESKTOP */
   display: block;
-  margin: 0 auto;                        /* ← CENTRAR: era 0 */
+  margin: 0 auto;                        /* ← CENTRAR */
 }
 
 #mainMenu .menu-btn:hover {
@@ -477,27 +477,27 @@ body {
   filter: brightness(0.9);
 }
 
-/* Botón PLAY - Tamaño REDUCIDO para desktop */
+/* Botón PLAY - Tamaño RESPONSIVE para desktop */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: 320px;                          /* ← REDUCIR TAMAÑO: era 400px */
-  height: 76px;                          /* ← REDUCIR TAMAÑO: era 95px */
-  margin-bottom: 15px;
+  width: min(320px, 28vw);               /* ← RESPONSIVE: era 320px */
+  height: min(76px, 7vh);                /* ← RESPONSIVE: era 76px */
+  margin-bottom: min(15px, 1.5vh);       /* ← RESPONSIVE: era 15px */
 }
 
-/* Botón INSTRUCTIONS - Tamaño REDUCIDO para desktop */
+/* Botón INSTRUCTIONS - Tamaño RESPONSIVE para desktop */
 #mainMenu #instructionsBtn {
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  width: 300px;                          /* ← REDUCIR TAMAÑO: era 380px */
-  height: 68px;                          /* ← REDUCIR TAMAÑO: era 85px */
+  width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
+  height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
 }
 
-/* Botón CHANGE NAME - Tamaño REDUCIDO para desktop */
+/* Botón CHANGE NAME - Tamaño RESPONSIVE para desktop */
 #mainMenu #changeNameBtn {
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
-  width: 300px;                          /* ← REDUCIR TAMAÑO: era 380px */
-  height: 68px;                          /* ← REDUCIR TAMAÑO: era 85px */
+  width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
+  height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
 }
 
 /* Ocultar texto de los botones */
@@ -511,11 +511,11 @@ body {
 #mainMenu .powered-by {
   display: block;                        /* ← MOSTRAR EN DESKTOP */
   position: absolute;
-  bottom: 20px;
+  bottom: min(20px, 2vh);                /* ← RESPONSIVE: era 20px */
   left: 50%;
   transform: translateX(-50%);
   color: #E3C6A8;
-  font-size: 12px;
+  font-size: clamp(10px, 1.2vw, 14px);   /* ← RESPONSIVE: era 12px */
 }
 
 /* Instrucciones */
@@ -1806,6 +1806,35 @@ body.game-active .arcade-side {
     max-width: 85vw;
     max-height: 85vh;
   }
+  
+  /* Ajustes específicos del menú para monitores medianos */
+  #mainMenu .menu-content {
+    width: min(900px, 80vw);
+    height: min(675px, 75vh);
+    padding: min(200px, 12vh) min(50px, 4vw) min(100px, 8vh) min(50px, 4vw);
+  }
+  
+  #mainMenu .menu-buttons {
+    max-width: min(320px, 28vw);
+    gap: min(18px, 1.8vh);
+  }
+  
+  #mainMenu .menu-btn {
+    width: min(260px, 23vw);
+    height: min(60px, 5.5vh);
+  }
+  
+  #mainMenu .play-btn,
+  #mainMenu #playBtn {
+    width: min(300px, 26vw);
+    height: min(72px, 6.5vh);
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: min(280px, 24vw);
+    height: min(64px, 6vh);
+  }
 }
 
 /* Para monitores grandes (1601px - 1920px) */
@@ -1816,6 +1845,35 @@ body.game-active .arcade-side {
     max-width: 80vw;
     max-height: 80vh;
   }
+  
+  /* Ajustes específicos del menú para monitores grandes */
+  #mainMenu .menu-content {
+    width: min(1000px, 75vw);
+    height: min(750px, 70vh);
+    padding: min(220px, 14vh) min(60px, 4.5vw) min(120px, 9vh) min(60px, 4.5vw);
+  }
+  
+  #mainMenu .menu-buttons {
+    max-width: min(350px, 26vw);
+    gap: min(20px, 2vh);
+  }
+  
+  #mainMenu .menu-btn {
+    width: min(280px, 22vw);
+    height: min(64px, 5.8vh);
+  }
+  
+  #mainMenu .play-btn,
+  #mainMenu #playBtn {
+    width: min(320px, 25vw);
+    height: min(76px, 6.8vh);
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: min(300px, 23vw);
+    height: min(68px, 6.2vh);
+  }
 }
 
 /* Para monitores muy grandes (más de 1920px) */
@@ -1825,6 +1883,53 @@ body.game-active .arcade-side {
     height: 750px !important;
     max-width: 75vw;
     max-height: 75vh;
+  }
+  
+  /* Ajustes específicos del menú para monitores muy grandes */
+  #mainMenu .menu-content {
+    width: min(1100px, 70vw);
+    height: min(825px, 65vh);
+    padding: min(240px, 15vh) min(70px, 4vw) min(140px, 10vh) min(70px, 4vw);
+  }
+  
+  #mainMenu .menu-buttons {
+    max-width: min(380px, 24vw);
+    gap: min(22px, 2.2vh);
+  }
+  
+  #mainMenu .menu-btn {
+    width: min(300px, 20vw);
+    height: min(68px, 5.5vh);
+  }
+  
+  #mainMenu .play-btn,
+  #mainMenu #playBtn {
+    width: min(340px, 23vw);
+    height: min(80px, 6.5vh);
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: min(320px, 21vw);
+    height: min(72px, 6vh);
+  }
+  
+  /* Ajustar elementos adicionales para monitores muy grandes */
+  .welcome-container {
+    top: 2.5vh;
+    right: 2.5vw;
+  }
+  
+  .character-container {
+    right: max(-60px, -4vw);
+    bottom: max(60px, 6vh);
+    width: min(350px, 22vw);
+    height: min(400px, 28vh);
+  }
+  
+  .title-image {
+    width: min(450px, 30vw);
+    height: min(135px, 9vh);
   }
 }
 
@@ -1837,6 +1942,48 @@ body.game-active .arcade-side {
   
   #gameContainer {
     background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+  }
+  
+  /* Ajustes específicos del menú para pantallas ultra-wide */
+  #mainMenu .menu-content {
+    width: min(1000px, 50vw);              /* ← Reducir ancho en ultra-wide */
+    height: min(750px, 85vh);              /* ← Mantener altura adecuada */
+    padding: min(220px, 16vh) min(60px, 3vw) min(120px, 12vh) min(60px, 3vw);
+  }
+  
+  #mainMenu .menu-buttons {
+    max-width: min(350px, 20vw);           /* ← Reducir ancho de botones */
+    gap: min(20px, 2.5vh);
+  }
+  
+  #mainMenu .menu-btn {
+    width: min(280px, 16vw);               /* ← Botones más estrechos */
+    height: min(64px, 7vh);
+  }
+  
+  #mainMenu .play-btn,
+  #mainMenu #playBtn {
+    width: min(320px, 18vw);               /* ← Play button más estrecho */
+    height: min(76px, 8vh);
+  }
+  
+  #mainMenu #instructionsBtn,
+  #mainMenu #changeNameBtn {
+    width: min(300px, 17vw);               /* ← Botones más estrechos */
+    height: min(68px, 7.5vh);
+  }
+  
+  /* Centrar mejor en ultra-wide */
+  .welcome-container {
+    top: 4vh;
+    right: 8vw;                            /* ← Más espacio desde el borde */
+  }
+  
+  .character-container {
+    right: max(-50px, -3vw);               /* ← Menos offset en ultra-wide */
+    bottom: max(50px, 8vh);
+    width: min(300px, 15vw);               /* ← Personaje más pequeño */
+    height: min(350px, 35vh);
   }
 }
 

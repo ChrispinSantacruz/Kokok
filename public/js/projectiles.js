@@ -107,8 +107,8 @@ export class Bomb {
       
       // Reducir velocidad en responsive
       if (isResponsive) {
-        this.velocity.x *= 0.6 // Reducido de 0.8 a 0.6 (-25% adicional)
-        this.velocity.y *= 0.6
+        this.velocity.x *= 0.78 // Aumentado de 0.6 a 0.78 (+30%)
+        this.velocity.y *= 0.78
       }
     } else {
       // Trayectoria normal
@@ -118,8 +118,8 @@ export class Bomb {
       
       // Reducir velocidad en responsive también para bombas normales
       if (isResponsive) {
-        this.velocity.x *= 0.6 // Reducido de 0.8 a 0.6 (-25% adicional)
-        this.velocity.y *= 0.6
+        this.velocity.x *= 0.78 // Aumentado de 0.6 a 0.78 (+30%)
+        this.velocity.y *= 0.78
       }
     }
   }
@@ -194,7 +194,7 @@ export class Rocket {
     
     // Ajustar velocidad según si es responsive
     const isResponsive = window.innerWidth < 1025
-    this.speed = isResponsive ? 3.6 : 8 // Reducido de 4.8 a 3.6 en responsive (-25% adicional)
+    this.speed = isResponsive ? 4.68 : 8 // Aumentado de 3.6 a 4.68 en responsive (+30%)
     this.turnSpeed = 0.15
     this.health = 1
   }

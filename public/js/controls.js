@@ -44,19 +44,6 @@ export class Controls {
       e.preventDefault()
     })
 
-    // Botón de salto móvil
-    const upBtn = document.getElementById("upPad")
-    if (upBtn) {
-      upBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault()
-        this.player.jump()
-      })
-      upBtn.addEventListener("click", (e) => {
-        e.preventDefault()
-        this.player.jump()
-      })
-    }
-
     // Botón de disparo
     const shootBtn = document.getElementById("shootBtn")
     if (shootBtn) {

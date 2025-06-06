@@ -1873,7 +1873,7 @@ body.game-active .arcade-side {
     width: min(1000px, 75vw);
     height: min(750px, 70vh);
     padding: min(220px, 14vh) min(60px, 4.5vw) min(120px, 9vh) min(60px, 4.5vw);
-    background-position: 120% center;      /* ← MOVER SOLO EL FONDO: era transform translate(8vw, 3vh) */
+    background-position: 100% center;      /* ← MOVER SOLO EL FONDO: era transform translate(8vw, 3vh) */
   }
   
   #mainMenu .menu-buttons {

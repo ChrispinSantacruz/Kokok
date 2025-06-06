@@ -1873,7 +1873,7 @@ body.game-active .arcade-side {
     width: min(1000px, 75vw);
     height: min(750px, 70vh);
     padding: min(220px, 14vh) min(60px, 4.5vw) min(120px, 9vh) min(60px, 4.5vw);
-    transform: translate(-5vw, 3vh);       /* ← AJUSTAR POSICIÓN PARA MONITORES GRANDES */
+    transform: translate(-10vw, 3vh);       /* ← AJUSTAR POSICIÓN PARA MONITORES GRANDES */
   }
   
   #mainMenu .menu-buttons {
@@ -1918,7 +1918,7 @@ body.game-active .arcade-side {
     width: min(1100px, 70vw);
     height: min(825px, 65vh);
     padding: min(240px, 15vh) min(70px, 4vw) min(140px, 10vh) min(70px, 4vw);
-    transform: translate(-6vw, 3.5vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MUY GRANDES */
+    transform: translate(-10vw, 3.5vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MUY GRANDES */
   }
   
   #mainMenu .menu-buttons {
@@ -1983,7 +1983,7 @@ body.game-active .arcade-side {
     width: min(1000px, 50vw);              /* ← Reducir ancho en ultra-wide */
     height: min(750px, 85vh);              /* ← Mantener altura adecuada */
     padding: min(220px, 16vh) min(60px, 3vw) min(120px, 12vh) min(60px, 3vw);
-    transform: translate(-3vw, 2vh);       /* ← AJUSTAR POSICIÓN PARA ULTRA-WIDE */
+    transform: translate(-10vw, 2vh);       /* ← AJUSTAR POSICIÓN PARA ULTRA-WIDE */
   }
   
   #mainMenu .menu-buttons {

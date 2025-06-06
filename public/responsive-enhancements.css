@@ -18,34 +18,7 @@
   --game-max-height: 1050px;
 }
 
-/* Container queries para el canvas del juego */
-@container (max-width: 480px) {
-  #gameCanvas {
-    width: calc(100vw - 20px) !important;
-    height: calc((100vw - 20px) * 0.75) !important;
-    min-width: var(--game-min-width);
-    min-height: var(--game-min-height);
-    border-width: 2px;
-  }
-}
-
-@container (min-width: 481px) and (max-width: 768px) {
-  #gameCanvas {
-    width: calc(90vw) !important;
-    height: calc(90vw * 0.75) !important;
-    border-width: 3px;
-  }
-}
-
-@container (min-width: 769px) and (max-width: 1024px) {
-  #gameCanvas {
-    width: 800px !important;
-    height: 600px !important;
-    max-width: 85vw;
-    max-height: 85vh;
-  }
-}
-
+/* Container queries SOLO para desktop - eliminamos móviles */
 @container (min-width: 1025px) and (max-width: 1440px) {
   #gameCanvas {
     width: 800px !important;
@@ -150,39 +123,16 @@
   }
 }
 
-/* Soporte para modo landscape en móviles */
-@media (max-height: 500px) and (orientation: landscape) {
-  #gameCanvas {
-    height: 85vh !important;
-    width: calc(85vh * 1.33) !important;
-  }
-  
-  #mobileControls {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: 5px 10px;
-  }
-  
-  .dpad-container {
-    order: 1;
-  }
-  
-  #shootBtn {
-    order: 2;
-  }
-}
-
 /* Mejoras para pantallas plegables */
 @media (max-width: 540px) and (min-height: 600px) {
   .screen {
-    padding: 10px;
+    padding: 1px;
   }
   
   #gameCanvas {
-    width: 95vw !important;
-    height: calc(95vw * 0.75) !important;
-    max-height: 70vh;
+    width: 90vw !important;
+    height: calc(102vw * 1.2) !important;
+    max-height: 85vh;
   }
 }
 
@@ -293,30 +243,35 @@
 /* Mejoras específicas de background para móviles y tablets */
 @media screen and (max-width: 1023px) {
   body, .screen, #gameContainer {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-color: #2c3e50 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    overflow: hidden;
   }
 }
 
 /* Para móviles en portrait */
 @media screen and (max-width: 768px) and (orientation: portrait) {
   body, .screen, #gameContainer {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    overflow: hidden;
   }
 }
 
 /* Para móviles en landscape */
 @media screen and (max-width: 768px) and (orientation: landscape) {
   body, .screen, #gameContainer {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    overflow: hidden;
   }
 } 

@@ -7,11 +7,11 @@
 body {
   font-family: "Arial Black", Arial, sans-serif;
   background-image: url('./assents/background_kokok.png');
-  background-size: cover;
-  background-position: center center;
+  background-size: 85%;             /* ← MITAD DEL TAMAÑO: era 170% */
+  background-position: center center; /* ← CENTRADO */
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-color: #2c3e50;
+  background-color: transparent;
   overflow: hidden;
   touch-action: none;
   min-height: 100vh;
@@ -34,64 +34,119 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
   container-type: size;
 }
 
 #gameContainer.game-over {
-  background: rgba(0, 0, 0, 0.5);
+  background: transparent;
 }
 
-#gameCanvas {
-  /* Tamaño fijo más consistente para desktop */
-  width: 800px;
-  height: 600px;
-  aspect-ratio: var(--game-aspect-ratio);
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-  border: 4px solid #e74c3c;
-  border-radius: 20px;
-  background: linear-gradient(180deg, #87ceeb 0%, #98fb98 100%);
-  margin: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
+/* Canvas del juego SOLO PARA DESKTOP */
+@media (min-width: 1025px) {
+  #gameCanvas {
+    /* Tamaño OPTIMIZADO para DESKTOP */
+    width: 900px !important;               /* ← AUMENTAR TAMAÑO: era 800px */
+    height: 675px !important;              /* ← AUMENTAR TAMAÑO: era 600px */
+    max-width: 85vw !important;            /* ← LÍMITE MÁXIMO */
+    max-height: 85vh !important;           /* ← LÍMITE MÁXIMO */
+    min-width: 320px !important;
+    min-height: 240px !important;
+    border: 4px solid #e74c3c !important;
+    border-radius: 8px !important;
+    margin: 0 auto !important;             /* ← CENTRADO */
+    object-fit: contain !important;
+    background: transparent !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  }
 
-/* UI del juego */
-#gameUI {
-  position: absolute;
-  top: max(20px, 2vw);
-  left: max(20px, 2vw);
-  z-index: 10;
-  font-size: clamp(14px, 2vw, 18px);
-}
+  #gameContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+  }
 
-#score,
-#lives {
-  background: rgba(0, 0, 0, 0.85);
-  color: #00ff00;
-  padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px);
-  border-radius: 25px;
-  margin-bottom: clamp(8px, 2vh, 15px);
-  font-weight: bold;
-  font-size: clamp(14px, 3.5vw, 20px);
-  border: 2px solid #00ff00;
-  text-shadow: 0 0 10px #00ff00;
-  min-width: 100px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
+  /* SCORE - ESQUINA SUPERIOR IZQUIERDA */
+  #score {
+    position: fixed !important;
+    top: 30px !important;                  
+    left: 30px !important;                 
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #00ff00 !important;
+    padding: 10px 16px !important;                    
+    border-radius: 20px !important;                   
+    font-weight: bold !important;
+    font-size: 16px !important;                       
+    border: 2px solid #00ff00 !important;
+    text-shadow: 0 0 10px #00ff00 !important;
+    min-width: 100px !important;                      
+    text-align: center !important;
+    z-index: 50 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    margin: 0 !important;
+  }
 
-#score .score-label, #lives .lives-label {
-  font-size: clamp(10px, 2.5vw, 14px);
-  margin-bottom: 2px;
-}
+  /* LIVES - ESQUINA SUPERIOR DERECHA */
+  #lives {
+    position: fixed !important;
+    top: 30px !important;                  
+    right: 30px !important;                
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #00ff00 !important;
+    padding: 10px 16px !important;                    
+    border-radius: 20px !important;                   
+    font-weight: bold !important;
+    font-size: 16px !important;                       
+    border: 2px solid #00ff00 !important;
+    text-shadow: 0 0 10px #00ff00 !important;
+    min-width: 100px !important;                      
+    text-align: center !important;
+    z-index: 50 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    margin: 0 !important;
+  }
 
-#score .score-number, #lives .lives-number {
-  font-size: clamp(16px, 4vw, 24px);
+  /* ETIQUETAS Y NÚMEROS */
+  #score .score-label, 
+  #lives .lives-label {
+    font-size: 11px !important;                       
+    margin-bottom: 2px !important;
+  }
+
+  #score .score-number, 
+  #lives .lives-number {
+    font-size: 18px !important;                       
+  }
+
+  /* Power-ups en la parte inferior centro - ARREGLADO */
+  #powerUpStatus {
+    position: fixed !important;
+    top: 150px !important;                       /* ← MANTENER POSICIÓN DESKTOP */
+    left: 2% !important;                         /* ← PEGADO AL BORDE IZQUIERDO: era 5% */
+    bottom: auto !important;                     
+    transform: none !important;                  /* ← SIN TRANSFORM EN DESKTOP */
+    background: rgba(0, 0, 0, 0.85) !important;  /* ← MISMO FONDO QUE SCORE */
+    color: #ffd700 !important;                   /* ← TEXTO DORADO */
+    padding: 8px 14px !important;                /* ← PADDING AJUSTADO */
+    border-radius: 20px !important;              /* ← MISMO RADIO QUE SCORE */
+    font-size: 13px !important;                  /* ← TAMAÑO MENOR QUE SCORE */
+    border: 2px solid #ffd700 !important;        /* ← BORDE DORADO */
+    text-shadow: 0 0 10px #ffd700 !important;    /* ← MISMO EFECTO */
+    max-width: 160px !important;                 /* ← ANCHO CONTROLADO */
+    min-width: 120px !important;                 /* ← ANCHO MÍNIMO */
+    box-shadow: none !important;                 /* ← SIN SOMBRA EXTRA */
+  }
 }
 
 #lives {
@@ -163,33 +218,64 @@ body {
 }
 
 #powerUpStatus {
-  background: rgba(255, 215, 0, 0.9);
-  color: #000;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 14px;
-  display: none;
+  position: absolute !important;
+  top: 12vh !important;                          /* ← NUEVA POSICIÓN RESPONSIVE */
+  left: 50% !important;
+  transform: translateX(-55%) !important;        /* ← NUEVA POSICIÓN RESPONSIVE */
+  background: rgba(0, 0, 0, 0.85) !important;    /* ← MISMO FONDO QUE SCORE */
+  color: #ffd700 !important;                     /* ← TEXTO DORADO */
+  padding: 10px 16px !important;                 /* ← MISMO PADDING QUE SCORE */
+  border-radius: 20px !important;                /* ← MISMO RADIO QUE SCORE */
+  font-size: 14px !important;                    /* ← TAMAÑO APROPIADO */
+  font-weight: bold !important;
+  text-align: center !important;
+  z-index: 30 !important;
+  border: 2px solid #ffd700 !important;          /* ← BORDE DORADO COMO SCORE */
+  text-shadow: 0 0 10px #ffd700 !important;      /* ← MISMO EFECTO QUE SCORE */
+  max-width: 180px !important;                   /* ← ANCHO CONTROLADO */
+  white-space: nowrap !important;
+  display: block !important;
+  box-shadow: none !important;                   /* ← SIN SOMBRA EXTRA */
+}
+
+/* Desktop específico - PowerUps en posición actual */
+@media (min-width: 1025px) {
+  #powerUpStatus {
+    position: fixed !important;
+    top: 150px !important;                       /* ← MANTENER POSICIÓN DESKTOP */
+    left: 2% !important;                         /* ← PEGADO AL BORDE IZQUIERDO: era 5% */
+    bottom: auto !important;                     
+    transform: none !important;                  /* ← SIN TRANSFORM EN DESKTOP */
+    background: rgba(0, 0, 0, 0.85) !important;  /* ← MISMO FONDO QUE SCORE */
+    color: #ffd700 !important;                   /* ← TEXTO DORADO */
+    padding: 8px 14px !important;                /* ← PADDING AJUSTADO */
+    border-radius: 20px !important;              /* ← MISMO RADIO QUE SCORE */
+    font-size: 13px !important;                  /* ← TAMAÑO MENOR QUE SCORE */
+    border: 2px solid #ffd700 !important;        /* ← BORDE DORADO */
+    text-shadow: 0 0 10px #ffd700 !important;    /* ← MISMO EFECTO */
+    max-width: 160px !important;                 /* ← ANCHO CONTROLADO */
+    min-width: 120px !important;                 /* ← ANCHO MÍNIMO */
+    box-shadow: none !important;                 /* ← SIN SOMBRA EXTRA */
+  }
 }
 
 .boss-alert {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(45deg, #ff0000, #ff4500);
-  color: white;
-  padding: 20px 30px;
-  border-radius: 15px;
-  font-size: 22px;
-  font-weight: bold;
-  animation: bossAlert 2s ease-in-out;
-  z-index: 20;
-  border: 3px solid #fff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  max-width: 250px;
-  text-align: center;
-  white-space: nowrap;
+  position: absolute !important;
+  top: 40% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: linear-gradient(45deg, #ff0000, #ff4500) !important;
+  color: white !important;
+  padding: 20px 25px !important;
+  border-radius: 15px !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+  z-index: 35 !important;
+  border: 3px solid #fff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  max-width: 280px !important;
+  text-align: center !important;
+  animation: bossAlert 2s ease-in-out !important;
 }
 
 @keyframes bossAlert {
@@ -280,8 +366,9 @@ body {
 }
 
 .welcome-container {
+  display: block !important;              /* ← MOSTRAR EN DESKTOP */
   position: absolute;
-  top: 80px;
+  top: 50px;
   right: 50px;
   z-index: 20;
 }
@@ -298,23 +385,30 @@ body {
   text-align: center;
   z-index: 20;
   background-image: url('./assents/kokok_game_boox-05.png');
-  background-size: 65%;
-  background-position: 86% center;
+  background-size: contain;              /* ← TAMAÑO NORMAL DESKTOP */
+  background-position: center center;    /* ← CENTRADO DESKTOP */
   background-repeat: no-repeat;
-  width: 1500px;
-  height: 1500px;
-  padding: 400px 90px 200px 60px;
+  width: 1000px;                         /* ← AUMENTAR TAMAÑO: era 800px */
+  height: 750px;                         /* ← AUMENTAR TAMAÑO: era 600px */
+  padding: 220px 60px 120px 60px;        /* ← CORREGIR PADDING: era incorrecto */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: center;                   /* ← CENTRAR BOTONES: era flex-start */
   position: relative;
   overflow: hidden;
   margin: 25px auto;
+  transform: translateX(115px);        /* ← MOVER HACIA LA IZQUIERDA */
 }
 
 .character-container {
-  display: none;
+  display: block;                        /* ← MOSTRAR EN DESKTOP */
+  position: absolute;
+  right: -50px;
+  bottom: 50px;
+  width: 300px;
+  height: 350px;
+  z-index: 15;
 }
 
 .title-image {
@@ -336,26 +430,18 @@ body {
 }
 
 #mainMenu .welcome-message {
-  font-size: 18px;
-  margin: 0;
-  color: #ffd700;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 12px 18px;
-  border-radius: 10px;
-  border: 2px solid #ffd700;
-  font-weight: bold;
-  display: inline-block;
+  display: block !important;             /* ← MOSTRAR BURBUJA EN DESKTOP */
 }
 
 #mainMenu .menu-buttons {
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  margin: 65px auto 0 auto;
+  gap: 20px;                             /* ← REDUCIR GAP: era 25px */
+  margin: 40px auto 0 183px;              /* ← CENTRAR BOTONES: era 65px 0 0 0 */
   width: 100%;
-  max-width: 400px;
-  align-items: center;
-  justify-content: center;
+  max-width: 350px;                      /* ← REDUCIR ANCHO MÁXIMO: era 400px */
+  align-items: center;                   /* ← CENTRAR BOTONES */
+  justify-content: center;               /* ← CENTRAR BOTONES */
 }
 
 #mainMenu .menu-btn {
@@ -366,9 +452,9 @@ body {
   cursor: pointer;
   transition: all 0.3s;
   
-  /* Tamaño para monitores grandes - reducido 20% */
-  width: 280px;
-  height: 64px;
+  /* Tamaño REDUCIDO para desktop */
+  width: 280px;                          /* ← REDUCIR TAMAÑO: era 350px */
+  height: 64px;                          /* ← REDUCIR TAMAÑO: era 80px */
   background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -376,9 +462,9 @@ body {
   /* Efectos hover */
   filter: brightness(1);
   
-  /* Centrado perfecto */
+  /* CENTRADO DESKTOP */
   display: block;
-  margin: 0 auto;
+  margin: 0 auto;                        /* ← CENTRAR: era 0 */
 }
 
 #mainMenu .menu-btn:hover {
@@ -391,27 +477,27 @@ body {
   filter: brightness(0.9);
 }
 
-/* Botón PLAY - Tamaño grande para desktop - 15% más grande que los otros botones */
+/* Botón PLAY - Tamaño REDUCIDO para desktop */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: 350px;
-  height: 83px;
+  width: 320px;                          /* ← REDUCIR TAMAÑO: era 400px */
+  height: 76px;                          /* ← REDUCIR TAMAÑO: era 95px */
   margin-bottom: 15px;
 }
 
-/* Botón INSTRUCTIONS - Tamaño grande para desktop - reducido 20% */
+/* Botón INSTRUCTIONS - Tamaño REDUCIDO para desktop */
 #mainMenu #instructionsBtn {
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  width: 304px;
-  height: 68px;
+  width: 300px;                          /* ← REDUCIR TAMAÑO: era 380px */
+  height: 68px;                          /* ← REDUCIR TAMAÑO: era 85px */
 }
 
-/* Botón CHANGE NAME - Tamaño grande para desktop - reducido 20% */
+/* Botón CHANGE NAME - Tamaño REDUCIDO para desktop */
 #mainMenu #changeNameBtn {
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
-  width: 304px;
-  height: 68px;
+  width: 300px;                          /* ← REDUCIR TAMAÑO: era 380px */
+  height: 68px;                          /* ← REDUCIR TAMAÑO: era 85px */
 }
 
 /* Ocultar texto de los botones */
@@ -423,7 +509,13 @@ body {
 }
 
 #mainMenu .powered-by {
-  display: none;
+  display: block;                        /* ← MOSTRAR EN DESKTOP */
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #E3C6A8;
+  font-size: 12px;
 }
 
 /* Instrucciones */
@@ -562,7 +654,7 @@ body {
 
 /* Controles móviles */
 #mobileControls {
-  display: block !important;
+  display: none !important;              /* ← OCULTAR EN DESKTOP */
   position: absolute !important;
   bottom: 5vh !important;
   left: 0 !important;
@@ -628,10 +720,7 @@ body {
   }
   
   .welcome-container {
-    position: absolute;
-    top: 45px;
-    right: 25px;
-    z-index: 20;
+    display: none !important;           /* ← OCULTAR EN TABLETS */
   }
   
   .title-image {
@@ -645,81 +734,94 @@ body {
   }
   
   #mainMenu .menu-content {
-    width: 400px;
-    height: 400px;
-    padding: 80px 40px 60px 40px;
-    margin: 0 auto;
-    background-image: url('./assents/kokok_ home-06.png');
-    background-position: center center;
-    background-size: contain;
-  }
-  
-  .main-title-container {
-    margin-bottom: 25px;
-  }
-  
-  .welcome-container {
-    position: absolute;
-    top: 45px;
-    right: 25px;
-    z-index: 20;
-  }
-  
-  .title-image {
-    width: 280px;
-    height: 85px;
-  }
-  
-  .main-content-container {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  #mainMenu .menu-content {
-    width: 400px;
-    height: 400px;
-    padding: 80px 40px 60px 40px;
-    margin: 0 auto;
-    background-image: url('./assents/kokok_ home-06.png');
-    background-position: center center;
-    background-size: contain;
-  }
-  
-  #mainMenu .welcome-message {
-    font-size: 13px;
-    padding: 8px 12px;
-    border-radius: 8px;
+    width: 450px !important;          /* ← BACKGROUND MÁS GRANDE para tablets */
+    height: 450px !important;         /* ← BACKGROUND MÁS ALTO para tablets */
+    padding: 100px 40px 60px 40px !important;  /* ← AJUSTAR PADDING para centrar botones */
+    margin: 0 auto !important;        /* ← CENTRAR EN TABLETS */
+    transform: translateX(0px) !important;  /* ← RESETEAR TRANSFORM EN TABLETS */
+    background-image: url('./assents/kokok_ home-06.png') !important;
+    background-size: 125% !important;             /* ← 25% MÁS GRANDE: era contain */
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
   
   #mainMenu .menu-buttons {
     max-width: 200px;
-    gap: 15px;
-    margin: 40px 0 0 0;
+    gap: 12px;               /* ← REDUCIR GAP para mejor espaciado */
+    margin: 30px auto 0 auto !important;      /* ← CENTRAR EN TABLETS */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   #mainMenu .menu-btn {
-    width: 200px;
-    height: 45px;
+    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS para tablets */
+    height: 36px;          /* ← BOTONES MÁS BAJOS para tablets */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 220px;
-    height: 55px;
+    width: 180px;          /* ← PLAY MÁS PEQUEÑO para tablets */
+    height: 44px;          /* ← PLAY MÁS BAJO para tablets */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 220px;
-    height: 50px;
+    width: 180px;          /* ← BOTONES MÁS PEQUEÑOS para tablets */
+    height: 40px;          /* ← BOTONES MÁS BAJOS para tablets */
   }
-  
+
   #mainMenu .powered-by {
     font-size: 11px;
     margin-top: 25px;
   }
 
-  /* LoginScreen responsive 768px - solo logo */
+  /* CANVAS Y JUEGO TABLET */
+  #gameCanvas {
+    width: 75vw !important;
+    height: 55vh !important;
+    max-width: 75vw !important;
+    max-height: 55vh !important;
+  }
+
+  /* UI DEL JUEGO TABLET */
+  #gameUI {
+    top: 1vh !important;                  /* ← POSICIÓN TABLET */
+    left: 50% !important;                 /* ← CENTRADO TABLET */
+    transform: translateX(-50%) !important; /* ← CENTRADO TABLET */
+    flex-direction: row !important;       /* ← FILA EN TABLET */
+    gap: 20px !important;                 /* ← GAP TABLET */
+    align-items: center !important;       /* ← CENTRADO TABLET */
+    justify-content: center !important;
+  }
+
+  #score,
+  #lives {
+    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3.5vw, 20px) !important;
+    min-width: 100px !important;
+    margin-bottom: clamp(8px, 2vh, 15px) !important;
+  }
+
+  #score .score-label, #lives .lives-label {
+    font-size: clamp(10px, 2.5vw, 14px) !important;
+  }
+
+  #score .score-number, #lives .lives-number {
+    font-size: clamp(16px, 4vw, 24px) !important;
+  }
+
+  /* OCULTAR CONTROLES MÓVILES EN TABLETS LANDSCAPE */
+  #mobileControls {
+    display: none !important;
+  }
+
+  /* LoginScreen responsive para tablets */
   .login-title-container {
     top: 40px;
   }
@@ -736,15 +838,6 @@ body {
     align-items: center !important;
     justify-content: center !important;
   }
-  
-  #gameCanvas {
-    width: 70vw !important;
-    height: 90vh !important;
-    max-width: 70vw !important;
-    max-height: 90vh !important;
-    border-radius: 15px !important;
-    margin-top: 0 !important;
-  }
 }
 
 @media (max-width: 768px) {
@@ -756,6 +849,23 @@ body {
     /* background ya se maneja arriba */
   }
 
+  /* OCULTAR ELEMENTOS DE DESKTOP EN MÓVILES */
+  .welcome-container {
+    display: none !important;           /* ← OCULTAR EN MÓVILES */
+  }
+  
+  .character-container {
+    display: none !important;           /* ← OCULTAR EN MÓVILES */
+  }
+  
+  #mainMenu .welcome-message {
+    display: none !important;           /* ← OCULTAR BURBUJA EN MÓVILES */
+  }
+  
+  #mainMenu .powered-by {
+    display: none !important;           /* ← OCULTAR EN MÓVILES */
+  }
+
   #mainMenu {
     flex-direction: column;
     justify-content: center;
@@ -764,18 +874,21 @@ body {
   }
   
   #mainMenu .menu-content {
-    width: 320px;
-    height: 400px;
-    padding: 60px 30px 30px 30px;
-    margin-right: 0;
+    width: 400px !important;          /* ← BACKGROUND MÁS GRANDE: era 320px */
+    height: 480px !important;         /* ← BACKGROUND MÁS ALTO: era 400px */
+    padding: 10px 40px 60px 40px !important;  /* ← MÁS PADDING ARRIBA para centrar botones */
+    margin: 0 auto !important;        /* ← CENTRAR EN MÓVILES */
+    transform: translateX(0px) !important;  /* ← RESETEAR TRANSFORM EN MÓVILES */
     order: 1;
-  }
-  
-  .character-container {
-    width: 200px;
-    height: 250px;
-    margin-top: 0;
-    order: 2;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;           /* ← SIN BACKGROUND NEGRO */
+    background-image: url('./assents/kokok_ home-06.png') !important;
+    background-size: 125% !important;             /* ← 25% MÁS GRANDE: era contain */
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
   }
   
   #mainMenu .game-title {
@@ -788,130 +901,141 @@ body {
     margin-bottom: 15px;
   }
   
-  #mainMenu .welcome-message {
-    font-size: 10px;
-    margin: 6px 0;
+  #mainMenu .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px auto 0 auto !important;  /* ← CENTRAR EN MÓVILES */
+    width: 100%;
+    max-width: 200px;
+    align-items: center;
+    justify-content: center;
   }
   
   #mainMenu .menu-btn {
-    width: 180px;
-    height: 40px;
+    width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
+    height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 200px;
-    height: 50px;
+    width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
+    height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 200px;
-    height: 45px;
+    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
+    height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
   }
   
   #mainMenu .menu-btn:not(.play-btn) {
     font-size: 11px;
   }
-  
-  #mainMenu .powered-by {
-    font-size: 8px;
-    margin-top: 10px;
+
+  /* CANVAS Y JUEGO MÓVIL */
+  #gameCanvas {
+    width: 90vw !important;         /* ← ANCHO MÓVIL */
+    height: 65vh !important;        /* ← ALTO MÓVIL */
+    max-width: 90vw !important;
+    max-height: 65vh !important;
+    margin: 0 !important;
+  }
+
+  /* UI DEL JUEGO MÓVIL - SCORE Y LIVES EN FILA HORIZONTAL */
+  #gameUI {
+    position: absolute !important;         /* ← POSICIÓN ABSOLUTA */
+    top: 1vh !important;                  /* ← POSICIÓN MÓVIL */
+    left: 0 !important;                   /* ← DESDE EL BORDE IZQUIERDO */
+    right: 0 !important;                  /* ← HASTA EL BORDE DERECHO */
+    transform: none !important;           /* ← SIN TRANSFORM */
+    display: flex !important;             /* ← MOSTRAR EN MÓVIL */
+    flex-direction: row !important;       /* ← FILA EN MÓVIL */
+    gap: 0px !important;                  /* ← SIN GAP */
+    align-items: flex-start !important;   /* ← ALINEACIÓN SUPERIOR */
+    justify-content: space-between !important; /* ← SEPARAR A LOS EXTREMOS */
+    width: 100vw !important;              /* ← ANCHO COMPLETO */
+    padding: 0 15px !important;           /* ← PADDING LATERAL */
+    z-index: 15 !important;               /* ← Z-INDEX ALTO */
+  }
+
+  /* SCORE - IZQUIERDA EN MÓVIL */
+  #score {
+    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
+    top: auto !important;                 
+    left: auto !important;                
+    margin: 0 !important;                 /* ← SIN MARGENES */
+    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3.5vw, 20px) !important;
+    min-width: 100px !important;
+  }
+
+  /* LIVES - DERECHA EN MÓVIL */
+  #lives {
+    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
+    top: auto !important;                 
+    right: auto !important;               
+    margin: 0 !important;                 /* ← SIN MARGENES */
+    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3.5vw, 20px) !important;
+    min-width: 100px !important;
+  }
+
+  #score .score-label, #lives .lives-label {
+    font-size: clamp(10px, 2.5vw, 14px) !important;
+  }
+
+  #score .score-number, #lives .lives-number {
+    font-size: clamp(16px, 4vw, 24px) !important;
+  }
+
+  /* MOSTRAR CONTROLES MÓVILES */
+  #mobileControls {
+    display: block !important;
   }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
   body {
-    /* background ya se maneja arriba */
+    background-color: transparent !important;
   }
   
   .screen {
-    /* background ya se maneja arriba */
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: transparent !important;
   }
+  
+  #gameContainer {
+    width: 100vw !important;
+    height: 100vh !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
 
-  #mainMenu {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
+@media screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
+  body {
+    background-color: transparent !important;
   }
   
-  #mainMenu .menu-content {
-    width: 280px;
-    height: 350px;
-    padding: 50px 25px 25px 25px;
-    margin-right: 0;
+  .screen {
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: transparent !important;
   }
-  
-  .character-container {
-    width: 160px;
-    height: 200px;
-    margin-top: 0;
-  }
-  
-  #mainMenu .game-title {
-    font-size: 1.3em;
-    margin-bottom: 3px;
-  }
-  
-  #mainMenu .subtitle {
-    font-size: 0.7em;
-    margin-bottom: 12px;
-  }
-  
-  #mainMenu .welcome-message {
-    font-size: 9px;
-    margin: 5px 0;
-    padding: 3px 8px;
-  }
-  
-  #mainMenu .menu-btn {
-    width: 160px;
-    height: 35px;
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: 180px;
-    height: 45px;
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 180px;
-    height: 40px;
-  }
-  
-  #mainMenu .menu-btn:not(.play-btn) {
-    font-size: 9px;
-  }
-  
-  #mainMenu .powered-by {
-    font-size: 7px;
-    margin-top: 8px;
-  }
+}
 
-  /* LoginScreen responsive 480px - solo logo */
-  .login-title-container {
-    top: 25px;
+@media screen and (min-width: 481px) and (max-width: 1023px) and (orientation: landscape) {
+  body {
+    background-color: transparent !important;
   }
   
-  .login-title-image {
-    width: 320px;
-    height: 95px;
-  }
-
-  /* Centrar mejor el loginScreen en móvil */
-  #loginScreen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-
-  /* Ajustar espaciado del formulario en móvil */
-  .login-form {
-    margin-top: 60px !important;
+  .screen {
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: transparent !important;
   }
 }
 
@@ -936,8 +1060,18 @@ body {
   }
 
   #gameCanvas {
-    width: 90vw;
-    height: 70vh;
+    width: 95vw !important;
+    height: 80vh !important;
+    max-width: 95vw !important;
+    max-height: 80vh !important;
+    min-width: 320px !important;
+    min-height: 240px !important;
+    border: 4px solid #e74c3c !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
   }
 
   /* UI más compacta en landscape */
@@ -994,82 +1128,101 @@ body {
 }
 
 .arcade-side {
-  position: fixed;
-  top: auto;
-  transform: none;
-  width: 200px;
-  height: 300px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  pointer-events: none;
+  display: none !important;
+}
+
+/* Mostrar las imágenes laterales solo en desktop - ARREGLADO */
+@media (min-width: 1025px) {
+  .arcade-side {
+    display: none !important;              /* ← OCULTAR COMPLETAMENTE */
+  }
+
+  #arcadeLeft {
+    display: none !important;              /* ← OCULTAR ELON */
+  }
+
+  #arcadeRight {
+    display: none !important;              /* ← OCULTAR TRUMP Y CUCARACHA */
+  }
+
+  .elon-img {
+    display: none !important;              /* ← OCULTAR ELON */
+  }
+
+  .trump-img {
+    display: none !important;              /* ← OCULTAR TRUMP */
+  }
+
+  #arcadeRight img {
+    display: none !important;              /* ← OCULTAR CUCARACHA */
+  }
 }
 
 /* Mostrar las imágenes laterales solo cuando el juego esté activo */
 body.game-active .arcade-side {
-  display: flex;
-}
-
-#arcadeLeft {
-  left: 30px;
-  bottom: 20px;
-  flex-direction: column;
-  gap: 10px;
-  height: auto;
-}
-
-#arcadeRight {
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  bottom: auto;
-}
-
-.arcade-side img {
-  max-height: 200px;
-  max-width: 150px;
-  min-height: 120px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(0,0,0,0.7));
-  border-radius: 8px;
+  display: none !important;
 }
 
 /* Estilos específicos para Elon y Trump cuando están juntos */
 .elon-img {
-  max-height: 180px !important;
-  max-width: 130px !important;
-  min-height: 100px !important;
+  display: none !important;
 }
 
 .trump-img {
-  max-height: 180px !important;
-  max-width: 130px !important;
-  min-height: 100px !important;
+  display: none !important;
 }
 
 /* Estilos específicos para la cucaracha - 200% más grande */
 #arcadeRight img {
-  max-height: 400px !important;
-  max-width: 300px !important;
-  min-height: 280px !important;
+  display: none !important;
 }
 
-@media (max-width: 1024px) {
-  .arcade-side {
-    display: none !important;
+@media (max-width: 1024px) and (orientation: portrait) {
+  body {
+    background-color: transparent !important;
+  }
+  
+  .screen {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  
+  #gameContainer {
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  #gameCanvas {
+    width: 90vw !important;         /* ← ANCHO MÓVIL: ej: 95vw, 85vw, 90vw */
+    height: 65vh !important;        /* ← ALTO MÓVIL: ej: 70vh, 60vh, 65vh */
+   /* ← Igual que width */
+    min-width: 320px !important;
+    min-height: 240px !important;
+    border: 4px solid #e74c3c !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
   }
 }
 
 /* --- MEJORAS RESPONSIVE PARA MENÚ PRINCIPAL Y OVERLAY --- */
 @media (max-width: 600px) {
   .menu-content {
-    max-width: 95vw !important;
-    padding: 10px 5vw !important;
-    margin-top: 10vw !important;
-    background: rgba(0,0,0,0.7);
-    border-radius: 18px;
-    box-shadow: 0 2px 16px #000a;
+    max-width: 90vw !important;         /* ← BACKGROUND MÁS GRANDE: era 95vw */
+    padding: 20px 8vw !important;       /* ← MÁS PADDING: era 10px 5vw */
+    margin-top: 8vw !important;         /* ← MEJOR ESPACIADO: era 10vw */
+    background: transparent !important; /* ← SIN BACKGROUND NEGRO - ERA LA BURBUJA */
+    border-radius: 0px;                 /* ← SIN BORDE REDONDEADO */
+    box-shadow: none;                   /* ← SIN SOMBRA */
+    min-height: 60vh;                   /* ← ALTURA MÍNIMA PARA MÁS ESPACIO */
   }
   .game-title {
     font-size: 1.7em !important;
@@ -1080,10 +1233,10 @@ body.game-active .arcade-side {
     margin-bottom: 18px !important;
   }
   .menu-btn {
-    min-width: 120px !important;
-    font-size: 14px !important;
-    padding: 10px 0 !important;
-    margin-bottom: 8px !important;
+    min-width: 100px !important;        /* ← BOTONES MÁS PEQUEÑOS: era 120px */
+    font-size: 12px !important;         /* ← TEXTO MÁS PEQUEÑO: era 14px */
+    padding: 8px 0 !important;          /* ← PADDING MÁS PEQUEÑO: era 10px */
+    margin-bottom: 6px !important;      /* ← MENOS ESPACIADO: era 8px */
   }
   .powered-by {
     font-size: 10px !important;
@@ -1195,316 +1348,89 @@ body.game-active .arcade-side {
 /* RESPONSIVE VERTICAL (PORTRAIT) MOBILE Y TABLETS */
 @media (max-width: 1024px) and (orientation: portrait) {
   body {
-    /* background ya se maneja arriba */
+    background-color: transparent !important;
   }
-
+  
   .screen {
-    /* background ya se maneja arriba */
+    width: 100vw !important;
+    height: 100vh !important;
   }
-
+  
   #gameContainer {
     width: 100vw !important;
     height: 100vh !important;
-    padding: 0 !important;
+    padding: 20px !important;
     margin: 0 !important;
-    display: flex;
-    flex-direction: column;
+    background: transparent !important;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
-
+  
   #gameCanvas {
-    width: 95vw !important;
-    height: 72vh !important;
-    max-width: 95vw !important;
-    max-height: 72vh !important;
+    width: 90vw;         /* ← ANCHO MÓVIL */
+    height: 65vh ;        /* ← ALTO MÓVIL */
+   /* ← Igual que width */
+    min-width: 320px !important;
+    min-height: 240px !important;
     border: 4px solid #e74c3c !important;
-    border-radius: 20px !important;
-    background: linear-gradient(180deg, #87ceeb 0%, #98fb98 100%) !important;
+    border-radius: 8px !important;
     margin: 0 !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-    margin-top: -3vh !important;
+    object-fit: contain !important;
+    background: transparent !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
   }
 
-  /* UI del juego reposicionada - VERTICAL */
+  /* UI DEL JUEGO MÓVIL - SCORE Y LIVES EN FILA HORIZONTAL */
   #gameUI {
-    position: absolute !important;
-    top: 1vh !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 15 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 20px !important;
-    align-items: center !important;
-    justify-content: center !important;
+    position: absolute !important;         /* ← POSICIÓN ABSOLUTA */
+    top: 1vh !important;                  /* ← POSICIÓN MÓVIL */
+    left: 0 !important;                   /* ← DESDE EL BORDE IZQUIERDO */
+    right: 0 !important;                  /* ← HASTA EL BORDE DERECHO */
+    transform: none !important;           /* ← SIN TRANSFORM */
+    display: flex !important;             /* ← MOSTRAR EN MÓVIL */
+    flex-direction: row !important;       /* ← FILA EN MÓVIL */
+    gap: 0px !important;                  /* ← SIN GAP */
+    align-items: flex-start !important;   /* ← ALINEACIÓN SUPERIOR */
+    justify-content: space-between !important; /* ← SEPARAR A LOS EXTREMOS */
+    width: 100vw !important;              /* ← ANCHO COMPLETO */
+    padding: 0 15px !important;           /* ← PADDING LATERAL */
+    z-index: 15 !important;               /* ← Z-INDEX ALTO */
   }
 
-  #score, #lives {
-    background: rgba(0, 0, 0, 0.9) !important;
-    color: #00ff00 !important;
-    padding: 12px 16px !important;
-    border-radius: 20px !important;
-    font-size: 14px !important;
-    font-weight: bold !important;
+  /* SCORE - IZQUIERDA EN MÓVIL */
+  #score {
+    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
+    top: auto !important;                 
+    left: auto !important;                
+    margin: 0 !important;                 /* ← SIN MARGENES */
+    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3.5vw, 20px) !important;
     min-width: 100px !important;
-    text-align: center !important;
-    border: 2px solid #00ff00 !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 4px !important;
+  }
+
+  /* LIVES - DERECHA EN MÓVIL */
+  #lives {
+    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
+    top: auto !important;                 
+    right: auto !important;               
+    margin: 0 !important;                 /* ← SIN MARGENES */
+    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
+    font-size: clamp(14px, 3.5vw, 20px) !important;
+    min-width: 100px !important;
   }
 
   #score .score-label, #lives .lives-label {
-    font-size: 12px !important;
-    opacity: 0.8 !important;
+    font-size: clamp(10px, 2.5vw, 14px) !important;
   }
 
   #score .score-number, #lives .lives-number {
-    font-size: 18px !important;
-    font-weight: bold !important;
+    font-size: clamp(16px, 4vw, 24px) !important;
   }
 
-  #lives {
-    color: #ff6b6b !important;
-    border-color: #ff6b6b !important;
-  }
-
-  /* Estilos específicos para imágenes de vidas en portrait móvil */
-  .life-icon {
-    width: 35px !important;
-    height: 35px !important;
-    border: 2px solid #ff6b6b !important;
-    box-shadow: 0 0 8px rgba(255, 107, 107, 0.5) !important;
-  }
-  
-  .life-cross {
-    font-size: 20px !important;
-  }
-  
-  .lives-images {
-    gap: 6px !important;
-  }
-  
-  .life-icon.lost {
-    border-color: #ff0000 !important;
-    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5) !important;
-  }
-
-  /* Controles móviles más arriba */
+  /* MOSTRAR CONTROLES MÓVILES */
   #mobileControls {
     display: block !important;
-    position: absolute !important;
-    bottom: 5vh !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 18vh !important;
-    background: rgba(0, 0, 0, 0.1) !important;
-    pointer-events: none !important;
-    z-index: 20 !important;
-  }
-
-  /* Cruceta más arriba */
-  .dpad-container {
-    position: absolute !important;
-    left: 15px !important;
-    bottom: 40px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 8px !important;
-    pointer-events: auto !important;
-  }
-
-  .dpad-row {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 5px !important;
-    align-items: center !important;
-  }
-
-  /* Ocultar botón de salto */
-  #upPad {
-    display: none !important;
-  }
-
-  .pad-btn {
-    width: 60px !important;
-    height: 60px !important;
-    font-size: 24px !important;
-    border-radius: 50% !important;
-    border: 3px solid #34495e !important;
-    background: linear-gradient(45deg, #95a5a6, #7f8c8d) !important;
-    color: #2c3e50 !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-    transition: all 0.1s ease !important;
-    pointer-events: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .pad-btn:active {
-    transform: scale(0.9) !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
-  }
-
-  /* Botón de dinero nivelado con los controles */
-  #shootBtn.shoot-btn {
-    position: absolute !important;
-    right: 20px !important;
-    bottom: 40px !important;
-    width: 80px !important;
-    height: 80px !important;
-    font-size: 32px !important;
-    border-radius: 50% !important;
-    border: 4px solid #f39c12 !important;
-    background: linear-gradient(45deg, #ffd700, #f39c12) !important;
-    color: #2c3e50 !important;
-    cursor: pointer !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
-    transition: all 0.1s ease !important;
-    pointer-events: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  #shootBtn.shoot-btn:active {
-    transform: scale(0.9) !important;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6) !important;
-  }
-
-  /* MENÚ GAME OVER - UNA SOLA COLUMNA */
-  .gameover-content {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    max-width: 90vw !important;
-    max-height: 85vh !important;
-    padding: 15px !important;
-    background: rgba(44, 62, 80, 0.95) !important;
-    border: 3px solid #e74c3c !important;
-    border-radius: 20px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7) !important;
-    overflow-y: auto !important;
-    text-align: center !important;
-  }
-
-  .gameover-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 15px !important;
-  }
-
-  .gameover-title {
-    font-size: 2.2em !important;
-    margin-bottom: 10px !important;
-    color: #ff0000 !important;
-    text-shadow: 2px 2px 0px #000 !important;
-    text-align: center !important;
-    order: 1 !important;
-  }
-
-  .score-circle {
-    width: 160px !important;
-    height: 160px !important;
-    margin: 10px auto !important;
-    order: 2 !important;
-  }
-
-  .score-info {
-    order: 2 !important;
-    margin-bottom: 0 !important;
-  }
-
-  .score-number, .record-number {
-    font-size: 1.6em !important;
-  }
-
-  .roach-mascot {
-    font-size: 2em !important;
-    margin: 10px 0 !important;
-    order: 3 !important;
-  }
-
-  .gameover-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    width: 100% !important;
-    align-items: center !important;
-    order: 4 !important;
-  }
-
-  .menu-btn {
-    min-width: 250px !important;
-    font-size: 14px !important;
-    padding: 12px 20px !important;
-    margin-bottom: 8px !important;
-    border-radius: 20px !important;
-    width: 80% !important;
-    max-width: 300px !important;
-  }
-
-  /* Ocultar botón de pantalla completa completamente */
-  #fullscreen-btn {
-    display: none !important;
-  }
-
-  /* Estilos específicos para tablets más grandes */
-  @media (min-width: 768px) {
-    #gameCanvas {
-      width: 85vw !important;
-      height: 52vh !important;
-      max-width: 85vw !important;
-      max-height: 52vh !important;
-      margin-top: 20vh !important;
-    }
-
-    .pad-btn {
-      width: 70px !important;
-      height: 70px !important;
-      font-size: 28px !important;
-    }
-
-    #shootBtn.shoot-btn {
-      width: 90px !important;
-      height: 90px !important;
-      font-size: 36px !important;
-    }
-
-    #score, #lives {
-      font-size: 16px !important;
-      padding: 15px 20px !important;
-      min-width: 120px !important;
-    }
-
-    #powerUpStatus {
-      font-size: 14px !important;
-      padding: 10px 18px !important;
-      min-width: 160px !important;
-    }
-
-    .score-circle {
-      width: 180px !important;
-      height: 180px !important;
-    }
-
-    .gameover-title {
-      font-size: 2.5em !important;
-    }
-
-    .menu-btn {
-      min-width: 280px !important;
-      font-size: 16px !important;
-    }
   }
 }
 
@@ -1581,30 +1507,10 @@ body.game-active .arcade-side {
   justify-content: center !important;
 }
 
-/* Power-up status - menos estirado horizontalmente */
-#powerUpStatus {
-  position: absolute !important;
-  top: 12vh !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  background: rgba(0, 0, 0, 0.9) !important;
-  color: #ffd700 !important;
-  padding: 10px 20px !important;
-  border-radius: 15px !important;
-  font-size: 14px !important;
-  font-weight: bold !important;
-  text-align: center !important;
-  z-index: 25 !important;
-  border: 2px solid #ffd700 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
-  max-width: 180px !important;
-  white-space: nowrap !important;
-}
-
 /* Menús más pequeños en landscape */
 .menu-content, .instructions-content, .gameover-content {
   max-width: 70vw !important;
-  max-height: 70vh !important;
+  max-height: 85vh !important;
   overflow-y: auto !important;
   padding: 15px !important;
   font-size: 0.9em !important;
@@ -2052,58 +1958,3 @@ body.game-active .arcade-side {
     background-color: #2c3e50 !important;
   }
 }
-
-/* Ajustes responsivos para botones de imagen */
-
-/* Para laptops/portátiles (1025px - 1600px) */
-@media (min-width: 1025px) and (max-width: 1600px) {
-  #mainMenu .menu-btn {
-    width: 224px;
-    height: 52px;
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: 294px;
-    height: 69px;
-    margin-bottom: 12px;
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 256px;
-    height: 56px;
-  }
-  
-  #mainMenu .menu-buttons {
-    gap: 20px;
-    max-width: 280px;
-  }
-}
-
-/* Para tablets y laptops pequeños (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-  #mainMenu .menu-btn {
-    width: 200px;
-    height: 44px;
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: 258px;
-    height: 60px;
-    margin-bottom: 10px;
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: 224px;
-    height: 48px;
-  }
-  
-  #mainMenu .menu-buttons {
-    gap: 18px;
-    max-width: 240px;
-  }
-}
-

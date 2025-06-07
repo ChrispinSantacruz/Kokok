@@ -46,6 +46,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
     <style>
+        /* === RESET BÁSICO === */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -181,6 +186,21 @@
             text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
             margin-bottom: 10px;
             line-height: 1.1;
+        }
+
+        /* === LOGO PRINCIPAL DE KOKOK === */
+        .kokok-logo {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .kokok-main-logo {
+            width: clamp(250px, 60vw, 400px);
+            height: auto;
+            max-width: 100%;
+            filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.8));
         }
 
         .login-subtitle {
@@ -499,281 +519,294 @@
             }
         }
 
-        /* --- GAME OVER SCREEN RESPONSIVE --- */
-        #gameOverScreen .gameover-card {
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        #gameOverScreen .score-circle {
-            width: min(40vw, 300px);
-            height: min(40vw, 300px);
-            min-width: 150px;
-            min-height: 150px;
-            background: linear-gradient(135deg, #00FF00 60%, #009900 100%);
-            border-radius: 50%;
-            margin: 0 auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 5px solid #222;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-        #gameOverScreen .score-info {
-            text-align: center;
-            color: #111;
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            width: 100%;
-        }
-        #gameOverScreen .score-number {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: bold;
-        }
-        #gameOverScreen .record-number {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            font-weight: bold;
-        }
-        #gameOverScreen .gameover-title {
-            width: clamp(300px, 60vw, 600px);
-            height: clamp(80px, 15vw, 150px);
-            background-image: url('./assents/KOKOK_GAME_GFX_acc-03.png');
-            background-size: contain;
+        /* === ESTILOS ESPECÍFICOS PARA GAME OVER === */
+        .gameover-screen {
+            background-image: url('assents/KOKOK_GAME_GFX_end-08.png');
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            margin: 0 auto 20px auto;
-            display: block;
-            /* Ocultar el texto original */
-            font-size: 0;
-            color: transparent;
-            text-indent: -9999px;
-            line-height: 0;
-        }
-        #gameOverScreen .gameover-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-        #gameOverScreen .menu-btn, 
-        #gameOverScreen .play-btn, 
-        #gameOverScreen .share-btn {
-            max-width: 400px;
-            min-width: 200px;
-            width: 100%;
-            margin: 0;
-            box-sizing: border-box;
         }
 
-        /* Responsive para orientación horizontal en Game Over */
-        @media (max-height: 600px) and (orientation: landscape) {
-            #gameOverScreen .gameover-card {
-                max-width: 700px;
-                display: flex;
-                flex-direction: row;
+        .gameover-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header con logo Game Over */
+        .gameover-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .gameover-logo {
+            width: clamp(300px, 50vw, 500px);
+            height: auto;
+            max-width: 100%;
+            filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.8));
+        }
+
+        /* Layout principal en dos columnas */
+        .gameover-main {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 60px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Columna izquierda - Score */
+        .score-column {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score-background {
+            position: relative;
+            display: inline-block;
+        }
+
+        .score-bg-image {
+            width: clamp(250px, 40vw, 350px);
+            height: auto;
+            display: block;
+        }
+
+        .score-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .score-item {
+            margin: 15px 0;
+        }
+
+        .score-label {
+            display: block;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: #654321;
+            margin-bottom: 8px;
+        }
+
+        .score-value {
+            display: block;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #2E7D32;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Columna derecha - Botones */
+        .buttons-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .gameover-btn-image {
+            width: clamp(200px, 35vw, 280px);
+            margin: 0;
+        }
+
+        .gameover-btn-image .btn-image {
+            width: 100%;
+        }
+
+        /* Decoración cucaracha */
+        .roach-decoration {
+            font-size: 3rem;
+            opacity: 0.7;
+            position: absolute;
+            bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        /* Responsive para pantallas medianas */
+        @media (max-width: 1024px) {
+            .gameover-main {
+                gap: 40px;
+            }
+            
+            .gameover-content {
+                padding: 30px 15px;
+            }
+        }
+
+        /* Responsive para tablets */
+        @media (max-width: 768px) {
+            .gameover-main {
+                flex-direction: column;
                 align-items: center;
                 gap: 30px;
             }
-
-            #gameOverScreen .score-circle {
-                width: min(25vh, 200px);
-                height: min(25vh, 200px);
-                margin: 0;
-                flex-shrink: 0;
-            }
-
-            #gameOverScreen .gameover-buttons {
-                gap: 10px;
-                margin-top: 0;
-                flex: 1;
-            }
-
-            #gameOverScreen .menu-btn, #gameOverScreen .play-btn, #gameOverScreen .share-btn {
-                padding: 12px 20px;
-                font-size: clamp(1rem, 2.5vh, 1.2rem);
-            }
-        }
-
-        /* Botón de pantalla completa - estilo */
-        #fullscreen-btn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            padding: 10px 20px;
-            background-color: #FFD700;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            #fullscreen-btn {
-                display: block;
-            }
-        }
-
-        /* === ESTILOS PARA MENSAJE DE ERROR === */
-        .error-message {
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* === ESTILOS PARA MENSAJE DE ÉXITO === */
-        .success-message {
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        /* === ESTILOS PARA MENSAJE DE BIENVENIDA === */
-        .welcome-message {
-            margin: 20px 0;
-        }
-
-        .welcome-message > div {
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Responsive para orientación horizontal en móviles */
-        @media (max-height: 600px) and (orientation: landscape) {
-            .login-content, #mainMenu .menu-content, #instructionsScreen .instructions-content {
-                max-width: 600px;
+            
+            .score-column,
+            .buttons-column {
+                width: 100%;
+                max-width: 400px;
             }
             
-            .login-title, .game-title {
-                font-size: clamp(2rem, 5vh, 3rem);
-                margin-bottom: 8px;
+            .gameover-header {
+                margin-bottom: 30px;
             }
-            
-            .login-subtitle, .subtitle {
-                font-size: clamp(0.9rem, 2.5vh, 1.1rem);
-                margin-bottom: 20px;
-            }
-            
-            .roach-icon-large {
-                font-size: clamp(3rem, 8vh, 4rem);
-                margin-bottom: 15px;
-            }
-            
-            .powered-by {
-                font-size: clamp(0.8rem, 2vh, 1rem);
-            }
-
-            .menu-buttons {
-                gap: 10px;
-                margin: 20px 0;
-            }
-
-            .menu-btn, .play-btn, .share-btn {
-                padding: 15px 20px;
-                font-size: clamp(1rem, 2.5vh, 1.2rem);
-                min-height: 50px;
-            }
-
-            .instructions-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-                margin: 20px 0;
-            }
-
-            .instruction-item {
-                padding: 15px;
-            }
-
-            #instructionsScreen h2 {
-                font-size: clamp(1.8rem, 4vh, 2.5rem);
-                margin-bottom: 20px;
-            }
-        }
-
-        /* === GAME OVER BUTTONS ESPECÍFICOS === */
-        #gameOverScreen .gameover-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        #gameOverScreen .menu-btn, 
-        #gameOverScreen .play-btn, 
-        #gameOverScreen .share-btn {
-            max-width: 400px;
-            min-width: 200px;
-            width: 100%;
-            margin: 0;
-            box-sizing: border-box;
         }
 
         /* Responsive para móviles */
-        @media (max-width: 768px) {
-            body {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
-            }
-            
-            .screen {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
-            }
-            
-            .controls-info {
-                font-size: 10px;
-            }
-        }
-
-        /* Responsive para orientación landscape en móviles */
-        @media (max-width: 1024px) and (orientation: landscape) {
-            body {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center;
-                background-color: #2c3e50;
-            }
-            
-            .screen {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center;
-                background-color: #2c3e50;
-            }
-        }
-
-        /* Responsive para pantallas muy pequeñas */
         @media (max-width: 480px) {
-            body {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
+            .gameover-content {
+                padding: 20px 10px;
             }
             
-            .screen {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
+            .gameover-header {
+                margin-bottom: 20px;
             }
+            
+            .gameover-main {
+                gap: 20px;
+            }
+            
+            .buttons-column {
+                gap: 15px;
+            }
+        }
+
+        /* === BOTÓN DE CONTROL DE SONIDO === */
+        .sound-control {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+        }
+
+        .sound-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #A67B5B;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #E3C6A8;
+            backdrop-filter: blur(5px);
+        }
+
+        .sound-btn:hover {
+            background: rgba(166, 123, 91, 0.8);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .sound-btn.muted {
+            background: rgba(255, 0, 0, 0.7);
+            border-color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .sound-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+
+        /* === BOTONES CON IMAGEN === */
+        .back-btn-image, .gameover-btn-image {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            margin: 10px auto;
+            display: block;
+            text-indent: -9999px !important;
+            overflow: hidden !important;
+            color: transparent !important;
+            font-size: 0 !important;
+            line-height: 0 !important;
+        }
+
+        .back-btn-image:hover, .gameover-btn-image:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .btn-image {
+            width: clamp(200px, 40vw, 300px);
+            height: auto;
+            max-width: 100%;
+            display: block !important;
+            pointer-events: none;
+        }
+
+        /* Botones específicos de game over */
+        .gameover-btn-image {
+            width: clamp(250px, 50vw, 350px) !important;
+            margin: 8px auto !important;
+            min-height: 60px;
+        }
+
+        .gameover-btn-image .btn-image {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* === FORZAR ESTILOS ESPECÍFICOS PARA GAME OVER === */
+        #gameOverScreen .gameover-btn-image {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            text-indent: -9999px !important;
+            color: transparent !important;
+            font-size: 0 !important;
+            line-height: 0 !important;
+            overflow: hidden !important;
+        }
+
+        #gameOverScreen .gameover-btn-image img {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            max-width: none !important;
+            min-width: 0 !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        #restartBtn, #shareTelegramScoreBtn, #shareTwitterBtn, #backToMenuBtn {
+            background: none !important;
+            border: none !important;
+            color: transparent !important;
+            text-indent: -9999px !important;
+            overflow: hidden !important;
+        }
+
+        #restartBtn img, #shareTelegramScoreBtn img, #shareTwitterBtn img, #backToMenuBtn img {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
         }
     </style>
 </head>
@@ -803,6 +836,11 @@
             </div>
             <div id="powerUpStatus"></div>
             <div id="bossAlert" class="boss-alert hidden">BOSS INCOMING!</div>
+            
+            <!-- Botón de control de sonido -->
+            <div id="soundControl" class="sound-control">
+                <button id="soundToggleBtn" class="sound-btn">🔊</button>
+            </div>
         </div>
 
         <!-- Pantalla de login optimizada -->
@@ -812,8 +850,9 @@
             </div>
             <div class="login-content">
                 <span class="roach-icon-large">🪳</span>
-                <h1 class="login-title">KOKOK<br>THE ROACH</h1>
-                <p class="login-subtitle">🪙 Crypto Shooter Game 🪙</p>
+                <div class="kokok-logo">
+                    <img src="assents/kokok_game_ buttons-05.png" alt="KOKOK THE ROACH" class="kokok-main-logo">
+                </div>
                 
                 <div class="login-form">
                     <div class="input-group">
@@ -868,34 +907,56 @@
                         <p>Tap to move, hold to shoot</p>
                     </div>
                 </div>
-                <button id="backBtn" class="menu-btn">⬅️ BACK</button>
+                <button id="backBtn" class="back-btn-image">
+                    <img src="assents/kokok_game_ buttons-end-02.png" alt="Back" class="btn-image">
+                </button>
             </div>
         </div>
 
-        <!-- Pantalla de Game Over optimizada -->
-        <div id="gameOverScreen" class="screen hidden">
-            <div class="gameover-card">
-                <h2 class="gameover-title">GAME OVER</h2>
-                <div class="score-section">
-                    <div class="score-circle">
-                        <div class="score-info">
-                            <div class="coin-icon"></div>
-                            <div class="score-text">Score</div>
-                            <div class="score-number" id="finalScore">0</div>
-                            <div class="record-text">Best</div>
-                            <div class="record-number" id="bestScore">0</div>
+        <!-- Pantalla de game over optimizada -->
+        <div id="gameOverScreen" class="screen hidden gameover-screen">
+            <div class="gameover-content">
+                <!-- Logo Game Over centrado arriba -->
+                <div class="gameover-header">
+                    <img src="assents/KOKOK_GAME_GFX_acc-03.png" alt="GAME OVER" class="gameover-logo">
+                </div>
+                
+                <!-- Contenido principal en dos columnas -->
+                <div class="gameover-main">
+                    <!-- Columna izquierda - Score -->
+                    <div class="score-column">
+                        <div class="score-background">
+                            <img src="assents/kokok_ home-06.png" alt="Score Background" class="score-bg-image">
+                            <div class="score-overlay">
+                                <div class="score-item">
+                                    <span class="score-label">Score</span>
+                                    <span id="finalScore" class="score-value">0</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="score-label">Best</span>
+                                    <span id="bestScore" class="score-value">0</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="gameover-buttons">
-                        <button id="restartBtn" class="menu-btn play-btn">🔄 PLAY AGAIN</button>
-                        <button id="shareTelegramScoreBtn" class="menu-btn share-btn">
-                            <span>📱</span>
-                            <span>SHARE SCORE</span>
+                    
+                    <!-- Columna derecha - Botones -->
+                    <div class="buttons-column">
+                        <button id="restartBtn" class="gameover-btn-image">
+                            <img src="assents/kokok_game_ buttons-end-04.png" alt="Play Again" class="btn-image">
                         </button>
-                        <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 SHARE ON TWITTER</button>
-                        <button id="backToMenuBtn" class="menu-btn">🏠 MAIN MENU</button>
+                        <button id="shareTelegramScoreBtn" class="gameover-btn-image">
+                            <img src="assents/kokok_game_ buttons-end-05.png" alt="Share Score" class="btn-image">
+                        </button>
+                        <button id="shareTwitterBtn" class="gameover-btn-image">
+                            <img src="assents/kokok_game_ buttons-end-06.png" alt="Share on X" class="btn-image">
+                        </button>
+                        <button id="backToMenuBtn" class="gameover-btn-image">
+                            <img src="assents/kokok_game_ buttons-end-07.png" alt="Main Menu" class="btn-image">
+                        </button>
                     </div>
                 </div>
+                
             </div>
         </div>
 

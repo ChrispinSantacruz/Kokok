@@ -8,6 +8,7 @@ import { Utils } from "./utils.js"
 import { Vector2 } from "./utils.js"
 import { TelegramIntegration } from "./telegramIntegration.js"
 import { PlayerManager } from "./playerManager.js"
+import { SoundManager } from "./soundManager.js"
 
 export class Game {
   constructor() {
@@ -18,6 +19,7 @@ export class Game {
     this.shootCooldownTime = 300 // 300ms entre shots
     this.telegram = new TelegramIntegration()
     this.playerManager = new PlayerManager()
+    this.soundManager = new SoundManager()
     this.hasSharedCurrentGame = false // Control para avoid multiple shared by game
 
     // Precargar imágenes de fondo
@@ -32,6 +34,16 @@ export class Game {
     this.init()
     this.setupEventListeners()
     this.telegram.init()
+    
+    // Configurar sonidos de botones después de un breve delay
+    setTimeout(() => {
+      this.soundManager.refreshButtonSounds()
+    }, 500)
+    
+    // Iniciar música del menú al cargar el juego
+    setTimeout(() => {
+      this.soundManager.playMenuMusic()
+    }, 1000)
   }
 
   setupCanvas() {
@@ -142,11 +154,25 @@ export class Game {
         this.addBullet()
       })
     }
+
+    // Control de sonido
+    const soundToggleBtn = document.getElementById("soundToggleBtn")
+    if (soundToggleBtn) {
+      soundToggleBtn.addEventListener("click", (e) => {
+        e.preventDefault()
+        const isMuted = this.soundManager.toggleMute()
+        soundToggleBtn.textContent = isMuted ? "🔇" : "🔊"
+        soundToggleBtn.classList.toggle("muted", isMuted)
+      })
+    }
   }
 
   startGame() {
     // Agregar clase al body para indicar que el juego está activo
     document.body.classList.add("game-active")
+    
+    // Cambiar a música de juego
+    this.soundManager.playGameMusic()
     
     // Resetear flag de compartir para nueva partida
     this.hasSharedCurrentGame = false
@@ -192,6 +218,9 @@ export class Game {
     // Quitar clase del body cuando se vuelve al menú
     document.body.classList.remove("game-active")
     
+    // Volver a música de menú
+    this.soundManager.playMenuMusic()
+    
     document.getElementById("gameOverScreen").classList.add("hidden")
     document.getElementById("gameUI").classList.add("hidden")
     const mobileControls = document.getElementById("mobileControls")
@@ -201,6 +230,11 @@ export class Game {
     }
     
     this.playerManager.showMainMenu()
+    
+    // Refrescar sonidos de botones después de cambiar pantalla
+    setTimeout(() => {
+      this.soundManager.refreshButtonSounds()
+    }, 100)
   }
 
   gameLoop(currentTime = 0) {
@@ -426,6 +460,9 @@ export class Game {
   addBomb(x, y, isParabolic = false) {
     let targetX, targetY, bomb
     
+    // Reproducir sonido de bomba cuando se lanza
+    this.soundManager.playBomba()
+    
     if (isParabolic) {
       // Trayectoria parabólica más amplia
       targetX = this.player.position.x + Utils.randomBetween(-100, 100)
@@ -442,6 +479,9 @@ export class Game {
   }
 
   addRocket(x, y) {
+    // Reproducir sonido de rocket cuando se lanza
+    this.soundManager.playRocket()
+    
     const rocket = new Rocket(x, y, this.player)
     this.enemyProjectiles.push(rocket)
   }
@@ -455,8 +495,13 @@ export class Game {
         const distance = Utils.getDistance(bullet.position, boss.position)
         if (distance < (boss.radius + bullet.radius)) {
           hit = true
+          
+          // REPRODUCIR SONIDO INMEDIATAMENTE al detectar colisión
+          this.soundManager.playDañoVillano()
+          
           boss.health--
           this.gameState.addScore(1)
+          
           if (boss.health <= 0) {
             this.gameState.bossDead()
             this.createExplosion(boss.position.x, boss.position.y, true)
@@ -484,6 +529,10 @@ export class Game {
           const distance = Utils.getDistance(bullet.position, projectile.position)
           if (distance < (projectile.radius + bullet.radius)) {
             if (projectile.takeDamage()) {
+              // Sonido de explosión cuando se destruye un misil
+              this.soundManager.playExplosion()
+              // Detener sonido de rocket
+              this.soundManager.stopRocket()
               this.createExplosion(projectile.position.x, projectile.position.y)
             }
             bullet.destroy()
@@ -500,10 +549,35 @@ export class Game {
       
       if (distance < (this.player.radius + projectile.radius)) {
         projectile.active = false
+        
+        // Detener sonido de bomba si es una bomba
+        if (projectile instanceof Bomb) {
+          this.soundManager.stopBomba()
+        }
+        
+        // REPRODUCIR SONIDO DE DAÑO INMEDIATAMENTE antes de cualquier otra cosa
+        this.soundManager.playDaño()
+        
         if (this.player.takeDamage()) {
           this.gameState.loseLife()
           this.createExplosion(playerPos.x, playerPos.y)
+          
+          // Verificar si el juego debe terminar
+          if (this.gameState.lives <= 0) {
+            this.gameOver()
+          }
         }
+      }
+    })
+
+    // Verificar proyectiles que impactan en el suelo
+    this.enemyProjectiles.forEach((projectile) => {
+      if (projectile instanceof Bomb && projectile.position.y >= this.canvas.height - 75) {
+        // Bomba explota en el suelo
+        this.soundManager.stopBomba()
+        this.soundManager.playExplosion()
+        this.createExplosion(projectile.position.x, projectile.position.y)
+        projectile.active = false
       }
     })
 
@@ -514,9 +588,17 @@ export class Game {
         const distance = Utils.getDistance(boss.position, playerPos)
         
         if (distance < (this.player.radius + boss.radius)) {
+          // REPRODUCIR SONIDO DE DAÑO INMEDIATAMENTE antes de cualquier otra cosa
+          this.soundManager.playDaño()
+          
           if (this.player.takeDamage()) {
             this.gameState.loseLife()
             this.createExplosion(playerPos.x, playerPos.y)
+            
+            // Verificar si el juego debe terminar
+            if (this.gameState.lives <= 0) {
+              this.gameOver()
+            }
           }
         }
       }
@@ -647,8 +729,13 @@ export class Game {
   }
 
   gameOver() {
+    console.log("Game.gameOver() called - stopping game loop and playing game over sound")
+    
     this.gameState.gameRunning = false
     cancelAnimationFrame(this.animationId)
+    
+    // Detener TODA la música y efectos, luego reproducir solo game over
+    this.soundManager.playGameover()
     
     // REMOVER compartir automático - ahora será manual
     // this.telegram.shareScore(this.gameState.score)
@@ -657,9 +744,8 @@ export class Game {
     document.getElementById("gameUI").classList.add("hidden")
     document.getElementById("finalScore").textContent = this.gameState.score
     
-    // Actualizar récord en pantalla
-    const highScore = localStorage.getItem("kokokHighScore") || 0
-    document.getElementById("highScore").textContent = highScore
+    // Actualizar récord en pantalla usando gameState
+    document.getElementById("bestScore").textContent = this.gameState.highScore
     
     // Resetear estado del botón de compartir
     const shareBtn = document.getElementById("shareTelegramScoreBtn")
@@ -675,6 +761,14 @@ export class Game {
       mobileControls.classList.remove("active")
       mobileControls.classList.add("hidden")
     }
+    
+    // Refrescar sonidos de botones en pantalla de game over
+    setTimeout(() => {
+      this.soundManager.refreshButtonSounds()
+    }, 100)
+    
+    // NO reproducir música de menú automáticamente después del game over
+    // La música de menú solo se reproduce cuando el usuario vuelve al menú manualmente
   }
 
   // Nueva función para compartir puntuación manualmente

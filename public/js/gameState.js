@@ -148,11 +148,8 @@ export class GameState {
       localStorage.setItem("kokokHighScore", this.highScore.toString())
     }
 
-    document.getElementById("finalScore").textContent = this.score
-    document.getElementById("bestScore").textContent = this.highScore
-    document.getElementById("gameOverScreen").classList.remove("hidden")
-    document.getElementById("gameUI").classList.add("hidden")
-    document.getElementById("mobileControls").classList.add("hidden")
+    // Solo actualizar datos, no UI - eso lo maneja game.gameOver()
+    console.log("GameState: Game ended, score:", this.score, "high score:", this.highScore)
   }
 
   reset() {

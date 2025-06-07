@@ -149,7 +149,7 @@ export class GameState {
     }
 
     document.getElementById("finalScore").textContent = this.score
-    document.getElementById("highScore").textContent = this.highScore
+    document.getElementById("bestScore").textContent = this.highScore
     document.getElementById("gameOverScreen").classList.remove("hidden")
     document.getElementById("gameUI").classList.add("hidden")
     document.getElementById("mobileControls").classList.add("hidden")

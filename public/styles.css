@@ -144,7 +144,8 @@ body {
     border: 2px solid #ffd700 !important;        /* ← BORDE DORADO */
     text-shadow: 0 0 10px #ffd700 !important;    /* ← MISMO EFECTO */
     max-width: 160px !important;                 /* ← ANCHO CONTROLADO */
-    min-width: 120px !important;                 /* ← ANCHO MÍNIMO */
+    white-space: nowrap !important;
+    display: block !important;
     box-shadow: none !important;                 /* ← SIN SOMBRA EXTRA */
   }
 }
@@ -595,11 +596,19 @@ body {
 }
 
 .gameover-title {
-  font-size: 4em;
-  color: #ff0000;
-  text-shadow: 3px 3px 0px #000, -3px -3px 0px #000, 3px -3px 0px #000, -3px 3px 0px #000;
-  margin-bottom: 20px;
-  line-height: 0.9;
+  width: clamp(300px, 60vw, 600px);
+  height: clamp(80px, 15vw, 150px);
+  background-image: url('./assents/KOKOK_GAME_GFX_acc-03.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 auto 20px auto;
+  display: block;
+  /* Ocultar el texto original */
+  font-size: 0;
+  color: transparent;
+  text-indent: -9999px;
+  line-height: 0;
 }
 
 .score-circle {
@@ -732,11 +741,21 @@ body {
 
 @media (max-width: 1024px) {
   body {
-    /* background ya se maneja arriba */
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
   
   .screen {
-    /* background ya se maneja arriba */
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
 
   #mainMenu {
@@ -788,8 +807,8 @@ body {
   }
   
   #mainMenu .menu-btn {
-    width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
-    height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
+    width: 200px !important;          /* ← BOTONES MÁS GRANDES: era 140px */
+    height: 45px !important;          /* ← BOTONES MÁS ALTOS: era 32px */
     background: none !important;
     border: none !important;
     color: transparent !important;
@@ -806,8 +825,8 @@ body {
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
-    height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
+    width: 220px !important;          /* ← PLAY MÁS GRANDE: era 160px */
+    height: 55px !important;          /* ← PLAY MÁS ALTO: era 40px */
     background-image: url('./assents/kokok_game_buttons-11.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -824,8 +843,8 @@ body {
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
-    height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
+    width: 220px !important;          /* ← BOTONES MÁS GRANDES: era 160px */
+    height: 50px !important;          /* ← BOTONES MÁS ALTOS: era 36px */
     background-image: url('./assents/kokok_game_buttons-12.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -838,6 +857,16 @@ body {
     box-shadow: none !important;
     cursor: pointer !important;
     transition: all 0.3s ease !important;
+  }
+
+  /* Botón INSTRUCTIONS específico en tablets */
+  #mainMenu #instructionsBtn {
+    background-image: url('./assents/kokok_game_buttons-12.png') !important;
+  }
+
+  /* Botón CHANGE NAME específico en tablets */
+  #mainMenu #changeNameBtn {
+    background-image: url('./assents/kokok_game_buttons-13.png') !important;
   }
 
   #mainMenu .powered-by {
@@ -870,6 +899,12 @@ body {
     font-size: clamp(14px, 3.5vw, 20px) !important;
     min-width: 100px !important;
     margin-bottom: clamp(8px, 2vh, 15px) !important;
+    background: rgba(0, 0, 0, 0.85) !important;  /* ← AGREGAR BACKGROUND OSCURO */
+    color: #00ff00 !important;                   /* ← TEXTO VERDE */
+    border-radius: 20px !important;              /* ← BORDES REDONDEADOS */
+    border: 2px solid #00ff00 !important;        /* ← BORDE VERDE */
+    text-shadow: 0 0 10px #00ff00 !important;    /* ← EFECTO GLOW */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important; /* ← SOMBRA VERDE */
   }
 
   #score .score-label, #lives .lives-label {
@@ -878,6 +913,17 @@ body {
 
   #score .score-number, #lives .lives-number {
     font-size: clamp(16px, 4vw, 24px) !important;
+  }
+
+  /* POWERUPS TAMBIÉN CON BACKGROUND EN TABLETS */
+  #powerUpStatus {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #ffd700 !important;
+    padding: 8px 14px !important;
+    border-radius: 20px !important;
+    border: 2px solid #ffd700 !important;
+    text-shadow: 0 0 10px #ffd700 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
   }
 
   /* OCULTAR CONTROLES MÓVILES EN TABLETS LANDSCAPE */
@@ -901,16 +947,32 @@ body {
     height: 100vh !important;
     align-items: center !important;
     justify-content: center !important;
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
 }
 
 @media (max-width: 768px) {
   body {
-    /* background ya se maneja arriba */
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
   
   .screen {
-    /* background ya se maneja arriba */
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
 
   /* OCULTAR ELEMENTOS DE DESKTOP EN MÓVILES */
@@ -968,17 +1030,17 @@ body {
   #mainMenu .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px !important;               /* ← MÁS GAP: era 12px */
     margin: 20px auto 0 auto !important;  /* ← CENTRAR EN MÓVILES */
     width: 100%;
-    max-width: 200px;
+    max-width: 250px !important;       /* ← MÁS ANCHO: era 200px */
     align-items: center;
     justify-content: center;
   }
   
   #mainMenu .menu-btn {
-    width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
-    height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
+    width: 200px !important;          /* ← BOTONES MÁS GRANDES: era 140px */
+    height: 45px !important;          /* ← BOTONES MÁS ALTOS: era 32px */
     background: none !important;
     border: none !important;
     color: transparent !important;
@@ -995,8 +1057,8 @@ body {
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
-    height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
+    width: 220px !important;          /* ← PLAY MÁS GRANDE: era 160px */
+    height: 55px !important;          /* ← PLAY MÁS ALTO: era 40px */
     background-image: url('./assents/kokok_game_buttons-11.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -1013,8 +1075,8 @@ body {
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
-    height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
+    width: 220px !important;          /* ← BOTONES MÁS GRANDES: era 160px */
+    height: 50px !important;          /* ← BOTONES MÁS ALTOS: era 36px */
     background-image: url('./assents/kokok_game_buttons-12.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -1031,6 +1093,16 @@ body {
   
   #mainMenu .menu-btn:not(.play-btn) {
     font-size: 11px;
+  }
+
+  /* Botón INSTRUCTIONS específico en móviles */
+  #mainMenu #instructionsBtn {
+    background-image: url('./assents/kokok_game_buttons-12.png') !important;
+  }
+
+  /* Botón CHANGE NAME específico en móviles */
+  #mainMenu #changeNameBtn {
+    background-image: url('./assents/kokok_game_buttons-13.png') !important;
   }
 
   /* CANVAS Y JUEGO MÓVIL */
@@ -1068,6 +1140,12 @@ body {
     padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
     font-size: clamp(14px, 3.5vw, 20px) !important;
     min-width: 100px !important;
+    background: rgba(0, 0, 0, 0.85) !important;  /* ← AGREGAR BACKGROUND OSCURO */
+    color: #00ff00 !important;                   /* ← TEXTO VERDE */
+    border-radius: 20px !important;              /* ← BORDES REDONDEADOS */
+    border: 2px solid #00ff00 !important;        /* ← BORDE VERDE */
+    text-shadow: 0 0 10px #00ff00 !important;    /* ← EFECTO GLOW */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important; /* ← SOMBRA VERDE */
   }
 
   /* LIVES - DERECHA EN MÓVIL */
@@ -1079,6 +1157,12 @@ body {
     padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
     font-size: clamp(14px, 3.5vw, 20px) !important;
     min-width: 100px !important;
+    background: rgba(0, 0, 0, 0.85) !important;  /* ← AGREGAR BACKGROUND OSCURO */
+    color: #00ff00 !important;                   /* ← TEXTO VERDE */
+    border-radius: 20px !important;              /* ← BORDES REDONDEADOS */
+    border: 2px solid #00ff00 !important;        /* ← BORDE VERDE */
+    text-shadow: 0 0 10px #00ff00 !important;    /* ← EFECTO GLOW */
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important; /* ← SOMBRA VERDE */
   }
 
   #score .score-label, #lives .lives-label {
@@ -1089,9 +1173,111 @@ body {
     font-size: clamp(16px, 4vw, 24px) !important;
   }
 
+  /* POWERUPS TAMBIÉN CON BACKGROUND EN MÓVILES */
+  #powerUpStatus {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #ffd700 !important;
+    padding: 8px 14px !important;
+    border-radius: 20px !important;
+    border: 2px solid #ffd700 !important;
+    text-shadow: 0 0 10px #ffd700 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+  }
+
   /* MOSTRAR CONTROLES MÓVILES */
   #mobileControls {
-    display: block !important;
+    display: flex !important;             /* ← CAMBIAR A FLEX */
+    position: fixed !important;           /* ← POSICIÓN FIJA */
+    bottom: 20px !important;              /* ← EN LA PARTE INFERIOR */
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: auto !important;              /* ← ALTURA AUTOMÁTICA */
+    background: transparent !important;
+    pointer-events: auto !important;      /* ← PERMITIR INTERACCIÓN */
+    z-index: 25 !important;               /* ← Z-INDEX ALTO */
+    justify-content: space-between !important; /* ← SEPARAR ELEMENTOS */
+    align-items: center !important;
+    padding: 0 30px !important;           /* ← PADDING LATERAL */
+  }
+
+  /* FORZAR VISIBILIDAD EN MÓVILES - SOBREESCRIBIR HIDDEN */
+  #mobileControls.hidden {
+    display: flex !important;             /* ← FORZAR MOSTRAR INCLUSO CON CLASE HIDDEN */
+  }
+
+  /* CONTENEDOR DE BOTONES DE DIRECCIÓN */
+  .dpad-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+
+  .dpad-row {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
+  }
+
+  /* BOTONES DE MOVIMIENTO */
+  .pad-btn {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    border: 3px solid #A67B5B !important;
+    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
+    color: #fff !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
+  }
+
+  .pad-btn:active {
+    background: linear-gradient(135deg, #8B5C2B, #6B4C1B) !important;
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* BOTÓN DE DISPARO */
+  .shoot-btn {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    border: 3px solid #FFD700 !important;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+    color: #4B3621 !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
+  }
+
+  .shoot-btn:active {
+    background: linear-gradient(135deg, #FFA500, #FF8C00) !important;
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* GAME CONTAINER CON BACKGROUND */
+  #gameContainer {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
 }
 
@@ -1157,6 +1343,12 @@ body {
 
   #gameContainer {
     height: 100vh;
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
 
   #gameCanvas {
@@ -1186,6 +1378,11 @@ body {
     margin-bottom: 8px;
     font-size: 14px;
     border-radius: 15px;
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #00ff00 !important;
+    border: 2px solid #00ff00 !important;
+    text-shadow: 0 0 10px #00ff00 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
   }
   
   /* Ajustar imágenes de vidas para landscape móvil */
@@ -1200,6 +1397,53 @@ body {
 
   #lives {
     max-width: 140px;
+  }
+
+  /* POWERUPS TAMBIÉN CON BACKGROUND EN LANDSCAPE */
+  #powerUpStatus {
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #ffd700 !important;
+    padding: 6px 10px !important;
+    border-radius: 15px !important;
+    border: 2px solid #ffd700 !important;
+    text-shadow: 0 0 10px #ffd700 !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    font-size: 12px !important;
+  }
+
+  /* MOSTRAR CONTROLES MÓVILES EN LANDSCAPE */
+  #mobileControls {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 15px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: auto !important;
+    background: transparent !important;
+    pointer-events: auto !important;
+    z-index: 25 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 20px !important;
+  }
+
+  /* FORZAR VISIBILIDAD EN LANDSCAPE - SOBREESCRIBIR HIDDEN */
+  #mobileControls.hidden {
+    display: flex !important;             /* ← FORZAR MOSTRAR INCLUSO CON CLASE HIDDEN */
+  }
+
+  /* Botones más pequeños en landscape */
+  .pad-btn {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 20px !important;
+  }
+
+  .shoot-btn {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 24px !important;
   }
 }
 
@@ -1220,11 +1464,291 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.95); /* Overlay más oscuro para cubrir completamente */
 }
 
-#gameOverScreen.hidden {
-  display: none;
+/* Background específico para Game Over en DESKTOP - MÁS ESPECÍFICO */
+@media (min-width: 1025px) {
+  #gameOverScreen {
+    background: rgba(0, 0, 0, 0.85) !important; /* Solo overlay oscuro, sin imagen */
+  }
+  
+  /* Reorganizar Game Over: TITULO ARRIBA, COLUMNAS ABAJO */
+  #gameOverScreen .gameover-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    max-width: 800px !important;
+    width: 90% !important;
+    padding: 30px 20px !important;
+    gap: 30px !important;
+    background: rgba(0, 0, 0, 0.2) !important; /* Fondo más sutil para el contenido */
+    border-radius: 15px !important;
+    backdrop-filter: blur(5px) !important; /* Efecto de desenfoque */
+  }
+  
+  /* GAME OVER título arriba */
+  #gameOverScreen .gameover-title {
+    margin-bottom: 0px !important;
+    width: clamp(300px, 40vw, 500px) !important;
+    height: clamp(80px, 12vw, 120px) !important;
+    order: 1 !important; /* Asegurar que esté arriba */
+  }
+  
+  /* Contenedor para las dos columnas */
+  #gameOverScreen .score-section {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 40px !important;
+    order: 2 !important; /* Después del título */
+  }
+  
+  /* Columna IZQUIERDA - Puntuación (SIN background) */
+  #gameOverScreen .score-circle {
+    margin: 0 !important;
+    width: clamp(200px, 25vw, 280px) !important;
+    height: clamp(200px, 25vw, 280px) !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Cada botón individual - tamaños finales responsive */
+  #gameOverScreen .menu-btn, 
+  #gameOverScreen .play-btn, 
+  #gameOverScreen .share-btn {
+    width: 100% !important;
+    max-width: clamp(200px, 22vw, 280px) !important;
+    min-height: clamp(36px, 5.6vh, 56px) !important;
+    min-width: clamp(176px, 20vw, 256px) !important; 
+    font-size: clamp(11px, 1.6vw, 16px) !important; 
+    margin: 0 !important;
+    padding: clamp(8px, 1.6vh, 14px) clamp(14px, 2vw, 24px) !important;
+  }
+  
+  /* Asegurar que el HTML sea interpretado correctamente */
+  #gameOverScreen .gameover-card > * {
+    flex-shrink: 0;
+  }
+}
+
+/* Background específico para Game Over en RESPONSIVE (tablets y móviles) */
+@media (max-width: 1024px) {
+  #gameOverScreen {
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important; /* Usar el mismo background del menú */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-color: #2c3e50 !important; /* Mismo color de base del menú */
+    position: fixed !important; /* Pantalla completa independiente */
+    top: 0 !important;
+    left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+    z-index: 1000 !important; /* Por encima de todo */
+  }
+  
+  #gameOverScreen .gameover-card {
+    background: rgba(0, 0, 0, 0.2) !important; /* Fondo más sutil */
+    border-radius: 15px !important;
+    padding: 40px 30px !important; /* Más padding */
+    backdrop-filter: blur(3px) !important;
+  display: flex !important;
+    flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+    text-align: center !important;
+    max-width: 95vw !important; /* Más ancho */
+    width: 95% !important;
+    gap: 40px !important; /* Más espaciado */
+    min-height: 80vh !important; /* Más alto */
+  }
+
+  /* GAME OVER título arriba en responsive - MÁS GRANDE */
+  #gameOverScreen .gameover-title {
+    margin-bottom: 0px !important;
+    width: clamp(400px, 80vw, 600px) !important; /* MÁS GRANDE: era 320px, 60vw, 500px */
+    height: clamp(120px, 20vw, 180px) !important; /* MÁS ALTO: era 90px, 15vw, 130px */
+    order: 1 !important;
+  }
+
+  /* Contenedor para las dos columnas - MÁS CENTRADOS */
+  #gameOverScreen .score-section {
+  display: flex !important;
+    flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+    width: 100% !important;
+    gap: 20px !important;
+    order: 2 !important;
+  }
+
+  /* Columna IZQUIERDA - Score CENTRADO en cuadro izquierdo */
+  #gameOverScreen .score-circle {
+    margin: 30px auto !important; /* Más margen */
+    width: clamp(264px, 60vw, 384px) !important; /* 20% más grande */
+    height: clamp(264px, 60vw, 384px) !important; /* 20% más grande */
+    border-radius: 20px !important; /* Bordes más redondeados */
+    background-image: url('./assents/kokok_ home-06.png') !important; /* Usar background de imagen */
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    border: 5px solid #222 !important; /* Borde más grueso */
+    box-shadow: 0 0 25px rgba(0,0,0,0.5) !important; /* Sombra más intensa */
+    order: 2 !important;
+  }
+
+  /* Asegurar que el contenido del score sea visible sobre el background en responsive */
+  @media (max-width: 1024px) {
+    #gameOverScreen .score-info {
+      background: rgba(0, 0, 0, 0.6) !important; /* Fondo semi-transparente para legibilidad */
+      border-radius: 15px !important;
+      padding: 20px !important;
+      width: 100% !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #fff !important; /* Texto blanco para contrastar */
+    }
+  }
+
+  /* BOTONES organizados VERTICALMENTE - DEFINICIÓN ÚNICA Y LIMPIA */
+  @media (min-width: 1025px) {
+    #gameOverScreen .gameover-buttons {
+      background-image: url('./assents/KOKOK_GAME_GFX_end-08.png') !important;
+      background-size: 70% !important; /* Más grande para que se vea completo */
+      background-position: 80% 85% !important; /* Más a la derecha y SUBIDO */
+    background-repeat: no-repeat !important;
+      background-color: transparent !important;
+      border-radius: 0 !important;
+      padding: clamp(20px, 3vh, 40px) clamp(16px, 2.5vw, 32px) !important; /* Menos padding arriba para subir botones */
+      backdrop-filter: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
+      gap: clamp(8px, 1.2vh, 16px) !important; /* Menos gap para subir botones */
+      align-items: center !important;
+      justify-content: flex-start !important; /* Cambiar a flex-start para subir contenido */
+      width: 100% !important;
+      max-width: none !important;
+      flex: 1 !important;
+      min-height: clamp(320px, 40vh, 500px) !important; /* Más altura para que no se corte */
+      min-width: clamp(320px, 38vw, 480px) !important; /* Más ancho para background completo */
+    }
+  }
+
+  /* RESPONSIVE - SIN background específico para botones, layout vertical */
+  @media (max-width: 1024px) {
+    #gameOverScreen .gameover-buttons {
+      background-image: none !important; /* Sin background en el contenedor */
+      background-color: transparent !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+      border-radius: 0 !important; /* Sin bordes redondeados */
+      padding: 35px 25px !important; /* Más padding */
+      backdrop-filter: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 20px !important; /* Más espaciado entre botones */
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      max-width: 456px !important; /* 20% más ancho (era 380px) */
+      order: 3 !important;
+      box-shadow: none !important; /* Sin sombra */
+    }
+    
+    /* Asegurar que el layout sea completamente vertical en responsive */
+    #gameOverScreen .score-section {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      gap: 20px !important;
+      order: 2 !important;
+    }
+    
+    /* Botones individuales en responsive más pequeños */
+    #gameOverScreen .menu-btn, 
+    #gameOverScreen .play-btn, 
+    #gameOverScreen .share-btn {
+      width: 100% !important;
+      max-width: 300px !important; /* 20% más anchos (era 250px) */
+      min-height: 66px !important; /* 20% más altos (era 55px) */
+      font-size: 19px !important; /* 20% más grande (era 16px) */
+      margin: 0 !important;
+      padding: 18px 30px !important; /* 20% más padding */
+      font-weight: bold !important;
+      /* Aplicar estilos de imagen como en desktop */
+      background: none !important;
+      border: none !important;
+      color: transparent !important;
+      border-radius: 0 !important;
+      text-shadow: none !important;
+      box-shadow: none !important;
+      background-size: contain !important;
+      background-position: center !important;
+    background-repeat: no-repeat !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+    }
+    
+    /* Botón PLAY AGAIN en responsive */
+    #gameOverScreen #restartBtn {
+      background-image: url('./assents/kokok_game_ buttons-end-04.png') !important;
+    }
+    
+    /* Botón MAIN MENU en responsive */
+    #gameOverScreen #backToMenuBtn {
+      background-image: url('./assents/kokok_game_ buttons-end-07.png') !important;
+    }
+    
+    /* Botón SHARE SCORE en responsive */
+    #gameOverScreen #shareTelegramScoreBtn {
+      background-image: url('./assents/kokok_game_ buttons-end-05.png') !important;
+    }
+    
+    /* Botón SHARE ON X en responsive */
+    #gameOverScreen #shareTwitterBtn {
+      background-image: url('./assents/kokok_game_ buttons-end-06.png') !important;
+    }
+    
+    /* Efectos hover para botones con imágenes en responsive */
+    #gameOverScreen .menu-btn:hover, 
+    #gameOverScreen .play-btn:hover, 
+    #gameOverScreen .share-btn:hover {
+      transform: scale(1.05) !important;
+      filter: brightness(1.1) contrast(1.1) !important;
+    }
+  }
+}
+
+/* Botones en responsive - MÁS GRANDES con background */
+#gameOverScreen .gameover-buttons {
+  background-image: url('./assents/kokok_ home-06.png') !important;
+  background-color: transparent !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  border-radius: 20px !important; /* Bordes más redondeados */
+  padding: 35px 25px !important; /* Más padding */
+  backdrop-filter: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important; /* Más espaciado entre botones */
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-width: 380px !important; /* Más ancho */
+  order: 3 !important;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3) !important; /* Sombra para destacar */
 }
 
 .arcade-side {
@@ -1277,1042 +1801,267 @@ body.game-active .arcade-side {
   display: none !important;
 }
 
-@media (max-width: 1024px) and (orientation: portrait) {
-  body {
-    background-color: transparent !important;
-  }
-  
-  .screen {
-    width: 100vw !important;
-    height: 100vh !important;
-  }
-  
-  #gameContainer {
-    width: 100vw !important;
-    height: 100vh !important;
-    padding: 20px !important;
-    margin: 0 !important;
-    background: transparent !important;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  #gameCanvas {
-    width: 90vw !important;         /* ← ANCHO MÓVIL: ej: 95vw, 85vw, 90vw */
-    height: 65vh !important;        /* ← ALTO MÓVIL: ej: 70vh, 60vh, 65vh */
-   /* ← Igual que width */
-    min-width: 320px !important;
-    min-height: 240px !important;
-    border: 4px solid #e74c3c !important;
-    border-radius: 8px !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    background: transparent !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-  }
-}
-
-/* --- MEJORAS RESPONSIVE PARA MENÚ PRINCIPAL Y OVERLAY --- */
-@media (max-width: 600px) {
-  .menu-content {
-    max-width: 90vw !important;         /* ← BACKGROUND MÁS GRANDE: era 95vw */
-    padding: 20px 8vw !important;       /* ← MÁS PADDING: era 10px 5vw */
-    margin-top: 8vw !important;         /* ← MEJOR ESPACIADO: era 10vw */
-    background: transparent !important; /* ← SIN BACKGROUND NEGRO - ERA LA BURBUJA */
-    border-radius: 0px;                 /* ← SIN BORDE REDONDEADO */
-    box-shadow: none;                   /* ← SIN SOMBRA */
-    min-height: 60vh;                   /* ← ALTURA MÍNIMA PARA MÁS ESPACIO */
-  }
-  .game-title {
-    font-size: 1.7em !important;
-    margin-bottom: 6px !important;
-  }
-  .subtitle {
-    font-size: 1em !important;
-    margin-bottom: 18px !important;
-  }
-  .menu-btn {
-    min-width: 100px !important;        /* ← BOTONES MÁS PEQUEÑOS: era 120px */
-    font-size: 12px !important;         /* ← TEXTO MÁS PEQUEÑO: era 14px */
-    padding: 8px 0 !important;          /* ← PADDING MÁS PEQUEÑO: era 10px */
-    margin-bottom: 6px !important;      /* ← MENOS ESPACIADO: era 8px */
-    background: none !important;        /* ← QUITAR FONDO CUADRADO */
-    border: none !important;            /* ← QUITAR BORDE */
-  }
-  .powered-by {
-    font-size: 10px !important;
-    margin-top: 10px !important;
-  }
-  body {
-    background: #222 !important;
-  }
-}
-
-/* Overlay de rotación: botón más grande y centrado */
-.rotate-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.95);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-.rotate-overlay video {
-  max-width: 60vw;
-  max-height: 35vh;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 20px #000a;
-}
-.rotate-overlay .rotate-message {
-  color: #fff;
-  font-size: 1em;
-  text-align: center;
-  margin-bottom: 15px;
-  max-width: 80vw;
-}
-.rotate-overlay .menu-btn {
-  font-size: 1.2em;
-  padding: 15px 35px;
-  margin-top: 0;
-  width: auto;
-  max-width: 280px;
-}
-@media (max-width: 600px) {
-  .rotate-overlay .menu-btn {
-    font-size: 1em;
-    width: 70vw;
-    max-width: 300px;
-    padding: 12px 25px;
-  }
-  .rotate-overlay video {
-    max-width: 70vw;
-    max-height: 30vh;
-  }
-}
-
-/* --- FULLSCREEN FIXES --- */
-:fullscreen #gameContainer,
-:-webkit-full-screen #gameContainer {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  background: #222 !important;
-}
-:fullscreen #gameCanvas,
-:-webkit-full-screen #gameCanvas {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  display: block;
-}
-:fullscreen .screen,
-:-webkit-full-screen .screen {
-  width: 100vw !important;
-  height: 100vh !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-}
-:fullscreen .rotate-overlay,
-:-webkit-full-screen .rotate-overlay {
-  width: 100vw !important;
-  height: 100vh !important;
-  padding: 0 !important;
-}
-
-#fullscreen-btn {
+/* OCULTAR CONTROLES MÓVILES EN TABLETS LANDSCAPE */
+#mobileControls {
   display: none !important;
 }
 
-@media (max-width: 768px) {
-  #fullscreen-btn {
+/* PERO MOSTRAR EN TABLETS PORTRAIT */
+@media (max-width: 1024px) and (orientation: portrait) {
+  #mobileControls {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: auto !important;
+    background: transparent !important;
+    pointer-events: auto !important;
+    z-index: 25 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 30px !important;
+  }
+
+  /* FORZAR VISIBILIDAD EN TABLETS PORTRAIT - SOBREESCRIBIR HIDDEN */
+  #mobileControls.hidden {
+    display: flex !important;
+  }
+
+  .pad-btn {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    border: 3px solid #A67B5B !important;
+    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
+    color: #fff !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
+  }
+
+  .shoot-btn {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    border: 3px solid #FFD700 !important;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+    color: #4B3621 !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
+  }
+}
+
+/* Ocultar controles móviles en portrait y escritorio */
+@media (orientation: portrait), (min-width: 1025px) {
+  #mobileControls {
     display: none !important;
   }
 }
 
-/* RESPONSIVE VERTICAL (PORTRAIT) MOBILE Y TABLETS */
-@media (max-width: 1024px) and (orientation: portrait) {
-  body {
-    background-color: transparent !important;
-  }
-  
-  .screen {
+/* FORZAR CONTROLES MÓVILES EN TODAS LAS PANTALLAS MENORES A 1025PX */
+@media (max-width: 1024px) {
+  #mobileControls,
+  #mobileControls.hidden {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
-  }
-  
-  #gameContainer {
-    width: 100vw !important;
-    height: 100vh !important;
-    padding: 20px !important;
-    margin: 0 !important;
+    height: auto !important;
     background: transparent !important;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  #gameCanvas {
-    width: 90vw;         /* ← ANCHO MÓVIL */
-    height: 65vh ;        /* ← ALTO MÓVIL */
-   /* ← Igual que width */
-    min-width: 320px !important;
-    min-height: 240px !important;
-    border: 4px solid #e74c3c !important;
-    border-radius: 8px !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    background: transparent !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    pointer-events: auto !important;
+    z-index: 1000 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 30px !important;
   }
 
-  /* UI DEL JUEGO MÓVIL - SCORE Y LIVES EN FILA HORIZONTAL */
-  #gameUI {
-    position: absolute !important;         /* ← POSICIÓN ABSOLUTA */
-    top: 1vh !important;                  /* ← POSICIÓN MÓVIL */
-    left: 0 !important;                   /* ← DESDE EL BORDE IZQUIERDO */
-    right: 0 !important;                  /* ← HASTA EL BORDE DERECHO */
-    transform: none !important;           /* ← SIN TRANSFORM */
-    display: flex !important;             /* ← MOSTRAR EN MÓVIL */
-    flex-direction: row !important;       /* ← FILA EN MÓVIL */
-    gap: 0px !important;                  /* ← SIN GAP */
-    align-items: flex-start !important;   /* ← ALINEACIÓN SUPERIOR */
-    justify-content: space-between !important; /* ← SEPARAR A LOS EXTREMOS */
-    width: 100vw !important;              /* ← ANCHO COMPLETO */
-    padding: 0 15px !important;           /* ← PADDING LATERAL */
-    z-index: 15 !important;               /* ← Z-INDEX ALTO */
+  .dpad-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 5px !important;
   }
 
-  /* SCORE - IZQUIERDA EN MÓVIL */
-  #score {
-    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
-    top: auto !important;                 
-    left: auto !important;                
-    margin: 0 !important;                 /* ← SIN MARGENES */
-    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
-    font-size: clamp(14px, 3.5vw, 20px) !important;
-    min-width: 100px !important;
+  .dpad-row {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
   }
 
-  /* LIVES - DERECHA EN MÓVIL */
-  #lives {
-    position: relative !important;        /* ← RELATIVO AL CONTENEDOR */
-    top: auto !important;                 
-    right: auto !important;               
-    margin: 0 !important;                 /* ← SIN MARGENES */
-    padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px) !important;
-    font-size: clamp(14px, 3.5vw, 20px) !important;
-    min-width: 100px !important;
+  .pad-btn {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    border: 3px solid #A67B5B !important;
+    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
+    color: #fff !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
   }
 
-  #score .score-label, #lives .lives-label {
-    font-size: clamp(10px, 2.5vw, 14px) !important;
+  .pad-btn:active {
+    background: linear-gradient(135deg, #8B5C2B, #6B4C1B) !important;
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
-  #score .score-number, #lives .lives-number {
-    font-size: clamp(16px, 4vw, 24px) !important;
+  .shoot-btn {
+    width: 70px !important;
+    height: 70px !important;
+    border-radius: 50% !important;
+    border: 3px solid #FFD700 !important;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+    color: #4B3621 !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
   }
 
-  /* MOSTRAR CONTROLES MÓVILES */
-  #mobileControls {
-    display: block !important;
+  .shoot-btn:active {
+    background: linear-gradient(135deg, #FFA500, #FF8C00) !important;
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 }
 
-/* Ocultar controles móviles en escritorio */
+/* Ocultar controles móviles solo en desktop */
 @media (min-width: 1025px) {
   #mobileControls {
     display: none !important;
   }
 }
 
-/* Controles específicos para landscape */
-.dpad-container {
-  position: absolute;
-  left: 2vw;
-  bottom: 2vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  pointer-events: auto;
-}
-
-.dpad-row {
-  display: flex;
-  flex-direction: row;
-  gap: 4px;
-  margin-top: 0;
-}
-
-.pad-btn {
-  width: 56px !important;
-  height: 56px !important;
-  font-size: 22px !important;
-  border-radius: 50% !important;
-  border: 3px solid #34495e !important;
-  background: linear-gradient(45deg, #95a5a6, #7f8c8d) !important;
-  color: #2c3e50 !important;
-  cursor: pointer !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
-  transition: all 0.1s ease !important;
-  pointer-events: auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.pad-btn:active {
-  transform: scale(0.9) !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
-}
-
-#shootBtn.shoot-btn {
-  position: absolute !important;
-  right: 20px !important;
-  bottom: 50px !important;
-  width: 72px !important;
-  height: 72px !important;
-  font-size: 29px !important;
-  border-radius: 50% !important;
-  border: 4px solid #f39c12 !important;
-  background: linear-gradient(45deg, #ffd700, #f39c12) !important;
-  color: #2c3e50 !important;
-  cursor: pointer !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
-  transition: all 0.1s ease !important;
-  pointer-events: auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Menús más pequeños en landscape */
-.menu-content, .instructions-content, .gameover-content {
-  max-width: 70vw !important;
-  max-height: 85vh !important;
-  overflow-y: auto !important;
-  padding: 15px !important;
-  font-size: 0.9em !important;
-}
-
-.game-title {
-  font-size: 2.2em !important;
-  margin-bottom: 15px !important;
-}
-
-.subtitle {
-  font-size: 1em !important;
-  margin-bottom: 20px !important;
-}
-
-.menu-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.menu-btn {
-  padding: 14px 18px;
-  font-size: 15px;
-  font-weight: bold;
-  border: none !important;              /* ← QUITAR BORDE */
-  border-radius: 0px !important;        /* ← QUITAR BORDE REDONDEADO */
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  min-width: 140px;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
-  color: transparent !important;        /* ← OCULTAR TEXTO */
-}
-
-.play-btn {
-  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
-  color: transparent !important;        /* ← OCULTAR TEXTO */
-}
-
-.play-btn:hover {
-  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
-  transform: scale(1.05);
-}
-
-.menu-btn:not(.play-btn):not(.share-btn) {
-  background: none !important;          /* ← QUITAR FONDO TRANSPARENTE */
-  color: transparent !important;        /* ← OCULTAR TEXTO */
-}
-
-/* Pantalla de Login/Change Name - Solo agregar logo arriba, mantener diseño original */
-#loginScreen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  position: relative;
-}
-
-.login-title-container {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 15;
-}
-
-.login-title-image {
-  width: 600px;
-  height: 180px;
-  background-image: url('./assents/kokok_game_ buttons-05.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  margin: 0 auto;
-}
-
-/* Dar más espacio entre el logo y el formulario */
-.login-form {
-  margin-top: 140px !important;
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-/* LoginScreen responsive 768px - solo logo */
-.login-title-container {
-  top: 30px;
-}
-
-.login-title-image {
-  width: 400px;
-  height: 120px;
-}
-
-/* Centrar mejor el loginScreen en tablet */
-#loginScreen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-/* Ajustar espaciado del formulario en tablet */
-.login-form {
-  margin-top: 90px !important;
-}
-
-/* Ocultar elementos originales del loginScreen - Reglas más específicas */
-#loginScreen .login-content .roach-icon-large {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-#loginScreen .login-content .login-title {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-#loginScreen .login-content .login-subtitle {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Estilos base para login-content */
-.login-content {
-  text-align: center;
-  color: #E3C6A8;
-  position: relative;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  background: none;
-  padding: 20px;
-}
-
-/* FORZAR BACKGROUNDS RESPONSIVE - REGLAS FINALES MEJORADAS */
-
-/* Background optimizado para portátiles */
-@media screen and (min-width: 1024px) and (max-width: 1600px) {
-  body {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
+/* ========== REGLA FINAL: FORZAR CONTROLES MÓVILES SOLO DURANTE EL JUEGO ========== */
+/* Esta regla debe estar al final para sobreescribir todas las demás */
+@media (max-width: 1024px) {
+  /* OCULTAR controles por defecto en responsive */
+  #mobileControls,
+  #mobileControls.hidden {
+    display: none !important;
   }
   
-  .screen {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-}
-
-/* Background para monitores desktop estándar */
-@media screen and (min-width: 1601px) and (max-width: 1920px) {
-  body {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-}
-
-/* Background para monitores grandes sin zoom excesivo */
-@media screen and (min-width: 1921px) {
-  body {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/background_kokok.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-}
-
-/* Mejoras para diferentes resoluciones */
-@container (min-width: 320px) and (max-width: 767px) {
-  #gameCanvas {
-    width: min(90vw, var(--max-game-width));
-    height: min(67.5vw, var(--max-game-height));
-    aspect-ratio: var(--game-aspect-ratio);
-  }
-}
-
-@container (min-width: 768px) and (max-width: 1023px) {
-  #gameCanvas {
-    width: min(85vw, var(--max-game-width));
-    height: min(63.75vw, var(--max-game-height));
-    aspect-ratio: var(--game-aspect-ratio);
-  }
-}
-
-@container (min-width: 1024px) and (max-width: 1439px) {
-  #gameCanvas {
-    width: min(80vw, var(--max-game-width));
-    height: min(60vw, var(--max-game-height));
-    aspect-ratio: var(--game-aspect-ratio);
-  }
-}
-
-@container (min-width: 1440px) {
-  #gameCanvas {
-    width: min(75vw, var(--max-game-width));
-    height: min(56.25vw, var(--max-game-height));
-    aspect-ratio: var(--game-aspect-ratio);
-  }
-}
-
-/* Mejorar UI overlay para que se adapte al tamaño del canvas */
-#gameUI {
-  position: absolute;
-  top: max(20px, 2vw);
-  left: max(20px, 2vw);
-  z-index: 10;
-  font-size: clamp(14px, 2vw, 18px);
-}
-
-#score,
-#lives {
-  background: rgba(0, 0, 0, 0.85);
-  color: #00ff00;
-  padding: clamp(8px, 3vw, 16px) clamp(12px, 4vw, 24px);
-  border-radius: 25px;
-  margin-bottom: clamp(8px, 2vh, 15px);
-  font-weight: bold;
-  font-size: clamp(14px, 3.5vw, 20px);
-  border: 2px solid #00ff00;
-  text-shadow: 0 0 10px #00ff00;
-  min-width: 100px;
-  text-align: center;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-/* Mejoras específicas para diferentes tamaños de monitor */
-
-/* Optimizaciones específicas para diferentes resoluciones desktop */
-
-/* Para laptops y monitores estándar (1024px - 1600px) */
-@media (min-width: 1024px) and (max-width: 1600px) {
-  #gameCanvas {
-    width: 800px !important;
-    height: 600px !important;
-    max-width: 85vw;
-    max-height: 85vh;
-  }
-  
-  /* Ajustes específicos del menú para monitores medianos */
-  #mainMenu .menu-content {
-    width: min(900px, 80vw);
-    height: min(675px, 75vh);
-    padding: min(200px, 12vh) min(50px, 4vw) min(100px, 8vh) min(50px, 4vw);
-    transform: translate(8vw, 4vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MEDIANOS */
-  }
-  
-  #mainMenu .menu-buttons {
-    max-width: min(320px, 28vw);
-    gap: min(50px, 5vh);
-    margin: min(70px, 7vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES MEDIANOS */
-  }
-  
-  /* Mover botones a la izquierda - MONITORES MEDIANOS */
-  #mainMenu .menu-btn {
-    width: min(260px, 23vw);
-    height: min(60px, 5.5vh);
-    margin: 0 auto 0 50px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: min(350px, 26vw);
-    height: min(72px, 6.5vh);
-    margin: 0 auto min(15px, 1.5vh) -100px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: min(280px, 24vw);
-    height: min(64px, 6vh);
-    margin: 0 auto 0 -80px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
-  }
-}
-
-/* Para monitores grandes (1601px - 1920px) */
-@media (min-width: 1601px) and (max-width: 1920px) {
-  #gameCanvas {
-    width: 900px !important;
-    height: 675px !important;
-    max-width: 80vw;
-    max-height: 80vh;
-  }
-  
-  /* Ajustes específicos del menú para monitores grandes */
-  #mainMenu .menu-content {
-    width: min(1000px, 75vw);
-    height: min(750px, 70vh);
-    padding: min(220px, 14vh) min(60px, 4.5vw) min(120px, 9vh) min(60px, 4.5vw);
-    background-position: 95% center;      /* ← MOVER SOLO EL FONDO: era transform translate(8vw, 3vh) */
-  }
-  
-  #mainMenu .menu-buttons {
-    max-width: min(350px, 26vw);
-    gap: min(20px, 2vh);
-    margin: min(80px, 8vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES GRANDES */
-  }
-  
-  /* Mover botones a la izquierda - MONITORES GRANDES */
-  #mainMenu .menu-btn {
-    width: min(280px, 22vw);
-    height: min(64px, 5.8vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: min(320px, 25vw);
-    height: min(76px, 6.8vh);
-    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: min(300px, 23vw);
-    height: min(68px, 6.2vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
-  }
-}
-
-/* Para monitores muy grandes (más de 1920px) */
-@media (min-width: 1921px) {
-  #gameCanvas {
-    width: 1000px !important;
-    height: 750px !important;
-    max-width: 75vw;
-    max-height: 75vh;
-  }
-  
-  /* Ajustes específicos del menú para monitores muy grandes */
-  #mainMenu .menu-content {
-    width: min(1100px, 70vw);
-    height: min(825px, 65vh);
-    padding: min(240px, 15vh) min(70px, 4vw) min(140px, 10vh) min(70px, 4vw);
-    transform: translate(-10vw, 3.5vh);     /* ← AJUSTAR POSICIÓN PARA MONITORES MUY GRANDES */
-  }
-  
-  #mainMenu .menu-buttons {
-    max-width: min(380px, 24vw);
-    gap: min(22px, 2.2vh);
-    margin: min(90px, 9vh) auto 0 auto;    /* ← AUMENTAR MARGEN PARA MONITORES MUY GRANDES */
-  }
-  
-  /* Mover botones a la izquierda - MONITORES MUY GRANDES */
-  #mainMenu .menu-btn {
-    width: min(300px, 20vw);
-    height: min(68px, 5.5vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: min(340px, 23vw);
-    height: min(80px, 6.5vh);
-    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: min(320px, 21vw);
-    height: min(72px, 6vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  /* Ajustar elementos adicionales para monitores muy grandes */
-  .welcome-container {
-    top: 2.5vh;
-    right: 2.5vw;
-  }
-  
-  .character-container {
-    right: max(-60px, -4vw);
-    bottom: max(60px, 6vh);
-    width: min(350px, 22vw);
-    height: min(400px, 28vh);
-  }
-  
-  .title-image {
-    width: min(450px, 30vw);
-    height: min(135px, 9vh);
-  }
-}
-
-/* Pantallas ultra-wide (21:9) */
-@media (min-aspect-ratio: 21/9) {
-  #gameCanvas {
-    width: min(1000px, 55vw);
-    height: min(750px, 41.25vw);
-  }
-  
-  #gameContainer {
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
-  }
-  
-  /* Ajustes específicos del menú para pantallas ultra-wide */
-  #mainMenu .menu-content {
-    width: min(1000px, 50vw);              /* ← Reducir ancho en ultra-wide */
-    height: min(750px, 85vh);              /* ← Mantener altura adecuada */
-    padding: min(220px, 16vh) min(60px, 3vw) min(120px, 12vh) min(60px, 3vw);
-    transform: translate(-10vw, 2vh);       /* ← AJUSTAR POSICIÓN PARA ULTRA-WIDE */
-  }
-  
-  #mainMenu .menu-buttons {
-    max-width: min(350px, 20vw);           /* ← Reducir ancho de botones */
-    gap: min(20px, 2.5vh);
-    margin: min(75px, 7.5vh) auto 0 auto;  /* ← AUMENTAR MARGEN PARA ULTRA-WIDE */
-  }
-  
-  /* Mover botones a la izquierda - ULTRA-WIDE */
-  #mainMenu .menu-btn {
-    width: min(280px, 16vw);               /* ← Botones más estrechos */
-    height: min(64px, 7vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu .play-btn,
-  #mainMenu #playBtn {
-    width: min(320px, 18vw);               /* ← Play button más estrecho */
-    height: min(76px, 8vh);
-    margin: 0 auto min(15px, 1.5vh) 120px !important; /* ← PLAY IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  #mainMenu #instructionsBtn,
-  #mainMenu #changeNameBtn {
-    width: min(300px, 17vw);               /* ← Botones más estrechos */
-    height: min(68px, 7.5vh);
-    margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px (CONSISTENTE) */
-  }
-  
-  /* Centrar mejor en ultra-wide */
-  .welcome-container {
-    top: 4vh;
-    right: 8vw;                            /* ← Más espacio desde el borde */
-  }
-  
-  .character-container {
-    right: max(-50px, -3vw);               /* ← Menos offset en ultra-wide */
-    bottom: max(50px, 8vh);
-    width: min(300px, 15vw);               /* ← Personaje más pequeño */
-    height: min(350px, 35vh);
-  }
-}
-
-/* Reglas adicionales para asegurar consistencia del background */
-@media screen and (min-width: 1024px) {
-  body {
-    background-size: cover !important;
-    background-position: center center !important;
-    min-height: 100vh !important;
+  /* MOSTRAR controles SOLO cuando el juego esté activo Y Game Over NO esté visible */
+  body.game-active #mobileControls:not(.game-over),
+  body.game-active #mobileControls.hidden:not(.game-over) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100vw !important;
+    height: auto !important;
+    z-index: 9999 !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 30px !important;
+    background: transparent !important;
+    pointer-events: auto !important;
   }
-  
-  .screen {
-    background-size: cover !important;
-    background-position: center center !important;
-  }
-  
-  /* Asegurar que el gameContainer también tenga el fondo correcto */
-  #gameContainer {
-    background-image: url('./assents/background_kokok.png');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-color: #2c3e50;
-  }
-}
 
-/* Para pantallas ultra wide, evitar que el background se estire demasiado */
-@media screen and (min-aspect-ratio: 21/9) {
-  body, .screen, #gameContainer {
-    background-size: cover !important;
-    background-position: center center !important;
+  /* FORZAR OCULTACIÓN durante Game Over */
+  body.game-active #gameOverScreen:not(.hidden) ~ #mobileControls,
+  #gameOverScreen:not(.hidden) ~ #mobileControls,
+  body #gameOverScreen:not(.hidden) ~ * #mobileControls {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
-}
 
-/* Background responsive para pantallas móviles y tablets */
-@media screen and (max-width: 1023px) {
-  body {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
+  /* Game Over con z-index muy alto para cubrir todo */
+  #gameOverScreen:not(.hidden) {
+    z-index: 10000 !important;
   }
-  
-  .screen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  #gameContainer {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png');
-    background-size: cover;
-    background-position: center center;
-    background-color: #2c3e50;
+
+  /* Asegurar que los botones dentro también sean visibles SOLO durante el juego activo sin Game Over */
+  body.game-active #mobileControls:not(.game-over) .dpad-container,
+  body.game-active #mobileControls:not(.game-over) .dpad-row,
+  body.game-active #mobileControls:not(.game-over) .pad-btn,
+  body.game-active #mobileControls:not(.game-over) .shoot-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }
 
-/* Ajustes específicos para móviles muy pequeños */
-@media screen and (max-width: 480px) {
-  body {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  #gameContainer {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png');
-    background-size: cover;
-    background-position: center center;
-    background-color: #2c3e50;
-  }
+/* Si el Game Over está visible, ocultar controles independientemente */
+#gameOverScreen:not(.hidden) + * #mobileControls,
+body:has(#gameOverScreen:not(.hidden)) #mobileControls {
+  display: none !important;
 }
 
-/* Ajustes para tablets en orientación portrait */
-@media screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
-  body {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
-  }
+/* REGLA SIMPLE: Ocultar controles cuando Game Over está visible */
+#gameOverScreen:not(.hidden) {
+  /* Cuando Game Over es visible, usar z-index muy alto para cubrir controles */
+  z-index: 10000 !important;
 }
 
-/* Ajustes para tablets en orientación landscape */
-@media screen and (min-width: 481px) and (max-width: 1023px) and (orientation: landscape) {
-  body {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
-  }
-  
-  .screen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-color: #2c3e50 !important;
+/* Ocultar controles directamente cuando Game Over no tiene clase hidden */
+#mobileControls {
+  z-index: 9999 !important;
+}
+
+/* Si Game Over está activo, forzar ocultación de controles */
+body #gameOverScreen:not(.hidden) ~ * #mobileControls,
+body #mobileControls:has(~ #gameOverScreen:not(.hidden)) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Asegurar que los botones dentro también sean visibles SOLO durante el juego */
+body.game-active #mobileControls .dpad-container,
+body.game-active #mobileControls .dpad-row,
+body.game-active #mobileControls .pad-btn,
+body.game-active #mobileControls .shoot-btn {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ========== REGLA DEFINITIVA Y FINAL ========== */
+/* CONTROLES MÓVILES: Solo durante juego activo, NUNCA en Game Over */
+@media (max-width: 1024px) {
+  /* OCULTAR controles cuando Game Over está visible - MÁXIMA PRIORIDAD */
+  #gameOverScreen:not(.hidden) ~ #mobileControls,
+  body #gameOverScreen:not(.hidden) ~ #mobileControls,
+  #mobileControls:has(~ #gameOverScreen:not(.hidden)) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
 }
 
-/* Texto de los botones del menú - HACER VISIBLE */
-#mainMenu .menu-btn span,
-#mainMenu .menu-btn {
-  color: inherit !important;
-  font-size: inherit !important;
-  text-indent: 0 !important;
-}
 
-/* Efectos hover para botones del menú en responsive - ACTUALIZADO PARA IMÁGENES */
-#mainMenu .menu-btn:hover {
-  transform: scale(1.05) !important;
-  filter: brightness(1.1) contrast(1.1) !important;
-}
 
-#mainMenu .play-btn:hover,
-#mainMenu #playBtn:hover {
-  transform: scale(1.05) !important;
-  filter: brightness(1.1) contrast(1.1) !important;
-}
-
-/* Botones del Game Over - Usar imágenes como el menú principal */
-#gameOverScreen .menu-btn {
-  background: none !important;
-  border: none !important;
-  color: transparent !important;
-  border-radius: 0 !important;
-  font-weight: bold !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  background-size: contain !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  min-width: 200px !important;
-  min-height: 50px !important;
-}
-
-#gameOverScreen .menu-btn:hover {
-  transform: scale(1.05) !important;
-  filter: brightness(1.1) contrast(1.1) !important;
-}
-
-/* Botón PLAY AGAIN */
-#gameOverScreen #restartBtn {
-  background-image: url('./assents/kokok_game_buttons-11.png') !important;
-}
-
-/* Botón MAIN MENU */
-#gameOverScreen #backToMenuBtn {
-  background-image: url('./assents/kokok_game_buttons-13.png') !important;
-}
-
-/* Botones SHARE - usar imagen de instructions como base */
-#gameOverScreen .share-btn {
-  background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  filter: hue-rotate(120deg) !important; /* Cambiar color para distinguir */
-}
-
-#gameOverScreen .share-btn:hover {
-  transform: scale(1.05) !important;
-  filter: hue-rotate(120deg) brightness(1.1) contrast(1.1) !important;
-}
-
-/* Botón BACK en instrucciones */
-#instructionsScreen .menu-btn,
-#instructionsScreen #backBtn {
-  background: none !important;
-  border: none !important;
-  color: transparent !important;
-  border-radius: 0 !important;
-  font-weight: bold !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-  background-size: contain !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  min-width: 200px !important;
-  min-height: 50px !important;
-  background-image: url('./assents/kokok_game_buttons-13.png') !important;
-}
-
-#instructionsScreen .menu-btn:hover,
-#instructionsScreen #backBtn:hover {
-  transform: scale(1.05) !important;
-  filter: brightness(1.1) contrast(1.1) !important;
-}

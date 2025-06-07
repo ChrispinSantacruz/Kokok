@@ -240,29 +240,39 @@
             padding: 20px;
             font-size: clamp(1.2rem, 3.5vw, 1.5rem);
             font-weight: bold;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
+            background: none !important;
             border: none;
-            border-radius: 12px;
-            color: #4B3621;
+            border-radius: 0;
+            color: transparent !important;
             cursor: pointer;
-            transition: all 0.3s ease, background 0.3s ease;
+            transition: none !important;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 20px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            box-shadow: none;
+            background-image: url('./assents/kokok_game_ buttons-end-03.png') !important;
+            background-size: contain !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            min-height: 60px;
+            text-indent: -9999px;
         }
 
+        /* Eliminar hover completamente */
         .login-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, #FFA500, #FF8C00);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+            /* Sin cambios en hover */
         }
 
         .login-btn:disabled {
-            background: #888;
+            background: none !important;
             cursor: not-allowed;
             transform: none;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            filter: grayscale(100%) brightness(0.7);
+            box-shadow: none;
+            background-image: url('./assents/kokok_game_ buttons-end-03.png') !important;
+            background-size: contain !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
         }
 
         .roach-icon-large {
@@ -527,12 +537,19 @@
             font-weight: bold;
         }
         #gameOverScreen .gameover-title {
-            font-size: clamp(2rem, 6vw, 3rem);
-            color: #FF0000;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 0 #000;
+            width: clamp(300px, 60vw, 600px);
+            height: clamp(80px, 15vw, 150px);
+            background-image: url('./assents/KOKOK_GAME_GFX_acc-03.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0 auto 20px auto;
+            display: block;
+            /* Ocultar el texto original */
+            font-size: 0;
+            color: transparent;
+            text-indent: -9999px;
+            line-height: 0;
         }
         #gameOverScreen .gameover-buttons {
             display: flex;
@@ -761,12 +778,6 @@
     </style>
 </head>
 <body>
-    <div id="arcadeLeft" class="arcade-side">
-        <img src="assents/kokok%20game%20elon%20elon-05%20(1).png" alt="Elon" class="elon-img" />
-        <img src="assents/kokok_game_trump1-16%20(1).png" alt="Trump" class="trump-img" />
-    </div>
-    <div id="arcadeRight" class="arcade-side"><img src="assents/kokok_%20home-05%20(1).png" alt="Cucaracha" /></div>
-
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
         
@@ -864,26 +875,26 @@
         <!-- Pantalla de Game Over optimizada -->
         <div id="gameOverScreen" class="screen hidden">
             <div class="gameover-card">
+                <h2 class="gameover-title">GAME OVER</h2>
                 <div class="score-section">
-                    <h2 class="gameover-title">GAME OVER</h2>
                     <div class="score-circle">
                         <div class="score-info">
-                            <div class="coin-icon">🪙</div>
-                            <div class="score-text">SCORE</div>
-                            <div id="finalScore" class="score-number">0</div>
-                            <div class="record-text">RECORD</div>
-                            <div id="highScore" class="record-number">0</div>
+                            <div class="coin-icon"></div>
+                            <div class="score-text">Score</div>
+                            <div class="score-number" id="finalScore">0</div>
+                            <div class="record-text">Best</div>
+                            <div class="record-number" id="bestScore">0</div>
                         </div>
                     </div>
-                </div>
-                <div class="gameover-buttons">
-                    <button id="restartBtn" class="menu-btn play-btn">🔄 PLAY AGAIN</button>
-                    <button id="shareTelegramScoreBtn" class="menu-btn share-btn">
-                        <span>📱</span>
-                        <span>SHARE SCORE</span>
-                    </button>
-                    <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 SHARE ON TWITTER</button>
-                    <button id="backToMenuBtn" class="menu-btn">🏠 MAIN MENU</button>
+                    <div class="gameover-buttons">
+                        <button id="restartBtn" class="menu-btn play-btn">🔄 PLAY AGAIN</button>
+                        <button id="shareTelegramScoreBtn" class="menu-btn share-btn">
+                            <span>📱</span>
+                            <span>SHARE SCORE</span>
+                        </button>
+                        <button id="shareTwitterBtn" class="menu-btn share-btn">🐦 SHARE ON TWITTER</button>
+                        <button id="backToMenuBtn" class="menu-btn">🏠 MAIN MENU</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -445,31 +445,25 @@ body {
 }
 
 #mainMenu .menu-btn {
-  /* Resetear estilos de botón */
+  width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
+  height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
   background: none !important;
   border: none !important;
-  padding: 0 !important;
-  cursor: pointer;
-  transition: all 0.3s;
-  
-  /* Tamaño RESPONSIVE para desktop */
-  width: min(280px, 25vw);               /* ← RESPONSIVE: era 280px */
-  height: min(64px, 6vh);                /* ← RESPONSIVE: era 64px */
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
   background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  
-  /* Efectos hover */
-  filter: brightness(1);
-  
-  /* CENTRADO DESKTOP - Mover a la izquierda */
-  display: block;
-  margin: 0 auto 0 120px !important;     /* ← BOTONES A LA IZQUIERDA 120px CON !IMPORTANT */
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
 
 #mainMenu .menu-btn:hover {
-  filter: brightness(1.1);
-  transform: scale(1.05);
+  transform: scale(1.05) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
 }
 
 #mainMenu .menu-btn:active {
@@ -480,35 +474,67 @@ body {
 /* Botón PLAY - Tamaño RESPONSIVE para desktop */
 #mainMenu .play-btn,
 #mainMenu #playBtn {
+  width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
+  height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
   background-image: url('./assents/kokok_game_buttons-11.png') !important;
-  width: min(320px, 28vw);               /* ← RESPONSIVE: era 320px */
-  height: min(76px, 7vh);                /* ← RESPONSIVE: era 76px */
-  margin: 0 auto min(15px, 1.5vh) 120px !important;  /* ← PLAY IZQUIERDA 120px CON !IMPORTANT */
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Botón INSTRUCTIONS - Tamaño RESPONSIVE para desktop */
 #mainMenu #instructionsBtn {
+  width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
+  height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
   background-image: url('./assents/kokok_game_buttons-12.png') !important;
-  width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
-  height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
-  margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px CON !IMPORTANT */
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Botón CHANGE NAME - Tamaño RESPONSIVE para desktop */
 #mainMenu #changeNameBtn {
+  width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
+  height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
   background-image: url('./assents/kokok_game_buttons-13.png') !important;
-  width: min(300px, 26vw);               /* ← RESPONSIVE: era 300px */
-  height: min(68px, 6.5vh);              /* ← RESPONSIVE: era 68px */
-  margin: 0 auto 0 120px !important;     /* ← BOTONES IZQUIERDA 120px CON !IMPORTANT */
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
 
-/* Ocultar texto de los botones */
+/* Ocultar texto de los botones - COMENTADO PARA MOSTRAR TEXTO */
+/*
 #mainMenu .menu-btn span,
 #mainMenu .menu-btn {
   color: transparent !important;
   font-size: 0 !important;
   text-indent: -9999px !important;
 }
+*/
 
 #mainMenu .powered-by {
   display: block;                        /* ← MOSTRAR EN DESKTOP */
@@ -764,24 +790,54 @@ body {
   #mainMenu .menu-btn {
     width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
     height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background: none !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
     height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background-image: url('./assents/kokok_game_buttons-11.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
     height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background-image: url('./assents/kokok_game_buttons-12.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
 
   #mainMenu .powered-by {
@@ -923,24 +979,54 @@ body {
   #mainMenu .menu-btn {
     width: 140px;          /* ← BOTONES MÁS PEQUEÑOS: era 180px */
     height: 32px;          /* ← BOTONES MÁS BAJOS: era 40px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background: none !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
     width: 160px;          /* ← PLAY MÁS PEQUEÑO: era 200px */
     height: 40px;          /* ← PLAY MÁS BAJO: era 50px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background-image: url('./assents/kokok_game_buttons-11.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
     width: 160px;          /* ← BOTONES MÁS PEQUEÑOS: era 200px */
     height: 36px;          /* ← BOTONES MÁS BAJOS: era 45px */
-    background: none !important;          /* ← QUITAR FONDO CUADRADO */
-    border: none !important;              /* ← QUITAR BORDE */
+    background-image: url('./assents/kokok_game_buttons-12.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+    color: transparent !important;
+    border-radius: 0 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
   }
   
   #mainMenu .menu-btn:not(.play-btn) {
@@ -2139,4 +2225,94 @@ body.game-active .arcade-side {
     background-position: center center !important;
     background-color: #2c3e50 !important;
   }
+}
+
+/* Texto de los botones del menú - HACER VISIBLE */
+#mainMenu .menu-btn span,
+#mainMenu .menu-btn {
+  color: inherit !important;
+  font-size: inherit !important;
+  text-indent: 0 !important;
+}
+
+/* Efectos hover para botones del menú en responsive - ACTUALIZADO PARA IMÁGENES */
+#mainMenu .menu-btn:hover {
+  transform: scale(1.05) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
+}
+
+#mainMenu .play-btn:hover,
+#mainMenu #playBtn:hover {
+  transform: scale(1.05) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
+}
+
+/* Botones del Game Over - Usar imágenes como el menú principal */
+#gameOverScreen .menu-btn {
+  background: none !important;
+  border: none !important;
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  min-width: 200px !important;
+  min-height: 50px !important;
+}
+
+#gameOverScreen .menu-btn:hover {
+  transform: scale(1.05) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
+}
+
+/* Botón PLAY AGAIN */
+#gameOverScreen #restartBtn {
+  background-image: url('./assents/kokok_game_buttons-11.png') !important;
+}
+
+/* Botón MAIN MENU */
+#gameOverScreen #backToMenuBtn {
+  background-image: url('./assents/kokok_game_buttons-13.png') !important;
+}
+
+/* Botones SHARE - usar imagen de instructions como base */
+#gameOverScreen .share-btn {
+  background-image: url('./assents/kokok_game_buttons-12.png') !important;
+  filter: hue-rotate(120deg) !important; /* Cambiar color para distinguir */
+}
+
+#gameOverScreen .share-btn:hover {
+  transform: scale(1.05) !important;
+  filter: hue-rotate(120deg) brightness(1.1) contrast(1.1) !important;
+}
+
+/* Botón BACK en instrucciones */
+#instructionsScreen .menu-btn,
+#instructionsScreen #backBtn {
+  background: none !important;
+  border: none !important;
+  color: transparent !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  min-width: 200px !important;
+  min-height: 50px !important;
+  background-image: url('./assents/kokok_game_buttons-13.png') !important;
+}
+
+#instructionsScreen .menu-btn:hover,
+#instructionsScreen #backBtn:hover {
+  transform: scale(1.05) !important;
+  filter: brightness(1.1) contrast(1.1) !important;
 }

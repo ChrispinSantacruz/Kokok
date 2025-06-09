@@ -1,5 +1,32 @@
 import { Utils, Vector2 } from "./utils.js"
 
+// Cargar imágenes de power-ups
+const powerUpImages = {
+  shield: new Image(),
+  speed: new Image(),
+  life: new Image()
+}
+
+// Configurar rutas de imágenes
+powerUpImages.shield.src = './assents/Escudo.png'
+powerUpImages.speed.src = './assents/Velocidad.png'
+powerUpImages.life.src = './assents/VidaExtra.png'
+
+// Asegurar que las imágenes estén cargadas
+let imagesLoaded = 0
+const totalImages = 3
+
+function onImageLoad() {
+  imagesLoaded++
+  if (imagesLoaded === totalImages) {
+    console.log('Power-up images loaded successfully')
+  }
+}
+
+powerUpImages.shield.onload = onImageLoad
+powerUpImages.speed.onload = onImageLoad
+powerUpImages.life.onload = onImageLoad
+
 export class PowerUp {
   constructor(x, y, type) {
     this.position = new Vector2(x, y)
@@ -40,31 +67,49 @@ export class PowerUp {
       Utils.drawCircle(ctx, 0, 0, this.radius, "#00FFFF")
       Utils.drawCircle(ctx, 0, 0, this.radius - 3, "#87CEEB")
 
-      // Símbolo de escudo
-      ctx.fillStyle = "white"
-      ctx.font = "16px Arial"
-      ctx.textAlign = "center"
-      ctx.fillText("🛡️", 0, 5)
+      // Usar imagen de escudo en lugar de emoji
+      if (powerUpImages.shield.complete && powerUpImages.shield.naturalWidth > 0) {
+        const imageSize = 24
+        ctx.drawImage(powerUpImages.shield, -imageSize/2, -imageSize/2, imageSize, imageSize)
+      } else {
+        // Fallback al emoji si la imagen no está cargada
+        ctx.fillStyle = "white"
+        ctx.font = "16px Arial"
+        ctx.textAlign = "center"
+        ctx.fillText("🛡️", 0, 5)
+      }
     } else if (this.type === "speed") {
       // Bolsa de azúcar
       Utils.drawCircle(ctx, 0, 0, this.radius, "#FFD700")
       Utils.drawCircle(ctx, 0, 0, this.radius - 3, "#FFA500")
 
-      // Símbolo de velocidad
-      ctx.fillStyle = "white"
-      ctx.font = "16px Arial"
-      ctx.textAlign = "center"
-      ctx.fillText("⚡", 0, 5)
+      // Usar imagen de velocidad en lugar de emoji
+      if (powerUpImages.speed.complete && powerUpImages.speed.naturalWidth > 0) {
+        const imageSize = 24
+        ctx.drawImage(powerUpImages.speed, -imageSize/2, -imageSize/2, imageSize, imageSize)
+      } else {
+        // Fallback al emoji si la imagen no está cargada
+        ctx.fillStyle = "white"
+        ctx.font = "16px Arial"
+        ctx.textAlign = "center"
+        ctx.fillText("⚡", 0, 5)
+      }
     } else if (this.type === "life") {
       // Vida extra
       Utils.drawCircle(ctx, 0, 0, this.radius, "#FF69B4")
       Utils.drawCircle(ctx, 0, 0, this.radius - 3, "#FF1493")
 
-      // Símbolo de corazón
-      ctx.fillStyle = "white"
-      ctx.font = "16px Arial"
-      ctx.textAlign = "center"
-      ctx.fillText("❤️", 0, 5)
+      // Usar imagen de vida extra en lugar de emoji
+      if (powerUpImages.life.complete && powerUpImages.life.naturalWidth > 0) {
+        const imageSize = 24
+        ctx.drawImage(powerUpImages.life, -imageSize/2, -imageSize/2, imageSize, imageSize)
+      } else {
+        // Fallback al emoji si la imagen no está cargada
+        ctx.fillStyle = "white"
+        ctx.font = "16px Arial"
+        ctx.textAlign = "center"
+        ctx.fillText("❤️", 0, 5)
+      }
     }
 
     // Brillo exterior

@@ -118,13 +118,13 @@ export class GameState {
     if (active) {
       statusElement.style.display = "block"
       if (type === "shield") {
-        statusElement.textContent = "🛡️ SHIELD ACTIVE"
+        statusElement.innerHTML = '<img src="assents/Escudo.png" alt="Shield" class="powerup-icon"> SHIELD ACTIVE'
         window.kokokShieldPowerUp = true
       } else if (type === "speed") {
-        statusElement.textContent = "⚡ SPEED ACTIVE"
+        statusElement.innerHTML = '<img src="assents/Velocidad.png" alt="Speed" class="powerup-icon"> SPEED ACTIVE'
         window.kokokSpeedPowerUp = true
       } else if (type === "life") {
-        statusElement.textContent = "❤️ LIFE RECOVERED"
+        statusElement.innerHTML = '<img src="assents/VidaExtra.png" alt="Life" class="powerup-icon"> LIFE RECOVERED'
         statusElement.style.display = "block"
         // La vida se muestra solo por 2 segundos como notificación
         setTimeout(() => {

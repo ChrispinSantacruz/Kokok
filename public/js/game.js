@@ -181,7 +181,7 @@ export class Game {
     const shareBtn = document.getElementById("shareTelegramScoreBtn")
     if (shareBtn) {
       shareBtn.disabled = false
-      shareBtn.innerHTML = '<span>📱</span><span>SHARE SCORE</span>'
+      // Mantener solo la imagen, no agregar texto
       shareBtn.style.background = ''
     }
     
@@ -751,7 +751,7 @@ export class Game {
     const shareBtn = document.getElementById("shareTelegramScoreBtn")
     if (shareBtn) {
       shareBtn.disabled = false
-      shareBtn.innerHTML = '<span>📱</span><span>SHARE SCORE</span>'
+      // Mantener solo la imagen, no agregar texto
       shareBtn.style.background = ''
     }
     
@@ -778,13 +778,11 @@ export class Game {
     
     // 🚫 NUEVA VALIDACIÓN: Prohibir compartir con 0 puntos
     if (score === 0) {
-      shareBtn.innerHTML = '<span>🚫</span><span>CANNOT SHARE 0 POINTS</span>'
       shareBtn.style.background = 'linear-gradient(135deg, #8B4513, #A0522D)'
       shareBtn.disabled = true
       
       // Restaurar botón después de 3 segundos
       setTimeout(() => {
-        shareBtn.innerHTML = '<span>📱</span><span>SHARE SCORE</span>'
         shareBtn.style.background = ''
         shareBtn.disabled = false
       }, 3000)
@@ -793,7 +791,6 @@ export class Game {
     
     // Verificar si ya se compartió esta partida
     if (this.hasSharedCurrentGame) {
-      shareBtn.innerHTML = '<span>✅</span><span>ALREADY SHARED</span>'
       shareBtn.disabled = true
       shareBtn.style.background = 'linear-gradient(135deg, #666, #888)'
       return
@@ -801,7 +798,6 @@ export class Game {
     
     // Deshabilitar botón temporalmente
     shareBtn.disabled = true
-    shareBtn.innerHTML = '<span>⏳</span><span>SENDING...</span>'
     shareBtn.style.background = 'linear-gradient(135deg, #ff8c00, #ffa500)'
     
     try {
@@ -832,7 +828,6 @@ export class Game {
       await this.telegram.sendToN8nWebhook(webhookData)
       
       // Mostrar mensaje de éxito
-      shareBtn.innerHTML = '<span>✅</span><span>SHARED SUCCESSFULLY!</span>'
       shareBtn.style.background = 'linear-gradient(135deg, #00aa00, #00dd00)'
       
       // Marcar como compartido
@@ -840,7 +835,6 @@ export class Game {
       
       // Después de 5 segundos, cambiar a estado "ya compartido"
       setTimeout(() => {
-        shareBtn.innerHTML = '<span>✅</span><span>ALREADY SHARED</span>'
         shareBtn.style.background = 'linear-gradient(135deg, #666, #888)'
         shareBtn.disabled = true
       }, 5000)
@@ -849,13 +843,11 @@ export class Game {
       console.error('Error sharing score:', error)
       
       // Mostrar mensaje de error
-      shareBtn.innerHTML = '<span>❌</span><span>ERROR - RETRY</span>'
       shareBtn.style.background = 'linear-gradient(135deg, #aa0000, #dd0000)'
       
       // Permitir reintento después de 3 segundos
       setTimeout(() => {
         shareBtn.disabled = false
-        shareBtn.innerHTML = '<span>📱</span><span>SHARE SCORE</span>'
         shareBtn.style.background = ''
       }, 3000)
     }

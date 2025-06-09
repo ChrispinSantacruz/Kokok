@@ -218,26 +218,36 @@ body {
   display: block;
 }
 
-#powerUpStatus {
-  position: absolute !important;
-  top: 12vh !important;                          /* ← NUEVA POSICIÓN RESPONSIVE */
-  left: 50% !important;
-  transform: translateX(-55%) !important;        /* ← NUEVA POSICIÓN RESPONSIVE */
-  background: rgba(0, 0, 0, 0.85) !important;    /* ← MISMO FONDO QUE SCORE */
-  color: #ffd700 !important;                     /* ← TEXTO DORADO */
-  padding: 10px 16px !important;                 /* ← MISMO PADDING QUE SCORE */
-  border-radius: 20px !important;                /* ← MISMO RADIO QUE SCORE */
-  font-size: 14px !important;                    /* ← TAMAÑO APROPIADO */
-  font-weight: bold !important;
-  text-align: center !important;
-  z-index: 30 !important;
-  border: 2px solid #ffd700 !important;          /* ← BORDE DORADO COMO SCORE */
-  text-shadow: 0 0 10px #ffd700 !important;      /* ← MISMO EFECTO QUE SCORE */
-  max-width: 180px !important;                   /* ← ANCHO CONTROLADO */
-  white-space: nowrap !important;
-  display: block !important;
-  box-shadow: none !important;                   /* ← SIN SOMBRA EXTRA */
-}
+  #powerUpStatus {
+    position: absolute !important;
+    top: 12vh !important;                          /* ← NUEVA POSICIÓN RESPONSIVE */
+    left: 50% !important;
+    transform: translateX(-55%) !important;        /* ← NUEVA POSICIÓN RESPONSIVE */
+    background: rgba(0, 0, 0, 0.85) !important;    /* ← MISMO FONDO QUE SCORE */
+    color: #ffd700 !important;                     /* ← TEXTO DORADO */
+    padding: 10px 16px !important;                 /* ← MISMO PADDING QUE SCORE */
+    border-radius: 20px !important;                /* ← MISMO RADIO QUE SCORE */
+    font-size: 14px !important;                    /* ← TAMAÑO APROPIADO */
+    font-weight: bold !important;
+    text-align: center !important;
+    z-index: 30 !important;
+    border: 2px solid #ffd700 !important;          /* ← BORDE DORADO COMO SCORE */
+    text-shadow: 0 0 10px #ffd700 !important;      /* ← MISMO EFECTO QUE SCORE */
+    max-width: 200px !important;                   /* ← ANCHO AUMENTADO PARA IMÁGENES */
+    white-space: nowrap !important;
+    display: block !important;
+    box-shadow: none !important;                   /* ← SIN SOMBRA EXTRA */
+  }
+  
+  /* Estilos para imágenes de power-ups GLOBAL */
+  .powerup-icon {
+    width: 20px !important;
+    height: 20px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 6px !important;
+    object-fit: contain !important;
+  }
 
 /* Desktop específico - PowerUps en posición actual */
 @media (min-width: 1025px) {
@@ -257,6 +267,16 @@ body {
     max-width: 160px !important;                 /* ← ANCHO CONTROLADO */
     min-width: 120px !important;                 /* ← ANCHO MÍNIMO */
     box-shadow: none !important;                 /* ← SIN SOMBRA EXTRA */
+  }
+  
+  /* Estilos para imágenes de power-ups DESKTOP */
+  .powerup-icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 8px !important;
+    object-fit: contain !important;
   }
 }
 
@@ -385,7 +405,6 @@ body {
 #mainMenu .menu-content {
   text-align: center;
   z-index: 20;
-  background-image: url('./assents/kokok_game_boox-05.png');
   background-size: contain;              /* ← TAMAÑO NORMAL DESKTOP */
   background-position: center center;    /* ← CENTRADO DESKTOP */
   background-repeat: no-repeat;
@@ -550,44 +569,57 @@ body {
 
 /* Instrucciones */
 .instructions-content {
-  text-align: center;
-  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 
-.instructions-content h2 {
-  font-size: 3em;
-  color: #00ff00;
-  text-shadow: 3px 3px 0px #000;
-  margin-bottom: 30px;
+.instructions-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: none; /* Eliminamos la limitación del contenedor */
+  margin-bottom: 40px;
 }
 
-.instructions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+.instructions-main-image {
+  width: 190%; /* Aumentamos 90% más (100% + 90% = 190%) */
+  max-width: none; /* Sin limitación máxima para desktop */
+  height: auto;
+  object-fit: contain;
 }
 
-.instruction-item {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 15px;
-  border: 3px solid #000;
+/* Botón Back en instrucciones - DESKTOP */
+.back-btn-image {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: -45px auto 0 auto !important;
+  width: 200px !important;
+  height: auto !important;
+  display: block !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease !important;
 }
 
-.roach-icon,
-.boss-icon,
-.powerup-icon,
-.control-icon {
-  font-size: 3em;
-  margin-bottom: 10px;
+.back-btn-image img {
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
 }
 
-.instruction-item p {
-  font-size: 14px;
-  color: #000;
-  font-weight: bold;
+.back-btn-image:hover {
+  transform: scale(1.05) !important;
+}
+
+.back-btn-image:active {
+  transform: scale(0.95) !important;
 }
 
 /* Game Over */
@@ -748,6 +780,19 @@ body {
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     background-color: #2c3e50 !important;
+  }
+  
+  /* INSTRUCCIONES RESPONSIVE - Imagen específica para móviles */
+  .instructions-main-image {
+    content: url('./assents/instruccionesResponsive.png');
+    max-width: 100%;
+    width: 95vw;
+  }
+  
+  /* Botón Back responsive para tablets */
+  .back-btn-image {
+    width: 180px !important;
+    margin: 15px auto 0 auto !important;
   }
   
   .screen {
@@ -967,6 +1012,20 @@ body {
     background-color: #2c3e50 !important;
   }
   
+  /* INSTRUCCIONES RESPONSIVE para móviles pequeños */
+  .instructions-main-image {
+    content: url('./assents/instruccionesResponsive.png');
+    max-width: 100%;
+    width: 90vw;
+    margin: 10px auto;
+  }
+  
+  /* Botón Back para móviles pequeños */
+  .back-btn-image {
+    width: 150px !important;
+    margin: 10px auto 0 auto !important;
+  }
+  
   .screen {
     background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
     background-size: cover !important;
@@ -1003,7 +1062,7 @@ body {
   #mainMenu .menu-content {
     width: 400px !important;          /* ← BACKGROUND MÁS GRANDE: era 320px */
     height: 480px !important;         /* ← BACKGROUND MÁS ALTO: era 400px */
-    padding: 10px 40px 60px 40px !important;  /* ← MÁS PADDING ARRIBA para centrar botones */
+    padding: 40px 0px 70px 60px !important;  /* ← NUEVO PADDING SOLICITADO */
     margin: 0 auto !important;        /* ← CENTRAR EN MÓVILES */
     transform: translateX(0px) !important;  /* ← RESETEAR TRANSFORM EN MÓVILES */
     order: 1;
@@ -1013,7 +1072,7 @@ body {
     align-items: center !important;
     background: transparent !important;           /* ← SIN BACKGROUND NEGRO */
     background-image: url('./assents/kokok_ home-06.png') !important;
-    background-size: 125% !important;             /* ← 25% MÁS GRANDE: era contain */
+    background-size: 87.5% !important;            /* ← REDUCIDO 30%: era 125% */
     background-position: center center !important;
     background-repeat: no-repeat !important;
   }
@@ -1031,17 +1090,17 @@ body {
   #mainMenu .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 15px !important;               /* ← MÁS GAP: era 12px */
-    margin: 20px auto 0 auto !important;  /* ← CENTRAR EN MÓVILES */
+    gap: 18px !important;               /* ← AUMENTADO PARA BOTONES MÁS GRANDES */
+    margin: 10px auto 10px auto !important;  /* ← MEJOR CENTRADO VERTICAL */
     width: 100%;
-    max-width: 250px !important;       /* ← MÁS ANCHO: era 200px */
+    max-width: 280px !important;       /* ← MÁS ANCHO PARA BOTONES GRANDES */
     align-items: center;
     justify-content: center;
   }
   
   #mainMenu .menu-btn {
-    width: 200px !important;          /* ← BOTONES MÁS GRANDES: era 140px */
-    height: 45px !important;          /* ← BOTONES MÁS ALTOS: era 32px */
+    width: 240px !important;          /* ← AUMENTADO 20%: era 200px */
+    height: 54px !important;          /* ← AUMENTADO 20%: era 45px */
     background: none !important;
     border: none !important;
     color: transparent !important;
@@ -1058,8 +1117,8 @@ body {
   
   #mainMenu .play-btn,
   #mainMenu #playBtn {
-    width: 220px !important;          /* ← PLAY MÁS GRANDE: era 160px */
-    height: 55px !important;          /* ← PLAY MÁS ALTO: era 40px */
+    width: 264px !important;          /* ← AUMENTADO 20%: era 220px */
+    height: 66px !important;          /* ← AUMENTADO 20%: era 55px */
     background-image: url('./assents/kokok_game_buttons-11.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -1076,8 +1135,8 @@ body {
   
   #mainMenu #instructionsBtn,
   #mainMenu #changeNameBtn {
-    width: 220px !important;          /* ← BOTONES MÁS GRANDES: era 160px */
-    height: 50px !important;          /* ← BOTONES MÁS ALTOS: era 36px */
+    width: 264px !important;          /* ← AUMENTADO 20%: era 220px */
+    height: 60px !important;          /* ← AUMENTADO 20%: era 50px */
     background-image: url('./assents/kokok_game_buttons-12.png') !important;
     background-size: contain !important;
     background-position: center !important;
@@ -1183,6 +1242,17 @@ body {
     border: 2px solid #ffd700 !important;
     text-shadow: 0 0 10px #ffd700 !important;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    max-width: 190px !important; /* Ancho aumentado para imágenes */
+  }
+  
+  /* Estilos para imágenes de power-ups MÓVILES */
+  .powerup-icon {
+    width: 18px !important;
+    height: 18px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 5px !important;
+    object-fit: contain !important;
   }
 
   /* MOSTRAR CONTROLES MÓVILES */
@@ -1226,10 +1296,12 @@ body {
     width: 60px !important;
     height: 60px !important;
     border-radius: 50% !important;
-    border: 3px solid #A67B5B !important;
-    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
-    color: #fff !important;
-    font-size: 24px !important;
+    border: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1238,6 +1310,16 @@ body {
     justify-content: center !important;
     user-select: none !important;
     touch-action: manipulation !important;
+  }
+
+  /* BOTÓN IZQUIERDA */
+  #leftPad {
+    background-image: url('./assents/Izquierda.png') !important;
+  }
+
+  /* BOTÓN DERECHA */
+  #rightPad {
+    background-image: url('./assents/Derecha.png') !important;
   }
 
   .pad-btn:active {
@@ -1251,10 +1333,13 @@ body {
     width: 70px !important;
     height: 70px !important;
     border-radius: 50% !important;
-    border: 3px solid #FFD700 !important;
-    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
-    color: #4B3621 !important;
-    font-size: 28px !important;
+    border: none !important;
+    background-image: url('./assents/Disparo.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1438,13 +1523,34 @@ body {
   .pad-btn {
     width: 50px !important;
     height: 50px !important;
-    font-size: 20px !important;
+    border: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
+  }
+
+  /* BOTÓN IZQUIERDA - LANDSCAPE */
+  #leftPad {
+    background-image: url('./assents/Izquierda.png') !important;
+  }
+
+  /* BOTÓN DERECHA - LANDSCAPE */
+  #rightPad {
+    background-image: url('./assents/Derecha.png') !important;
   }
 
   .shoot-btn {
     width: 60px !important;
     height: 60px !important;
-    font-size: 24px !important;
+    border: none !important;
+    background-image: url('./assents/Disparo.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
   }
 }
 
@@ -1468,10 +1574,15 @@ body {
   background: rgba(0, 0, 0, 0.95); /* Overlay más oscuro para cubrir completamente */
 }
 
-/* Background específico para Game Over en DESKTOP - MÁS ESPECÍFICO */
+/* Background específico para Game Over en DESKTOP */
 @media (min-width: 1025px) {
   #gameOverScreen {
-    background: rgba(0, 0, 0, 0.85) !important; /* Solo overlay oscuro, sin imagen */
+    background-image: url('./assents/background_kokok.png') !important;
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
   }
   
   /* Reorganizar Game Over: TITULO ARRIBA, COLUMNAS ABAJO */
@@ -1485,9 +1596,9 @@ body {
     width: 90% !important;
     padding: 30px 20px !important;
     gap: 30px !important;
-    background: rgba(0, 0, 0, 0.2) !important; /* Fondo más sutil para el contenido */
-    border-radius: 15px !important;
-    backdrop-filter: blur(5px) !important; /* Efecto de desenfoque */
+    background: transparent !important; /* Sin fondo */
+    border-radius: 0px !important;
+    backdrop-filter: none !important; /* Sin efecto de desenfoque */
   }
   
   /* GAME OVER título arriba */
@@ -1520,14 +1631,55 @@ body {
   /* Cada botón individual - tamaños finales responsive */
   #gameOverScreen .menu-btn, 
   #gameOverScreen .play-btn, 
-  #gameOverScreen .share-btn {
+  #gameOverScreen .share-btn,
+  #gameOverScreen .gameover-btn-image {
     width: 100% !important;
     max-width: clamp(200px, 22vw, 280px) !important;
     min-height: clamp(36px, 5.6vh, 56px) !important;
     min-width: clamp(176px, 20vw, 256px) !important; 
-    font-size: clamp(11px, 1.6vw, 16px) !important; 
-    margin: 0 !important;
-    padding: clamp(8px, 1.6vh, 14px) clamp(14px, 2vw, 24px) !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 8px auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Botón SHARE SCORE específico para DESKTOP */
+  #gameOverScreen #shareTelegramScoreBtn {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 10px auto !important;
+    width: 220px !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    text-indent: 0 !important;
+    font-size: 0 !important;
+    color: transparent !important;
+  }
+
+  #gameOverScreen #shareTelegramScoreBtn img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    object-fit: contain !important;
+  }
+
+  /* Asegurar que las imágenes de los botones se muestren correctamente en desktop */
+  #gameOverScreen .gameover-btn-image img,
+  #gameOverScreen #restartBtn img,
+  #gameOverScreen #shareTwitterBtn img,
+  #gameOverScreen #backToMenuBtn img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   
   /* Asegurar que el HTML sea interpretado correctamente */
@@ -1536,14 +1688,15 @@ body {
   }
 }
 
-/* Background específico para Game Over en RESPONSIVE (tablets y móviles) */
+/* Background específico para Game Over en RESPONSIVE */
 @media (max-width: 1024px) {
   #gameOverScreen {
-    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important; /* Usar el mismo background del menú */
+    background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
     background-size: cover !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
-    background-color: #2c3e50 !important; /* Mismo color de base del menú */
+    background-attachment: fixed !important;
+    background-color: #2c3e50 !important;
     position: fixed !important; /* Pantalla completa independiente */
     top: 0 !important;
     left: 0 !important;
@@ -1553,10 +1706,10 @@ body {
   }
   
   #gameOverScreen .gameover-card {
-    background: rgba(0, 0, 0, 0.2) !important; /* Fondo más sutil */
-    border-radius: 15px !important;
+    background: transparent !important; /* Sin fondo */
+    border-radius: 0px !important;
     padding: 40px 30px !important; /* Más padding */
-    backdrop-filter: blur(3px) !important;
+    backdrop-filter: none !important;
   display: flex !important;
     flex-direction: column !important;
   align-items: center !important;
@@ -1593,10 +1746,7 @@ body {
     width: clamp(264px, 60vw, 384px) !important; /* 20% más grande */
     height: clamp(264px, 60vw, 384px) !important; /* 20% más grande */
     border-radius: 20px !important; /* Bordes más redondeados */
-    background-image: url('./assents/kokok_ home-06.png') !important; /* Usar background de imagen */
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
+    background: transparent !important; /* Sin background de imagen */
     border: 5px solid #222 !important; /* Borde más grueso */
     box-shadow: 0 0 25px rgba(0,0,0,0.5) !important; /* Sombra más intensa */
     order: 2 !important;
@@ -1665,6 +1815,29 @@ body {
       box-shadow: none !important; /* Sin sombra */
     }
     
+    /* Estilos generales para todos los botones del Game Over en responsive */
+    #gameOverScreen .gameover-btn-image {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 8px auto !important;
+      width: clamp(250px, 50vw, 350px) !important;
+      min-height: 60px !important;
+      display: block !important;
+      overflow: visible !important;
+      text-indent: 0 !important;
+      color: transparent !important;
+      font-size: 0 !important;
+    }
+
+    #gameOverScreen .gameover-btn-image img {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
     /* Asegurar que el layout sea completamente vertical en responsive */
     #gameOverScreen .score-section {
       display: flex !important;
@@ -1703,22 +1876,87 @@ body {
     
     /* Botón PLAY AGAIN en responsive */
     #gameOverScreen #restartBtn {
-      background-image: url('./assents/kokok_game_ buttons-end-04.png') !important;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 8px auto !important;
+      width: clamp(250px, 50vw, 350px) !important;
+      min-height: 60px !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+
+    #gameOverScreen #restartBtn img {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
     
     /* Botón MAIN MENU en responsive */
     #gameOverScreen #backToMenuBtn {
-      background-image: url('./assents/kokok_game_ buttons-end-07.png') !important;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 8px auto !important;
+      width: clamp(250px, 50vw, 350px) !important;
+      min-height: 60px !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+
+    #gameOverScreen #backToMenuBtn img {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
     
-    /* Botón SHARE SCORE en responsive */
+    /* Botón SHARE SCORE - SIMPLIFICADO Y LIMPIO */
     #gameOverScreen #shareTelegramScoreBtn {
-      background-image: url('./assents/kokok_game_ buttons-end-05.png') !important;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 10px auto !important;
+      width: 280px !important;
+      height: auto !important;
+      display: block !important;
+      overflow: visible !important;
+      text-indent: 0 !important;
+      font-size: 0 !important;
+      color: transparent !important;
+    }
+
+    #gameOverScreen #shareTelegramScoreBtn img {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      object-fit: contain !important;
     }
     
     /* Botón SHARE ON X en responsive */
     #gameOverScreen #shareTwitterBtn {
-      background-image: url('./assents/kokok_game_ buttons-end-06.png') !important;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 8px auto !important;
+      width: clamp(250px, 50vw, 350px) !important;
+      min-height: 60px !important;
+      display: block !important;
+      overflow: visible !important;
+    }
+
+    #gameOverScreen #shareTwitterBtn img {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
     
     /* Efectos hover para botones con imágenes en responsive */
@@ -1834,10 +2072,12 @@ body.game-active .arcade-side {
     width: 60px !important;
     height: 60px !important;
     border-radius: 50% !important;
-    border: 3px solid #A67B5B !important;
-    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
-    color: #fff !important;
-    font-size: 24px !important;
+    border: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1848,14 +2088,27 @@ body.game-active .arcade-side {
     touch-action: manipulation !important;
   }
 
+  /* BOTÓN IZQUIERDA - PORTRAIT */
+  #leftPad {
+    background-image: url('./assents/Izquierda.png') !important;
+  }
+
+  /* BOTÓN DERECHA - PORTRAIT */
+  #rightPad {
+    background-image: url('./assents/Derecha.png') !important;
+  }
+
   .shoot-btn {
     width: 70px !important;
     height: 70px !important;
     border-radius: 50% !important;
-    border: 3px solid #FFD700 !important;
-    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
-    color: #4B3621 !important;
-    font-size: 28px !important;
+    border: none !important;
+    background-image: url('./assents/Disparo.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1910,10 +2163,12 @@ body.game-active .arcade-side {
     width: 60px !important;
     height: 60px !important;
     border-radius: 50% !important;
-    border: 3px solid #A67B5B !important;
-    background: linear-gradient(135deg, #A67B5B, #8B5C2B) !important;
-    color: #fff !important;
-    font-size: 24px !important;
+    border: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1924,8 +2179,17 @@ body.game-active .arcade-side {
     touch-action: manipulation !important;
   }
 
+  /* BOTÓN IZQUIERDA - GENERAL */
+  #leftPad {
+    background-image: url('./assents/Izquierda.png') !important;
+  }
+
+  /* BOTÓN DERECHA - GENERAL */
+  #rightPad {
+    background-image: url('./assents/Derecha.png') !important;
+  }
+
   .pad-btn:active {
-    background: linear-gradient(135deg, #8B5C2B, #6B4C1B) !important;
     transform: scale(0.95) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
@@ -1934,10 +2198,13 @@ body.game-active .arcade-side {
     width: 70px !important;
     height: 70px !important;
     border-radius: 50% !important;
-    border: 3px solid #FFD700 !important;
-    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
-    color: #4B3621 !important;
-    font-size: 28px !important;
+    border: none !important;
+    background-image: url('./assents/Disparo.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: transparent !important;
+    font-size: 0px !important;
     cursor: pointer !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
     transition: all 0.2s ease !important;
@@ -1949,7 +2216,6 @@ body.game-active .arcade-side {
   }
 
   .shoot-btn:active {
-    background: linear-gradient(135deg, #FFA500, #FF8C00) !important;
     transform: scale(0.95) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }

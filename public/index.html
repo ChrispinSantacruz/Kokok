@@ -54,11 +54,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('./assents/background_kokok.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-color: #2c3e50;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -74,19 +70,85 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Cuando el juego esté activo, el container debe cubrir toda la pantalla */
+        body.game-active #gameContainer {
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
         }
 
         #gameCanvas {
-            border: 3px solid #A67B5B;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            background: #5C4033;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
             display: none; /* Oculto por defecto hasta que inicie el juego */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100vw;
+            max-height: 100vh;
         }
 
         /* Mostrar canvas solo cuando el juego esté activo */
         body.game-active #gameCanvas {
             display: block;
+        }
+
+        /* Background para cuando el juego esté activo */
+        body.game-active {
+            background-image: url('./assents/background_kokok.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Asegurar que el background cubra completamente */
+        body.game-active::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('./assents/background_kokok.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+
+        /* En móviles, usar el background responsive durante el juego */
+        @media (max-width: 768px) {
+            body.game-active {
+                background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+                background-size: cover !important;
+                background-position: center center !important;
+                background-color: #2c3e50 !important;
+                background-attachment: fixed !important;
+                min-height: 100vh !important;
+                height: 100vh !important;
+            }
+
+            body.game-active::before {
+                background-image: url('./assents/kokok_game_BG_responsive-07.png') !important;
+            }
         }
 
         /* Ocultar canvas en pantallas de menú */
@@ -100,11 +162,7 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            background-image: url('./assents/background_kokok.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-color: #2c3e50;
             overflow: hidden;
         }
 
@@ -145,21 +203,33 @@
             z-index: 1000;
         }
         
+        /* Estilos para el título móvil - Solo para responsive */
         @media (max-width: 768px) {
-            body {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
+            .mobile-title-container {
+                display: block;
+                position: absolute;
+                top: 15px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 1001;
             }
-            
-            .screen {
-                background-image: url('./assents/kokok_game_BG_responsive-07.png');
-                background-size: cover;
-                background-position: center center;
-                background-color: #2c3e50;
+
+            .mobile-title-logo {
+                width: clamp(200px, 60vw, 280px);
+                height: auto;
+                filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.8));
             }
-            
+        }
+
+        /* Ocultar título en desktop */
+        @media (min-width: 769px) {
+            .mobile-title-container {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Solo estilos básicos que no conflicten con styles.css */
             .controls-info {
                 font-size: 10px;
             }
@@ -321,13 +391,50 @@
         }
 
         /* === MENÚ PRINCIPAL MEJORADO === */
-        #mainMenu .menu-content {
-            text-align: center;
-            color: #E3C6A8;
-            max-width: 450px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 20px;
+        /* Background específico para menú principal en desktop */
+        #mainMenu {
+            background-image: url('./assents/KOKOK_GAME_GFX_background2-01 (1).png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        /* Solo para desktop - responsive se maneja en styles.css */
+        @media (min-width: 769px) {
+            #mainMenu .menu-content {
+                text-align: center;
+                color: #E3C6A8;
+                max-width: 450px;
+                width: 100%;
+                margin: 0 auto;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                min-height: 100vh;
+                padding-top: clamp(80px, 12vh, 150px);
+            }
+        }
+
+        /* Ajustes del contenido del menú para diferentes pantallas */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            #mainMenu .menu-content {
+                padding-top: clamp(100px, 15vh, 180px);
+            }
+        }
+
+        @media (min-width: 1367px) and (max-width: 1920px) {
+            #mainMenu .menu-content {
+                padding-top: clamp(120px, 18vh, 220px);
+            }
+        }
+
+        @media (min-width: 1921px) {
+            #mainMenu .menu-content {
+                padding-top: clamp(150px, 20vh, 280px);
+            }
         }
 
         .game-title {
@@ -346,13 +453,19 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
         }
 
-        .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 30px 0;
-            width: 100%;
-            align-items: center;
+        /* Solo para desktop - responsive se maneja en styles.css */
+        @media (min-width: 769px) {
+            .menu-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: clamp(20px, 3vh, 30px);
+                margin: clamp(40px, 8vh, 80px) 0 0 0;
+                width: 100%;
+                align-items: center;
+                justify-content: flex-start;
+                position: relative;
+                top: clamp(50px, 10vh, 100px);
+            }
         }
 
         /* === PANTALLA DE INSTRUCCIONES === */
@@ -397,57 +510,98 @@
             margin: 0;
         }
 
-        /* === ESTILOS CONSISTENTES PARA BOTONES === */
-        .menu-btn, .play-btn, .share-btn {
-            background: linear-gradient(135deg, #A67B5B, #8B5C2B);
-            color: #E3C6A8;
-            border: none;
-            padding: 18px 20px;
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-align: center;
-            margin: 0 auto;
+        /* === ESTILOS PARA BOTONES DESKTOP - MÓVIL SE MANEJA EN styles.css === */
+        @media (min-width: 769px) {
+            /* Botón PLAY */
+            #mainMenu #playBtn {
+                background: none !important;
+                background-image: url('./assents/kokok_game_buttons-11.png') !important;
+                background-size: contain !important;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+                border: none !important;
+                color: transparent !important;
+                width: 200px !important;
+                height: 50px !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                margin: 0 auto !important;
+                text-indent: -9999px !important;
+                overflow: hidden !important;
+            }
+
+            /* Botón INSTRUCTIONS */
+            #mainMenu #instructionsBtn {
+                background: none !important;
+                background-image: url('./assents/kokok_game_buttons-12.png') !important;
+                background-size: contain !important;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+                border: none !important;
+                color: transparent !important;
+                width: 200px !important;
+                height: 45px !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                margin: 0 auto !important;
+                text-indent: -9999px !important;
+                overflow: hidden !important;
+            }
+
+            /* Botón CHANGE NAME */
+            #mainMenu #changeNameBtn {
+                background: none !important;
+                background-image: url('./assents/kokok_game_buttons-13.png') !important;
+                background-size: contain !important;
+                background-position: center !important;
+                background-repeat: no-repeat !important;
+                border: none !important;
+                color: transparent !important;
+                width: 200px !important;
+                height: 45px !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                margin: 0 auto !important;
+                text-indent: -9999px !important;
+                overflow: hidden !important;
+            }
         }
 
-        .play-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #4B3621;
+        /* Efectos hover para botones con imágenes */
+        #mainMenu #playBtn:hover,
+        #mainMenu #instructionsBtn:hover,
+        #mainMenu #changeNameBtn:hover {
+            transform: scale(1.05) !important;
+            filter: brightness(1.1) contrast(1.1) !important;
         }
 
-        .share-btn {
-            background: linear-gradient(135deg, #0088cc, #006699);
-            color: white;
+        #mainMenu #playBtn:active,
+        #mainMenu #instructionsBtn:active,
+        #mainMenu #changeNameBtn:active {
+            transform: scale(0.98) !important;
+            filter: brightness(0.9) !important;
         }
 
-        .menu-btn:hover, .play-btn:hover, .share-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        /* Ajustes específicos para diferentes tamaños de pantalla desktop */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            #mainMenu .menu-buttons {
+                top: clamp(60px, 12vh, 120px);
+                margin-top: clamp(50px, 10vh, 100px);
+            }
         }
 
-        .play-btn:hover {
-            background: linear-gradient(135deg, #FFA500, #FF8C00);
+        @media (min-width: 1367px) and (max-width: 1920px) {
+            #mainMenu .menu-buttons {
+                top: clamp(80px, 15vh, 150px);
+                margin-top: clamp(60px, 12vh, 120px);
+            }
         }
 
-        .share-btn:hover {
-            background: linear-gradient(135deg, #006699, #004466);
-        }
-
-        .menu-btn:hover {
-            background: linear-gradient(135deg, #8B5C2B, #6B4C1B);
+        @media (min-width: 1921px) {
+            #mainMenu .menu-buttons {
+                top: clamp(100px, 18vh, 200px);
+                margin-top: clamp(80px, 15vh, 150px);
+            }
         }
 
         /* Botones deshabilitados */
@@ -459,15 +613,7 @@
             color: #999;
         }
 
-        /* Mejoras específicas para responsive */
-        @media (max-width: 480px) {
-            .menu-btn, .play-btn, .share-btn {
-                padding: 20px 15px;
-                font-size: clamp(1rem, 4vw, 1.2rem);
-                min-height: 65px;
-                letter-spacing: 0.5px;
-            }
-        }
+
 
         .mobile-pad-container {
             display: flex;
@@ -795,7 +941,7 @@
             visibility: visible !important;
         }
 
-        #restartBtn, #shareTelegramScoreBtn, #shareTwitterBtn, #backToMenuBtn {
+        #restartBtn, #shareTwitterBtn, #backToMenuBtn {
             background: none !important;
             border: none !important;
             color: transparent !important;
@@ -803,10 +949,38 @@
             overflow: hidden !important;
         }
 
-        #restartBtn img, #shareTelegramScoreBtn img, #shareTwitterBtn img, #backToMenuBtn img {
+        #restartBtn img, #shareTwitterBtn img, #backToMenuBtn img {
             display: block !important;
             width: 100% !important;
             height: auto !important;
+        }
+
+        /* BOTÓN SHARE SCORE ESPECÍFICO - MÁXIMA PRIORIDAD */
+        #shareTelegramScoreBtn {
+            background: none !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 15px auto !important;
+            width: 300px !important;
+            height: auto !important;
+            display: block !important;
+            overflow: visible !important;
+            text-indent: 0 !important;
+            font-size: 0 !important;
+            color: transparent !important;
+            position: relative !important;
+        }
+
+        #shareTelegramScoreBtn img {
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            object-fit: contain !important;
+            position: relative !important;
+            z-index: 10 !important;
         }
     </style>
 </head>
@@ -849,7 +1023,7 @@
                 <div class="login-title-image"></div>
             </div>
             <div class="login-content">
-                <span class="roach-icon-large">🪳</span>
+                
                 <div class="kokok-logo">
                     <img src="assents/kokok_game_ buttons-05.png" alt="KOKOK THE ROACH" class="kokok-main-logo">
                 </div>
@@ -868,8 +1042,8 @@
 
         <!-- Pantalla principal optimizada -->
         <div id="mainMenu" class="screen hidden">
-            <div class="main-title-container">
-                <div class="title-image"></div>
+            <div class="mobile-title-container">
+                <img src="assents/kokok_game_ buttons-05.png" alt="KOKOK THE ROACH" class="mobile-title-logo">
             </div>
             <div class="welcome-container">
                 <div id="welcomeMessage" class="welcome-message"></div>
@@ -877,9 +1051,9 @@
             <div class="main-content-container">
                 <div class="menu-content">
                     <div class="menu-buttons">
-                        <button id="playBtn" class="menu-btn play-btn">🎮 PLAY</button>
-                        <button id="instructionsBtn" class="menu-btn">📖 INSTRUCTIONS</button>
-                        <button id="changeNameBtn" class="menu-btn">✏️ CHANGE NAME</button>
+                        <button id="playBtn" class="menu-btn play-btn"></button>
+                        <button id="instructionsBtn" class="menu-btn"></button>
+                        <button id="changeNameBtn" class="menu-btn"></button>
                     </div>
                 </div>
             </div>
@@ -888,24 +1062,8 @@
         <!-- Pantalla de instrucciones optimizada -->
         <div id="instructionsScreen" class="screen hidden">
             <div class="instructions-content">
-                <h2>📖 INSTRUCTIONS</h2>
-                <div class="instructions-grid">
-                    <div class="instruction-item">
-                        <div class="roach-icon">🪳</div>
-                        <p>You are KOKOK, a cockroach that shoots money bills</p>
-                    </div>
-                    <div class="instruction-item">
-                        <div class="boss-icon">👨‍💼</div>
-                        <p>Defeat Trump (bombs), Elon (rockets) and the final duo</p>
-                    </div>
-                    <div class="instruction-item">
-                        <div class="powerup-icon">🛡️</div>
-                        <p>Collect shields and sugar bags for special power</p>
-                    </div>
-                    <div class="instruction-item">
-                        <div class="control-icon">📱</div>
-                        <p>Tap to move, hold to shoot</p>
-                    </div>
+                <div class="instructions-image-container">
+                    <img src="assents/KOKOK_GAME_GFX_instructions-05.png" alt="Game Instructions" class="instructions-main-image">
                 </div>
                 <button id="backBtn" class="back-btn-image">
                     <img src="assents/kokok_game_ buttons-end-02.png" alt="Back" class="btn-image">
@@ -946,7 +1104,7 @@
                             <img src="assents/kokok_game_ buttons-end-04.png" alt="Play Again" class="btn-image">
                         </button>
                         <button id="shareTelegramScoreBtn" class="gameover-btn-image">
-                            <img src="assents/kokok_game_ buttons-end-05.png" alt="Share Score" class="btn-image">
+                            <img src="assents/ShareScore.png" alt="Share Score" class="btn-image">
                         </button>
                         <button id="shareTwitterBtn" class="gameover-btn-image">
                             <img src="assents/kokok_game_ buttons-end-06.png" alt="Share on X" class="btn-image">

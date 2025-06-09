@@ -399,7 +399,7 @@ body {
   position: relative;
   overflow: hidden;
   margin: 0 auto;                        /* ← CENTRADO AUTOMÁTICO: era 25px auto */
-  transform: translate(-5vw, 3vh);       /* ← MOVER IZQUIERDA Y ABAJO: era none */
+  transform: translate(7vw, 3vh);       /* ← MOVER IZQUIERDA Y ABAJO: era none */
 }
 
 .character-container {
@@ -438,11 +438,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: min(20px, 2vh);                   /* ← RESPONSIVE: era 20px */
-  margin: min(80px, 8vh) auto 0 auto;    /* ← AQUÍ CAMBIAS SOLO LA ALTURA DE BOTONES */
+  margin: min(120px, 8vh) 0 0 0;         /* ← CAMBIAR: quitar auto para mover a la izquierda */
   width: 100%;
   max-width: min(350px, 30vw);           /* ← RESPONSIVE: era 350px */
-  align-items: center;                   /* ← CENTRAR BOTONES */
-  justify-content: center;               /* ← CENTRAR BOTONES */
+  align-items: flex-start;               /* ← ALINEAR A LA IZQUIERDA */
+  justify-content: center;               /* ← CENTRAR VERTICALMENTE */
+  transform: translateX(-6vw);           /* ← MOVER BOTONES RESPONSIVO: 8% del ancho de pantalla */
 }
 
 #mainMenu .menu-btn {

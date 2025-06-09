@@ -29,6 +29,7 @@ export class SoundManager {
             
             // Efectos de juego
             gameover: this.createAudio('sounds/Gameover.mp3', this.effectsVolume),
+            powerup: this.createAudio('sounds/Powerup.mp3', this.effectsVolume),
             
             // Efectos de UI (vamos a crear sonidos sintéticos simples)
             hover: this.createSyntheticSound('hover'),
@@ -233,6 +234,10 @@ export class SoundManager {
         
         // Reproducir sonido de game over inmediatamente
         this.playSound('gameover')
+    }
+
+    playPowerup() {
+        this.playSound('powerup')
     }
 
     // Método para detener todos los sonidos

@@ -323,7 +323,7 @@ export class Game {
     this.updateParticles()
 
     // Verificar power-ups con mejor detección de colisión
-    const powerUpCollected = this.powerUpManager.checkCollisions(this.player, this.gameState)
+            const powerUpCollected = this.powerUpManager.checkCollisions(this.player, this.gameState, this.soundManager)
     if (powerUpCollected) {
       console.log(`Power-up collected: ${powerUpCollected}`)
       this.gameState.updatePowerUpStatus(powerUpCollected, true)

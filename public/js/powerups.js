@@ -193,12 +193,18 @@ export class PowerUpManager {
     this.powerUps.forEach((powerUp) => powerUp.draw(ctx))
   }
 
-  checkCollisions(player, gameState = null) {
+  checkCollisions(player, gameState = null, soundManager = null) {
     for (let i = 0; i < this.powerUps.length; i++) {
       const powerUp = this.powerUps[i]
       if (powerUp.active && powerUp.checkCollision(player)) {
         const type = powerUp.type
         powerUp.collect(player, gameState)
+        
+        // Reproducir sonido de power-up si soundManager está disponible
+        if (soundManager && soundManager.playPowerup) {
+          soundManager.playPowerup()
+        }
+        
         console.log(`Power-up collected: ${type}`)
         return type
       }

@@ -42,8 +42,8 @@ export class TelegramIntegration {
         // Manejar comandos de Telegram (si se envían dentro de la WebApp)
         this.telegram.onEvent('command', (command) => {
             switch(command) {
-                case 'start':
-                    // Si ya estamos en la WebApp, al enviar /start de nuevo mostramos el mensaje de inicio
+                case 'game':
+                    // Si ya estamos en la WebApp, al enviar /game de nuevo mostramos el mensaje de inicio
                     // this.showStartMessage(); // COMENTADO por compatibilidad
                     break;
                 case 'help':

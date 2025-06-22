@@ -17,6 +17,11 @@ export class Controls {
   setupEventListeners() {
     // Controles de teclado
     document.addEventListener("keydown", (e) => {
+      // Solo procesar controles si el juego está corriendo
+      if (!this.game.gameState.gameRunning) {
+        return;
+      }
+      
       if (!this.keys[e.code]) {
         this.keys[e.code] = true
         if (e.code === "Space") {
@@ -31,6 +36,11 @@ export class Controls {
     })
 
     document.addEventListener("keyup", (e) => {
+      // Solo procesar controles si el juego está corriendo
+      if (!this.game.gameState.gameRunning) {
+        return;
+      }
+      
       this.keys[e.code] = false
     })
 

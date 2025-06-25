@@ -162,7 +162,7 @@ export class TelegramIntegration {
     async sendToN8nWebhook(data) {
         try {
             // URL específica del webhook de n8n del usuario (CORREGIDA CON WEBHOOK-TEST)
-            const n8nWebhookUrl = 'https://chriscodex2.app.n8n.cloud/webhook-test/1017d610-1159-4eed-b4e7-8644b0f3ace9';
+            const n8nWebhookUrl = 'https://chriscodex3.app.n8n.cloud/webhook-test/1017d610-1159-4eed-b4e7-8644b0f3ace9';
             
             console.log('🚀 Enviando datos a n8n (método GET):', data);
             
